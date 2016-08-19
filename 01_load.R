@@ -10,3 +10,19 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and limitations under the License.
 
+## Loading B.C. GHG emissions and related data from BC Data Catalogue (Open Government License - BC)
+## from https://catalogue.data.gov.bc.ca/dataset/british-columbia-greenhouse-gas-emissions
+
+##do not turn all strings in csv files into factors
+options(stringsAsFactors=FALSE)
+
+
+##filled in N/A and deleted spaces within cells, removing first column of row IDs
+ghgdata <- read.csv("https://catalogue.data.gov.bc.ca/dataset/24c899ee-ef73-44a2-8569-a0d6b094e60c/resource/11b1da01-fabc-406c-8b13-91e87f126dec/download/bcghgemissions.csv",
+                    header=TRUE, sep=",", strip.white=TRUE, check.names=FALSE,
+                    na.string=c("-","","NA"))
+
+
+gdpdata <- read.csv("https://catalogue.data.gov.bc.ca/dataset/24c899ee-ef73-44a2-8569-a0d6b094e60c/resource/ac3f0132-204a-4a5b-b145-6165fc99a0b3/download/bcghgrelateddata.csv",
+                    header=TRUE, sep=",", strip.white=TRUE, check.names=FALSE,
+                    na.string=c("-","","NA"))
