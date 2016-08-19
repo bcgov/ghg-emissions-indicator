@@ -10,4 +10,12 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and limitations under the License.
 
+library(envreportbc) #for pdf font output
 
+source("01_load.R")
+source("02_clean.R")
+source("03_analysis.R")
+source("04_output.R")
+
+mon_year <- format(Sys.Date(), "%b%Y")
+outfile <- paste0("EnvReportBC_GHG_Emissions_", mon_year, ".pdf")
