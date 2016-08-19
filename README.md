@@ -1,12 +1,12 @@
 # Trends in Greenhouse Gas Emissions in B.C.
 
-A set of R scripts to populate an indicator on trends in B.C.'s greenhouse gas (GHG) emissions. These scripts reproduce the analysis published on [Environmental Reporting BC](http://www.env.gov.bc.ca/soe/indicators/sustainability/ghg-emissions.html) in August 2016.
+A set of R scripts to populate an indicator on trends in B.C.'s greenhouse gas (GHG) emissions. These scripts reproduce the graphs published on [Environmental Reporting BC](http://www.env.gov.bc.ca/soe/indicators/sustainability/ghg-emissions.html) in August 2016.
 
 ### Usage
 
 #### Data
-The data for the indicator is  available from the [BC Data Catalogue](https://catalogue.data.gov.bc.ca/dataset?download_audience=Public) under the
-[Open Government License - BC](http://www2.gov.bc.ca/gov/content/governments/about-the-bc-government/databc/open-data/open-government-license-bc).
+The [British Columbia Greenhouse Gas Emissions](https://catalogue.data.gov.bc.ca/dataset/24c899ee-ef73-44a2-8569-a0d6b094e60c) data used for the indicator is available from the [BC Data Catalogue](https://catalogue.data.gov.bc.ca/dataset?download_audience=Public) under the
+[Open Government License - BC](http://www2.gov.bc.ca/gov/content/governments/about-the-bc-government/databc/open-data/open-government-license-bc)
 
 
 ####Code
