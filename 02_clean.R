@@ -62,9 +62,7 @@ gdpnormmelt <- reshape2::melt(gdpdata.norm, id.vars=c("Year"),
 
 ##Changing year from factor to character manually
 ghgmelt$year <- as.integer(as.character(ghgmelt$year))
-ghgmelt$ktCO2e <- as.numeric(as.character(ghgmelt$ktCO2e))
 ghgenergymelt$Year <- as.integer(as.character(ghgenergymelt$Year))
-ghgenergymelt$ktCO2e <- as.numeric(as.character(ghgenergymelt$ktCO2e))
 gdpnormmelt$Year <- as.integer(as.character(gdpnormmelt$Year))
 
 
