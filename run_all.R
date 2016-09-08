@@ -19,3 +19,7 @@ source("04_output.R")
 
 mon_year <- format(Sys.Date(), "%b%Y")
 outfile <- paste0("EnvReportBC_GHG_Emissions_", mon_year, ".pdf")
+
+rmarkdown::render("print_ver/ghg.Rmd",
+                  output_file = outfile)
+extrafont::embed_fonts(file.path("print_ver/", outfile))
