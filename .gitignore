@@ -8,3 +8,4 @@ internal.R
 *.pdf
 /data
 README.html
+.DS_Store
