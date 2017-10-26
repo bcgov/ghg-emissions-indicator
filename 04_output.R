@@ -18,7 +18,7 @@ library(grid) #for direct labelling of plots
 library(Cairo) #for exporting png with nice text
 library(dplyr) #pipe function, data manipulation
 library(envreportutils) #for theme_soe and theme_soe_facet
-
+library(forcats) # fct_rev() for stacking order
 
 ## @knitr pre
 
@@ -40,8 +40,10 @@ ghgtime <- ggplot(data=ghgyear, aes(x = year, y = sum)) +
                      expand=c(0,0)) +
   scale_x_continuous(limits = c(1990, 2014), breaks=seq(1990, 2014, 2), expand=c(0,0)) +
   theme_soe() +
-  theme(axis.text = element_text(size = 9),
-        plot.title = element_text(size = 12), plot.margin = unit(c(5,5,0,0),"mm"))
+  theme(axis.text = element_text(size = 10),
+        axis.title = element_text(size = 14),
+        plot.title = element_text(size = 14, hjust = 0.5),
+        plot.margin = unit(c(2,6,2,2),"mm"))
 plot(ghgtime)
 
 
@@ -56,8 +58,10 @@ ghgpop <- ggplot(data=gdpdata, aes(x = Year, y = GHGs_per_Capita_tCO2e_person)) 
                      expand=c(0,0)) +
   scale_x_continuous(limits = c(1990, 2014),  breaks=seq(1990, 2014, 2), expand=c(0,0)) +
   theme_soe() +
-  theme(axis.text = element_text(size = 9),
-        plot.title = element_text(size = 12), plot.margin = unit(c(5,5,0,0),"mm")) 
+  theme(axis.text = element_text(size = 10),
+        axis.title = element_text(size = 14),
+        plot.title = element_text(size = 14, hjust = 0.5),
+        plot.margin = unit(c(2,6,2,2),"mm")) 
 plot(ghgpop)
 
 
@@ -72,8 +76,10 @@ gdptime <- ggplot(data=gdpdata, aes(x = Year, y = GHGs_per_GDP_tCO2e_million_GDP
                      expand=c(0,0)) +
   scale_x_continuous(limits = c(1990, 2014),  breaks=seq(1990, 2014, 2), expand=c(0,0)) +
   theme_soe() +
-  theme(axis.text = element_text(size = 9),
-        plot.title = element_text(size = 12), plot.margin = unit(c(5,5,0,0),"mm")) 
+  theme(axis.text = element_text(size = 10),
+        axis.title = element_text(size = 14),
+        plot.title = element_text(size = 14, hjust = 0.5),
+        plot.margin = unit(c(2,6,2,2),"mm")) 
 plot(gdptime)
 
 
@@ -100,9 +106,10 @@ ghg.gdp.norm <- ggplot(data=gdpnormmelt, aes(x = Year, y = Amount,
   annotate("text", label = "Population", colour = "#4daf4a", x = 2009, y = 1.41,
            size = 5, family = chart_font_web) +
   theme_soe() +
-  theme(axis.text = element_text(size = 9),
-        plot.title = element_text(size = 12),
-        plot.margin = unit(c(5,5,0,0),"mm")) 
+  theme(axis.text = element_text(size =10),
+        axis.title = element_text(size = 14),
+        plot.title = element_text(size = 14, hjust = 0.5),
+        plot.margin = unit(c(2,6,2,2),"mm")) 
 plot(ghg.gdp.norm)
 
 
@@ -110,7 +117,7 @@ plot(ghg.gdp.norm)
 
 ##stacked area chart of GHG emissions over time by sector
 
-## order the data frame by secotr, based on mean sum of emissions
+## order the data frame by sector, based on mean sum of emissions
 ghgsector <- order_df(ghgsector, target_col = "sector", value_col = "sum", fun = mean)
 
 sector.order <- rev(levels(ghgsector$sector))
@@ -121,7 +128,7 @@ sector.pal <- brewer.pal(sector.no, "Set1")
 names(sector.pal) <- sector.order
 
 #stacked sector plot
-ghgstack <- ggplot(data=ghgsector, aes(x = year, y = sum, fill = sector)) + 
+ghgstack <- ggplot(data=ghgsector, aes(x = year, y = sum, fill = fct_rev(sector))) + 
   geom_area(size=.2, alpha=.6) + 
   geom_line(data=ghgyear, aes(x = year, y = sum),
             colour = "black", size = 1, show.legend = FALSE) +
@@ -138,9 +145,10 @@ ghgstack <- ggplot(data=ghgsector, aes(x = year, y = sum, fill = sector)) +
         panel.grid.minor = element_line(size = 0.5, colour = "grey85"),
         panel.grid.minor.x = element_blank(),
         panel.grid.major.x = element_blank(),
-        axis.text = element_text(size = 8),
-        legend.text = element_text(size = 9),
-        legend.title = element_text(size = 9), 
+        axis.text = element_text(size = 12),
+        axis.title = element_text(size = 14),
+        legend.text = element_text(size = 12),
+        legend.title = element_text(size = 12), 
         legend.background = element_rect(colour = "white"))
 plot(ghgstack)
 
@@ -182,14 +190,14 @@ ghgenergytrends <- ggplot(data=ghgenergygroup,
                       breaks = subsector.order) +
   theme_soe_facet() +
   theme(legend.position = ("bottom"),
-        legend.title = element_text(size = 10),
+        legend.title = element_text(size = 12),
         
-        legend.text = element_text(size = 10),
-        axis.text.x = element_text(size = 6, hjust = .8),
+        legend.text = element_text(size = 12),
+        axis.text.x = element_text(size = 10, hjust = .8),
         #     axis.text.x = element_text(angle = 45, size = 7, vjust = 0.5),
-        axis.text = element_text(size = 8),
-        strip.text.x = element_text(size = 9),
-        plot.margin = unit(c(10,7,0,0),"mm"),
+        axis.text = element_text(size = 10),
+        strip.text.x = element_text(size = 12),
+        plot.margin = unit(c(5,5,0,2),"mm"),
         panel.grid.major.x = element_blank(),
         legend.background = element_blank())
 plot(ghgenergytrends)
@@ -199,7 +207,7 @@ plot(ghgenergytrends)
 
 ##Printing plots for web 
 
-## create a folder in directory called out for png files
+## create a folder in directory called out for image files
 dir.create('out', showWarnings = FALSE)
 
 ## Set plot dimensions:
@@ -211,57 +219,112 @@ sm_h.px <- 315
 lg_dpi <- 95
 sm_dpi <- 72
 
-##small plots
+##small plots in SVG formats
 
 ##total ghg over time by year
-ggsave("./out/ghg_plot_small.png", plot = ghgtime, type = "cairo-png", 
-       width = sm_w.px / sm_dpi, height = sm_h.px / sm_dpi, units="in", 
-       dpi=sm_dpi)
+svg_px("./out/ghg_plot_small.svg", width = sm_w.px, height = sm_h.px)
+plot(ghgtime)
+dev.off()
 
 ##total ghg/gdp over time by year
-ggsave("./out/ghg_gdp_plot_small.png", plot = gdptime, type = "cairo-png", 
-       width = sm_w.px / sm_dpi, height = sm_h.px / sm_dpi, units="in", 
-       dpi=sm_dpi)
+svg_px("./out/ghg_gdp_plot_small.svg", width = sm_w.px, height = sm_h.px)
+plot(gdptime)
+dev.off()
 
 ##total ghg per pop over time by year
-ggsave("./out/ghg_pop_plot_small.png", plot = ghgpop, type = "cairo-png", 
-       width = sm_w.px / sm_dpi, height = sm_h.px / sm_dpi, units="in", 
-       dpi=sm_dpi)
+svg_px("./out/ghg_pop_plot_small.svg", width = sm_w.px, height = sm_h.px)
+plot(ghgpop)
+dev.off()
 
 ##ghg, gdp and pop compared over time by year
-ggsave("./out/norm_plot_small.png", plot = ghg.gdp.norm, type = "cairo-png", 
-       width = sm_w.px / sm_dpi, height = sm_h.px / sm_dpi, units="in", 
-       dpi=sm_dpi)
-
+svg_px("./out/norm_plot_small.svg", width = sm_w.px, height = sm_h.px)
+plot(ghg.gdp.norm)
+dev.off()
 
 ##large plots
 
 ##total ghg over time by year
-ggsave("./out/ghg_plot.png", plot = ghgtime, type = "cairo-png", 
-       width = lg_w.px / lg_dpi, height = lg_h.px / lg_dpi, units="in", 
-       dpi=lg_dpi)
+svg_px("./out/ghg_plot.svg", width = lg_w.px, height = lg_h.px)
+plot(ghgtime)
+dev.off()
 
 ##total ghg/gdp over time by year
-ggsave("./out/ghg_gdp_plot.png", plot = gdptime, type = "cairo-png", 
-       width = lg_w.px / lg_dpi, height = lg_h.px / lg_dpi, units="in", 
-       dpi=lg_dpi)
+svg_px("./out/ghg_gdp_plot.svg", width = lg_w.px, height = lg_h.px)
+plot(gdptime)
+dev.off()
 
 ##total ghg per pop over time by year
-ggsave("./out/ghg_pop_plot.png", plot = ghgpop, type = "cairo-png", 
-       width = lg_w.px / lg_dpi, height = lg_h.px / lg_dpi, units="in", 
-       dpi=lg_dpi)
+svg_px("./out/ghg_pop_plot.svg", width = lg_w.px, height = lg_h.px)
+plot(ghgpop)
+dev.off()
 
 ##ghg, gdp and pop compared over time by year
-ggsave("./out/norm_plot.png", plot = ghg.gdp.norm, type = "cairo-png", 
-       width = lg_w.px / lg_dpi, height = lg_h.px / lg_dpi, units="in", 
-       dpi=lg_dpi)
+svg_px("./out/norm_plot.svg", width = lg_w.px, height = lg_h.px)
+plot(ghg.gdp.norm)
+dev.off()
 
 ##total ghg by sector over time by year stacked area chart
-ggsave("./out/sector_plot.png", plot = ghgstack, type = "cairo-png", 
-       width = 8.50, height = 4.30, units="in", 
-       dpi=100)
+svg_px("./out/sector_plot.svg", width = 850, height = 430)
+plot(ghgstack)
+dev.off()
 
 ##total ghg over time by source for energy sector facet plot
-ggsave("./out/energy_plot.png", plot = ghgenergytrends, type = "cairo-png", 
-       width = 8.36, height = 6.50, units="in", dpi=100)
+svg_px("./out/energy_plot.svg", width = 836, height = 650)
+plot(ghgenergytrends)
+dev.off()
 
+# ### PNG outputs ###
+# #small plots
+# 
+# ##total ghg over time by year
+# ggsave("./out/ghg_plot_small.png", plot = ghgtime, type = "cairo-png", 
+#        width = sm_w.px / sm_dpi, height = sm_h.px / sm_dpi, units="in", 
+#        dpi=sm_dpi)
+# 
+# ##total ghg/gdp over time by year
+# ggsave("./out/ghg_gdp_plot_small.png", plot = gdptime, type = "cairo-png", 
+#        width = sm_w.px / sm_dpi, height = sm_h.px / sm_dpi, units="in", 
+#        dpi=sm_dpi)
+# 
+# ##total ghg per pop over time by year
+# ggsave("./out/ghg_pop_plot_small.png", plot = ghgpop, type = "cairo-png", 
+#        width = sm_w.px / sm_dpi, height = sm_h.px / sm_dpi, units="in", 
+#        dpi=sm_dpi)
+# 
+# ##ghg, gdp and pop compared over time by year
+# ggsave("./out/norm_plot_small.png", plot = ghg.gdp.norm, type = "cairo-png", 
+#        width = sm_w.px / sm_dpi, height = sm_h.px / sm_dpi, units="in", 
+#        dpi=sm_dpi)
+# 
+# 
+# ##large plots
+# 
+# ##total ghg over time by year
+# ggsave("./out/ghg_plot.png", plot = ghgtime, type = "cairo-png", 
+#        width = lg_w.px / lg_dpi, height = lg_h.px / lg_dpi, units="in", 
+#        dpi=lg_dpi)
+# 
+# ##total ghg/gdp over time by year
+# ggsave("./out/ghg_gdp_plot.png", plot = gdptime, type = "cairo-png", 
+#        width = lg_w.px / lg_dpi, height = lg_h.px / lg_dpi, units="in", 
+#        dpi=lg_dpi)
+# 
+# ##total ghg per pop over time by year
+# ggsave("./out/ghg_pop_plot.png", plot = ghgpop, type = "cairo-png", 
+#        width = lg_w.px / lg_dpi, height = lg_h.px / lg_dpi, units="in", 
+#        dpi=lg_dpi)
+# 
+# ##ghg, gdp and pop compared over time by year
+# ggsave("./out/norm_plot.png", plot = ghg.gdp.norm, type = "cairo-png", 
+#        width = lg_w.px / lg_dpi, height = lg_h.px / lg_dpi, units="in", 
+#        dpi=lg_dpi)
+# 
+# ##total ghg by sector over time by year stacked area chart
+# ggsave("./out/sector_plot.png", plot = ghgstack, type = "cairo-png", 
+#        width = 8.50, height = 4.30, units="in", 
+#        dpi=100)
+# 
+# ##total ghg over time by source for energy sector facet plot
+# ggsave("./out/energy_plot.png", plot = ghgenergytrends, type = "cairo-png", 
+#        width = 8.36, height = 6.50, units="in", dpi=100)
+# 
