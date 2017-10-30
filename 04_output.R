@@ -43,7 +43,7 @@ ghgtime <- ggplot(data=ghgyear, aes(x = year, y = sum)) +
   theme(axis.text = element_text(size = 10),
         axis.title = element_text(size = 14),
         plot.title = element_text(size = 14, hjust = 0.5),
-        plot.margin = unit(c(2,6,2,2),"mm"))
+        plot.margin = unit(c(6,6,6,2),"mm"))
 plot(ghgtime)
 
 
@@ -61,7 +61,7 @@ ghgpop <- ggplot(data=gdpdata, aes(x = Year, y = GHGs_per_Capita_tCO2e_person)) 
   theme(axis.text = element_text(size = 10),
         axis.title = element_text(size = 14),
         plot.title = element_text(size = 14, hjust = 0.5),
-        plot.margin = unit(c(2,6,2,2),"mm")) 
+        plot.margin = unit(c(6,6,6,2),"mm")) 
 plot(ghgpop)
 
 
@@ -79,7 +79,7 @@ gdptime <- ggplot(data=gdpdata, aes(x = Year, y = GHGs_per_GDP_tCO2e_million_GDP
   theme(axis.text = element_text(size = 10),
         axis.title = element_text(size = 14),
         plot.title = element_text(size = 14, hjust = 0.5),
-        plot.margin = unit(c(2,6,2,2),"mm")) 
+        plot.margin = unit(c(6,6,6,2),"mm")) 
 plot(gdptime)
 
 
@@ -109,7 +109,7 @@ ghg.gdp.norm <- ggplot(data=gdpnormmelt, aes(x = Year, y = Amount,
   theme(axis.text = element_text(size =10),
         axis.title = element_text(size = 14),
         plot.title = element_text(size = 14, hjust = 0.5),
-        plot.margin = unit(c(2,6,2,2),"mm")) 
+        plot.margin = unit(c(6,6,6,2),"mm")) 
 plot(ghg.gdp.norm)
 
 
