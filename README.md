@@ -10,7 +10,7 @@ A set of R scripts to populate an indicator on trends in greenhouse gas emission
 [British Columbia Greenhouse Gas Emissions](https://catalogue.data.gov.bc.ca/dataset/24c899ee-ef73-44a2-8569-a0d6b094e60c) data are sourced from the [B.C. Data Catalogue](https://catalogue.data.gov.bc.ca/dataset?download_audience=Public), released under the
 [Open Government Licence - British Columbia](http://www2.gov.bc.ca/gov/content/governments/about-the-bc-government/databc/open-data/open-government-license-bc).
 
-British Columbia population estimates ([Table: 17-10-0005-01](https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=1710000501&pickMembers[0]=1.11&pickMembers[1]=2.1)) and gross domestic product ([Table: 36-10-0222-01](https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=3610022201)) data are sourced from [Statistics Canada](https://www.statcan.gc.ca/eng/start), released under the [Statistics Canada Open Licence Agreement](https://www.statcan.gc.ca/eng/reference/licence). 
+British Columbia population estimates ([Table: 17-10-0005-01](https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=1710000501)) and gross domestic product ([Table: 36-10-0222-01](https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=3610022201)) data are sourced from [Statistics Canada](https://www.statcan.gc.ca/eng/start), released under the [Statistics Canada Open Licence Agreement](https://www.statcan.gc.ca/eng/reference/licence). 
 
 
 ### Code
