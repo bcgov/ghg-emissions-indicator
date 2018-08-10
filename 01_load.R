@@ -11,9 +11,9 @@
 # See the License for the specific language governing permissions and limitations under the License.
 
 
-library(readr)
-library(cansim)
-library(dplyr)
+library(readr) #read in csv file
+library(cansim) #get Statistics Canada CANSIM data
+library(dplyr) #data munging
 
 
 ## Get British Columbia Greehhosue Gas Emissions estimates from B.C. Data Catalogue 
