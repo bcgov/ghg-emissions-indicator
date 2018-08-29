@@ -14,6 +14,8 @@ library(tidyr) #wide df to long df
 library(dplyr) #data munging
 library(stringr)
 
+## Read in raw data from 01_load.R if not already in environment
+if (!exists("bc_ghg")) load("tmp/raw_data.RData")
 
 ## Convert wide to long format 
 bc_ghg_long <- bc_ghg %>% 
