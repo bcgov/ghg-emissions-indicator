@@ -17,15 +17,15 @@ library(envreportutils) #for theme_soe and theme_soe_facet
 library(scales) #for label = comma
 library(forcats) # fct_rev() for stacking order
 library(RColorBrewer) #for colour palette
+library(dplyr)
 
 
 ## Read in plotting data from 02_clean.R if not already in environment
 if (!exists("bc_ghg_sum")) load("tmp/clean_data.RData")
 
-
 ## @knitr pre
-## @knitr ghgtrends
 
+## @knitr ghgtrends
 
 ## Line plot of total GHG emissions over time in British Columbia
 ghg_time <- ggplot(data = bc_ghg_sum, aes(x = year, y = ghg_estimate)) + 
@@ -157,7 +157,7 @@ subsector.no <- length(subsector.order)
 subsector.pal <- brewer.pal(subsector.no, "Set1")
 names(subsector.pal) <- subsector.order
 
-#background dataset
+#generate a background dataset
 ghg_energy_group_bg <- ghg_energy_group %>% 
   ungroup() %>% 
   select(-subsector_level1) %>% 
