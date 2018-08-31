@@ -10,47 +10,54 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and limitations under the License.
 
-#loading libraries for script
-library(ggplot2) #for plotting
+
+## Loading R libraries for script
+library(ggplot2) #plotting
+library(envreportutils) #for theme_soe and theme_soe_facet
+library(scales) #for label = comma
+
 library(RColorBrewer) #for colour palette
-library(extrafont) #for Verdana font
 library(grid) #for direct labelling of plots
 library(Cairo) #for exporting png with nice text
 library(dplyr) #pipe function, data manipulation
-library(envreportutils) #for theme_soe and theme_soe_facet
 library(forcats) # fct_rev() for stacking order
+
+
+## Read in plotting data from 03_analysis.R if not already in environment
+if (!exists("bc_ghg_sum")) load("tmp/plotting_data.RData")
+
 
 ## @knitr pre
 
-##font selection
-chart_font_web <- "Verdana"
 
-
-##PLOTS
+###########
+## PLOTS ##
+###########
 
 
 ## @knitr ghgtrends
 
-##line plot of total GHG emissions over time in BC
-ghgtime <- ggplot(data=ghgyear, aes(x = year, y = sum)) + 
+## Line plot of total GHG emissions over time in British Columbia
+ghg_time <- ggplot(data = bc_ghg_sum, aes(x = year, y = ghg_estimate, group = 1)) + 
   geom_line(colour = "#e41a1c", size = 1.5) + 
   ggtitle("Greenhouse Gas Emissions\nTotal") +
-  xlab ("Year") + ylab ("ktCO2e") +
+  xlab (NULL) + ylab (quote(ktCO2[e])) +
   scale_y_continuous(limits = c(52000, 72000), breaks=seq(0, 72000, 2000),
-                     expand=c(0,0)) +
-  scale_x_continuous(limits = c(1990, 2014), breaks=seq(1990, 2014, 2), expand=c(0,0)) +
+                     expand=c(0,0), label = comma) +
+  scale_x_continuous(limits = c(1990, 2016.5), breaks=seq(1992, 2016, 2), expand=c(0,0)) +
   theme_soe() +
   theme(axis.text = element_text(size = 10),
         axis.title = element_text(size = 14),
         plot.title = element_text(size = 14, hjust = 0.5),
         plot.margin = unit(c(6,6,6,2),"mm"))
-plot(ghgtime)
+plot(ghg_time)
+
 
 
 ## @knitr ghgpop
 
-##line plot of total GHG emissions per person over time in BC
-ghgpop <- ggplot(data=gdpdata, aes(x = Year, y = GHGs_per_Capita_tCO2e_person)) + 
+## Line plot of total GHG emissions per person over time in British Columbia
+ghgpop <- ggplot(data = gdpdata, aes(x = Year, y = GHGs_per_Capita_tCO2e_person)) + 
   geom_line(colour = "#e41a1c", size = 1.5) + 
   ggtitle("Greenhouse Gas Emissions\n per Person") +
   xlab ("Year") + ylab ("tCO2e per person") +

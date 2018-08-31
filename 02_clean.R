@@ -30,16 +30,12 @@ bc_ghg_long <- bc_ghg %>%
          year = as.integer(as.character(year)))
 
 
-## Create separate ENERGY dataframe
-bc_ghg_energy <- bc_ghg_long %>% 
-  filter(sector == "ENERGY") %>% 
-  mutate(general_source = case_when(subsector_level2 == "Road Transportation" ~ "Road",
-                                    subsector_level2 == "Railways" ~ "Railway",
-                                    subsector_level3 == "Pipeline Transport" ~ "Pipeline Transport",
-                                    subsector_level2 == "Other Transportation" ~ "Off-Road",
-                                    TRUE ~ subsector_level2),
-         general_source = str_replace(general_source, "and", "&")) %>% 
-  select(sector, subsector_level1, general_source, year, ktCO2e)
+## Summarize ghg emissions per sector per year
+ghg_sector_sum <- bc_ghg_long %>%
+  filter(sector != "OTHER LAND USE (Not included in total B.C. emissions)") %>%
+  group_by(sector, year) %>%
+  summarise(sum = sum(ktCO2e, na.rm=TRUE) %>%
+              round (digits = 0))
 
 
 ## Calculate ghg totals
@@ -51,7 +47,7 @@ bc_ghg_sum <- bc_ghg_long %>%
   select(sector, year, ghg_estimate)
 
 
-## Add ghg totals by year to bc_pop_gdp 
+## Add ghg totals by year to bc_pop_gdp data
 bc_measures <- bc_pop_gdp %>% 
   mutate(year = as.integer(as.character(year))) %>%
   left_join(bc_ghg_sum) %>% 
@@ -67,8 +63,46 @@ normalized_measures <- bc_measures %>%
   gather(key = measure, value = estimate, -year)
 
 
-# Create tmp folder if not already there and store objects in local repository
-if (!exists("tmp")) dir.create("tmp", showWarnings = FALSE)
-save(bc_ghg_long, bc_ghg_energy, bc_ghg_sum,
-     bc_measures, normalized_measures, file = "tmp/clean_data.RData")
+## Calculate GHG emissions per capita & per unit GDP and convert to tCO2e (from ktCO2e)
+bc_ghg_per_capita <- bc_measures %>% 
+  mutate(ghg_per_capita = (ghg_estimate/population_estimate)*1000,
+         ghg_per_unit_gdp = (ghg_estimate/gdp_estimate)*1000) %>% 
+  select(year, ghg_per_capita, ghg_per_unit_gdp)
 
+
+## Create separate ENERGY dataframe
+bc_ghg_energy <- bc_ghg_long %>% 
+  filter(sector == "ENERGY") %>% 
+  mutate(general_source = case_when(subsector_level2 == "Road Transportation" ~ "Road",
+                                    subsector_level2 == "Railways" ~ "Railway",
+                                    subsector_level3 == "Pipeline Transport" ~ "Pipeline Transport",
+                                    subsector_level2 == "Other Transportation" ~ "Off-Road",
+                                    TRUE ~ subsector_level2),
+         general_source = str_replace(general_source, "and", "&")) %>% 
+  select(sector, subsector_level1, general_source, year, ktCO2e)
+
+
+## Summarize ghg emissions in Energy sector by subsector and general sources
+ghg_energy_group <- bc_ghg_energy %>%
+  group_by(sector, subsector_level1, general_source, year) %>%
+  summarise(sum = sum(ktCO2e, na.rm=TRUE) %>%
+              round(digits = 0)) %>%
+  filter(subsector_level1 != "CO2 Transport and Storage") 
+
+
+# Create tmp folder if not already there and store clean data in local repository
+if (!exists("tmp")) dir.create("tmp", showWarnings = FALSE)
+save(bc_ghg_long, ghg_sector_sum, bc_ghg_sum, normalized_measures,
+     bc_ghg_per_capita, bc_ghg_energy,ghg_energy_group, file = "tmp/clean_data.RData")
+
+
+## GHG emission estimate comparison among years
+calc_inc <- function(ghg_now, ghg_then) {
+  perc <- ((ghg_now/ghg_then)-1)*100
+  paste(perc, "%")
+}
+
+previous_year <- calc_inc(bc_ghg_sum$ghg_estimate[bc_ghg_sum$year == "2016"], bc_ghg_sum$ghg_estimate[bc_ghg_sum$year =="2015"])
+previous_year
+baseline_year <- calc_inc(bc_ghg_sum$ghg_estimate[bc_ghg_sum$year == "2016"], bc_ghg_sum$ghg_estimate[bc_ghg_sum$year == "2007"])
+baseline_year
