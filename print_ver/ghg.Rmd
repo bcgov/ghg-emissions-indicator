@@ -1,6 +1,6 @@
 ---
 topic: "sustainability"
-title: "Trends in Greenhouse Gas Emissions in B.C. (1990-2014)"
+title: "Trends in Greenhouse Gas Emissions in B.C. (1990-2016)"
 output: envreportutils.internal::print_ver
 ---
 
@@ -19,26 +19,26 @@ See the License for the specific language governing permissions and limitations 
 -->
 
 ```{r set-options, echo=FALSE, cache=FALSE, warning=FALSE, message=FALSE}
-library(ggplot2) #for plotting
-library(RColorBrewer) #for colour palette
-library(extrafont) #for Verdana font
-library(grid) #for direct labelling of plots
-library(Cairo) #for exporting png with nice text
-library(dplyr) #pipe function, data manipulation
+library(ggplot2) #plotting
 library(envreportutils) #for theme_soe and theme_soe_facet
+library(scales) #for label = comma
+library(forcats) # fct_rev() for stacking order
+library(RColorBrewer) #for colour palette
+library(dplyr)
 library(knitr) #for rendering the PDF
 library(rprojroot)
 
-## Find the root of the project so we can find the files in the directory tree.
+## Find the root of the project so we can find the files in the directory tree
 root <- rprojroot::is_rstudio_project
 
+## Read in plotting data from 02_clean.R if not already in environment
+if (!exists("bc_ghg_sum")) load(root$find_file("tmp/clean_data.RData"))
 
 opts_chunk$set(echo=FALSE, cache=FALSE, warning=FALSE, message=FALSE, error=FALSE, fig.height=3.5, fig.width=6)
-source(root$find_file("01_load.R"))
-source(root$find_file("02_clean.R"))
-source(root$find_file("03_analysis.R"))
-read_chunk(root$find_file("04_output.R"))
 
+# source(root$find_file("01_load.R"))
+# source(root$find_file("02_clean.R"))
+read_chunk(root$find_file("03_output.R"))
 ```
 
 
@@ -61,6 +61,7 @@ read_chunk(root$find_file("04_output.R"))
 
 
 ```{r ghgtrends}
+plot(ghg_time)
 ```
 
 
@@ -75,6 +76,7 @@ read_chunk(root$find_file("04_output.R"))
 
 
 ```{r ghgpop}
+plot(ghg_pop)
 ```
  
                
@@ -88,6 +90,7 @@ read_chunk(root$find_file("04_output.R"))
 
 
 ```{r ghggdp}
+plot(gdp_time)
 ```
       
             
@@ -101,6 +104,7 @@ read_chunk(root$find_file("04_output.R"))
 
 
 ```{r norm}
+plot(norm)
 ```
 
 
@@ -127,6 +131,7 @@ read_chunk(root$find_file("04_output.R"))
 
     
 ```{r sector, fig.height=6, fig.width=8.5}
+plot(ghg_stack)
 ```      
 
 \newpage    
@@ -141,6 +146,7 @@ read_chunk(root$find_file("04_output.R"))
 \vspace{.6cm}
           
 ```{r energy, fig.height=6.5, fig.width=8.3}
+plot(ghg_energy_trends)
 ```
 
 
@@ -180,8 +186,8 @@ each file, as indicated below.
     - License: B.C. OGL: <http://www2.gov.bc.ca/gov/content/governments/about-the-bc-government/databc/open-data/open-government-license-bc>
 
 
-Published and Available On-Line at Environmental Reporting BC (August
-2016):
+Published and Available On-Line at Environmental Reporting BC (September
+2018):
 <http://www.env.gov.bc.ca/soe/indicators/sustainability/ghg-emissions.html>
 
 Email correspondence to: envreportbc@gov.bc.ca
