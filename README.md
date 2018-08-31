@@ -14,12 +14,11 @@ British Columbia population estimates ([Table: 17-10-0005-01](https://www150.sta
 
 
 ### Code
-There are four core scripts that are required for the indicator, they need to be run in order:
+There are three core scripts that are required for the indicator, they need to be run in order:
 
-- 01_clean.R
-- 02_analysis.R
-- 03_visualize.R
-- 04_output.R
+- 01_load.R
+- 02_clean.R
+- 03_output.R
 
 The `run_all.R` script can be `source`ed to run it all at once.
 
