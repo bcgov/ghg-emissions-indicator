@@ -11,9 +11,10 @@
 # See the License for the specific language governing permissions and limitations under the License.
 
 
-library(tidyr) #wide df to long df
+## Loading R libraries for script
+library(tidyr) #wide to long df
 library(dplyr) #data munging
-library(stringr)
+library(stringr) 
 
 
 ## Read in raw data from 01_load.R if not already in environment
@@ -38,17 +39,23 @@ bc_ghg_energy <- bc_ghg_long %>%
                                     subsector_level2 == "Other Transportation" ~ "Off-Road",
                                     TRUE ~ subsector_level2),
          general_source = str_replace(general_source, "and", "&")) %>% 
-  filter(subsector_level1 != "CO2 Transport and Storage") %>% # all values are all `-` == no emissions
   select(sector, subsector_level1, general_source, year, ktCO2e)
 
 
-## Add ghg totals by year to bc_pop_gdp
-bc_measures <- bc_ghg_long %>%
+## Calculate ghg totals
+bc_ghg_sum <- bc_ghg_long %>%
   filter(sector != "OTHER LAND USE (Not included in total B.C. emissions)") %>%
   group_by(year) %>%
   summarise(ghg_estimate = round(sum(ktCO2e, na.rm=TRUE), digits = 0)) %>% 
-  mutate(year = as.character(year)) %>% 
-  left_join(bc_pop_gdp)
+  mutate(sector = "British Columbia") %>% 
+  select(sector, year, ghg_estimate)
+
+
+## Add ghg totals by year to bc_pop_gdp 
+bc_measures <- bc_pop_gdp %>% 
+  mutate(year = as.integer(as.character(year))) %>%
+  left_join(bc_ghg_sum) %>% 
+  select(-sector)
 
 
 ## Make normalized dateframe for relative comparisons and convert to long format
@@ -62,5 +69,6 @@ normalized_measures <- bc_measures %>%
 
 # Create tmp folder if not already there and store objects in local repository
 if (!exists("tmp")) dir.create("tmp", showWarnings = FALSE)
-save(bc_ghg_long, bc_ghg_energy, bc_measures, normalized_measures, file = "tmp/clean_data.RData")
+save(bc_ghg_long, bc_ghg_energy, bc_ghg_sum,
+     bc_measures, normalized_measures, file = "tmp/clean_data.RData")
 

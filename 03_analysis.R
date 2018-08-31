@@ -10,49 +10,54 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and limitations under the License.
 
-##loading R libraries for script
-library(dplyr) #pipe function, data manipulation
 
 
-##filter and prep data for graphs
+## Loading R libraries for script
+library(dplyr) #data munging
 
-##summarize ghg emissions per year
-ghgyear <- ghgmelt %>%
-  filter(sector != "OTHER LAND USE") %>%
-  group_by(year) %>%
-  summarise(sum = sum(ktCO2e, na.rm=TRUE) %>%
-              round (digits = 0))
 
-##adding category column and re-ordering columns so category is first
-ghgyear["sector"] <- "N/A"
-ghgyear$"sector" <- "British Columbia"
-ghgyear <- ghgyear[c(3,1,2)]
-#ghgyear$sum <- as.integer(ghgyear$sum)
+## Read in clean data from 02_clean.R if not already in environment
+if (!exists("bc_ghg_long")) load("tmp/clean_data.RData")
 
-##performing calculations for ghg emission comparison with previous years
-calc_inc <- function(ghg_14, ghg_pre) {
-  perc <- ((ghg_14/ghg_pre)-1)*100
-  paste(perc, "%")
-}
 
-calc_inc(ghgyear$sum[ghgyear$year == "2014"], ghgyear$sum[ghgyear$year =="2013"])
-calc_inc(ghgyear$sum[ghgyear$year == "2014"], ghgyear$sum[ghgyear$year == "2011"])
-calc_inc(ghgyear$sum[ghgyear$year == "2014"], ghgyear$sum[ghgyear$year == "2007"])
-calc_inc(ghgyear$sum[ghgyear$year == "2014"], ghgyear$sum[ghgyear$year == "2004"])
+## Calculate GHG emissions per capita & per unit GDP and convert to tCO2e (from ktCO2e)
+bc_ghg_per_capita <- bc_measures %>% 
+  mutate(ghg_per_capita = (ghg_estimate/population_estimate)*1000,
+         ghg_per_unit_gdp = (ghg_estimate/gdp_estimate)*1000) %>% 
+  select(year, ghg_per_capita, ghg_per_unit_gdp)
 
-##summarize ghg emissions per sector per year
-ghgsector <- ghgmelt %>%
-  filter(sector != "OTHER LAND USE") %>%
+## Summarize ghg emissions per sector per year
+ghg_sector_sum <- bc_ghg_long %>%
+  filter(sector != "OTHER LAND USE (Not included in total B.C. emissions)") %>%
   group_by(sector, year) %>%
   summarise(sum = sum(ktCO2e, na.rm=TRUE) %>%
               round (digits = 0))
 
-##merge ghg by year and ghg by sector-year dataframes for single summed dataset
-ghgmerge <- rbind(ghgyear, ghgsector)
+# ##merge ghg by year and ghg by sector-year dataframes for single summed dataset
+# ghgmerge <- rbind(ghgyear, ghgsector)
 
-##summarize ghg in Energy by subsector and general sources
-ghgenergygroup <- ghgenergymelt %>%
-  group_by(sector, subsector_level1, general_source, Year) %>%
+## Summarize ghg emissions in Energy sector by subsector and general sources
+ghg_energy_group <- bc_ghg_energy %>%
+  group_by(sector, subsector_level1, general_source, year) %>%
   summarise(sum = sum(ktCO2e, na.rm=TRUE) %>%
               round(digits = 0)) %>%
   filter(subsector_level1 != "CO2 Transport and Storage") 
+
+
+# Create tmp folder if not already there and store plotting dataframes in local repository
+if (!exists("tmp")) dir.create("tmp", showWarnings = FALSE)
+save(bc_ghg_sum, bc_ghg_per_capita,
+     ghg_sector_sum, ghg_energy_group, file = "tmp/plot_data.RData")
+
+
+## GHG emission estimate comparison among years
+calc_inc <- function(ghg_now, ghg_then) {
+  perc <- ((ghg_now/ghg_then)-1)*100
+  paste(perc, "%")
+}
+
+previous_year <- calc_inc(bc_ghg_sum$ghg_estimate[bc_ghg_sum$year == "2016"], bc_ghg_sum$ghg_estimate[bc_ghg_sum$year =="2015"])
+previous_year
+baseline_year <- calc_inc(bc_ghg_sum$ghg_estimate[bc_ghg_sum$year == "2016"], bc_ghg_sum$ghg_estimate[bc_ghg_sum$year == "2007"])
+baseline_year
+

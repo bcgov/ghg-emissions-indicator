@@ -11,6 +11,7 @@
 # See the License for the specific language governing permissions and limitations under the License.
 
 
+## Loading R libraries for script
 library(readr) #read in csv file
 library(cansim) #get Statistics Canada CANSIM data
 library(dplyr) #data munging
@@ -51,6 +52,7 @@ bc_gdp <- get_cansim(3610022201) %>%
 
 bc_pop_gdp <- bc_pop %>% 
   left_join(bc_gdp)
+
 
 # Create tmp folder if not already there and store objects in local repository
 if (!exists("tmp")) dir.create("tmp", showWarnings = FALSE)
