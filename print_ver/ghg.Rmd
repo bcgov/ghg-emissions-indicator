@@ -26,35 +26,30 @@ library(forcats) # fct_rev() for stacking order
 library(RColorBrewer) #for colour palette
 library(dplyr)
 library(knitr) #for rendering the PDF
-library(rprojroot)
-
-## Find the root of the project so we can find the files in the directory tree
-root <- rprojroot::is_rstudio_project
+library(here)
 
 ## Read in plotting data from 02_clean.R if not already in environment
-if (!exists("bc_ghg_sum")) load(root$find_file("tmp/clean_data.RData"))
+if (!exists("bc_ghg_sum")) load(here("tmp", "clean_data.RData"))
 
 opts_chunk$set(echo=FALSE, cache=FALSE, warning=FALSE, message=FALSE, error=FALSE, fig.height=3.5, fig.width=6)
 
 # source(root$find_file("01_load.R"))
 # source(root$find_file("02_clean.R"))
-read_chunk(root$find_file("03_output.R"))
+read_chunk(here("03_output.R"))
 ```
 
 
 ```{r pre}
-
 ```
 
 * **The climate is changing because of greenhouse gases.** Greenhouse gas emissions warm the global atmosphere and cause our climate to change. Reducing greenhouse gas emissions is a key component to limiting the increase in global average temperature and the resulting change in climate.
   
-* **Total greenhouse gas emissions in 2014 in B.C. were 64,500 kilotonnes of carbon dioxide equivalent.** Changes over three and ten year periods provide an indication of trends in emissions over time. There is a 2.7% increase in emissions since 2011 and a 9% decrease in emissions since 2004. Greenhouse gas emission estimates reported here are from the [British Columbia Greenhouse Gas Emission Inventory (2014)](http://www2.gov.bc.ca/gov/content?id=50B908BE85E0446EB6D3C434B4C8C106) and do not include forest management offsets. In 2014, offsets from forest management projects totalled 1,800 kilotonnes of carbon dioxide equivalent and are included towards [B.C.'s Progress to Targets](http://www2.gov.bc.ca/gov/content?id=9DF88AF901A14DE59BF3CF4B8A6B17EB). When these forest management offsets are included, B.C.'s greenhouse gas emissions have decreased by 5.5% since 2007.^1^
+* **Total greenhouse gas emissions in 2016 in B.C. were 64,500 kilotonnes of carbon dioxide equivalent.** Changes over three and ten year periods provide an indication of trends in emissions over time. There is a 2.7% increase in emissions since 2011 and a 9% decrease in emissions since 2004. Greenhouse gas emission estimates reported here are from the [British Columbia Greenhouse Gas Emission Inventory (2016)](http://www2.gov.bc.ca/gov/content?id=50B908BE85E0446EB6D3C434B4C8C106) and do not include forest management offsets. In 2016, offsets from forest management projects totalled 1,800 kilotonnes of carbon dioxide equivalent and are included towards [B.C.'s Progress to Targets](http://www2.gov.bc.ca/gov/content?id=9DF88AF901A14DE59BF3CF4B8A6B17EB). When these forest management offsets are included, B.C.'s greenhouse gas emissions have decreased by 5.5% since 2007.^1^
      
 * **British Columbians are generating fewer greenhouse gases.** Greenhouse gas emissions per person have declined over the past decade and stabilized in recent years in B.C. Greenhouse gas emissions per unit gross domestic product---a measure of the size of the economy---are on the decline in B.C. 
  
 * **Most greenhouse gas emissions in B.C. come from producing and using energy.** The energy sector produces the largest amount of greenhouse gas emissions in British Columbia. Major sources for energy sector emissions include transportation and stationary combustion sources, such as heating buildings.
 
-* **Everyone can help reduce greenhouse gas emissions in British Columbia.** [LiveSmart BC](http://www.livesmartbc.ca/) can help you make sustainable choices to reduce greenhouse gas emissions and save you money at home, at work, and on the road.
 
 
 \newpage 
