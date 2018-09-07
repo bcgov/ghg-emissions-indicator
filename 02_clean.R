@@ -43,7 +43,7 @@ ghg_sector_sum <- bc_ghg_long %>%
          sector = fct_reorder(sector, sum))
   
 
-## Calculate ghg totals
+## Calculate ghg annual totals
 bc_ghg_sum <- bc_ghg_long %>%
   filter(sector != "OTHER LAND USE (Not included in total B.C. emissions)") %>%
   group_by(year) %>%
@@ -97,20 +97,20 @@ ghg_energy_group <- bc_ghg_energy %>%
   mutate(general_source = fct_reorder(general_source, -sum))
 
 
-#Ordering column
-ghgenergygroup <- order_df(ghgenergygroup, "general_source", "sum", mean, na.rm = TRUE, desc = TRUE)
+## Data summaries 
 
-# Create tmp folder if not already there and store clean data in local repository
-if (!exists("tmp")) dir.create("tmp", showWarnings = FALSE)
-save(bc_ghg_long, ghg_sector_sum, bc_ghg_sum, normalized_measures,
-     bc_ghg_per_capita, bc_ghg_energy,ghg_energy_group, file = "tmp/clean_data.RData")
-
+## 2016 total
+ghg_est <- bc_ghg_sum %>% 
+  filter(year == "2016") %>% 
+  pull() %>% 
+  signif(digits = 3) %>% 
+  comma()
 
 
 ## GHG emission estimate comparison among years
 calc_inc <- function(ghg_now, ghg_then) {
   perc <- ((ghg_now/ghg_then)-1)*100
-  paste(perc, "%")
+  round(perc, digits = 1)
 }
 
 previous_year <- calc_inc(bc_ghg_sum$ghg_estimate[bc_ghg_sum$year == "2016"], bc_ghg_sum$ghg_estimate[bc_ghg_sum$year == "2015"])
@@ -121,3 +121,11 @@ three_year <- calc_inc(bc_ghg_sum$ghg_estimate[bc_ghg_sum$year == "2016"], bc_gh
 three_year
 ten_year <- calc_inc(bc_ghg_sum$ghg_estimate[bc_ghg_sum$year == "2016"], bc_ghg_sum$ghg_estimate[bc_ghg_sum$year == "2006"])
 ten_year
+
+
+# Create tmp folder if not already there and store clean data in local repository
+if (!exists("tmp")) dir.create("tmp", showWarnings = FALSE)
+save(bc_ghg_long, ghg_sector_sum, bc_ghg_sum, normalized_measures,
+     bc_ghg_per_capita, bc_ghg_energy,ghg_energy_group,
+     ghg_est, three_year, ten_year, file = "tmp/clean_data.RData")
+
