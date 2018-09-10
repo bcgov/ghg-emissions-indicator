@@ -14,7 +14,9 @@
 ## Loading R libraries for script
 library(tidyr) #wide to long df
 library(dplyr) #data munging
-library(stringr) 
+library(stringr) #work with strings
+library(forcats) #work with factors
+library(scales) #comma()
 
 
 ## Read in raw data from 01_load.R if not already in environment
