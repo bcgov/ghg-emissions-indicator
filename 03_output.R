@@ -17,7 +17,7 @@ library(envreportutils) #for theme_soe and theme_soe_facet
 library(scales) #for label = comma
 library(forcats) # fct_rev() for stacking order
 library(RColorBrewer) #for colour palette
-library(dplyr)
+library(dplyr) #data munging
 
 
 ## Read in plotting data from 02_clean.R if not already in environment
@@ -25,21 +25,26 @@ if (!exists("bc_ghg_sum")) load("tmp/clean_data.RData")
 
 ## @knitr pre
 
+theme_lineplots <- theme(axis.text.y = element_text(size = 12),
+                    axis.text.x = element_text(size = 14),
+                    axis.title.y = element_text(size = 16,
+                                                margin = margin(t = 0, r = 10, b = 0, l = 0, unit = "pt")),
+                    plot.title = element_text(size = 17, hjust = 0.5),
+                    plot.margin = unit(c(6,6,6,2),"mm"))
+
+
 ## @knitr ghgtrends
 
 ## Line plot of total GHG emissions over time in British Columbia
 ghg_time <- ggplot(data = bc_ghg_sum, aes(x = year, y = ghg_estimate)) + 
   geom_line(colour = "#e41a1c", size = 1.5) + 
-  ggtitle("Greenhouse Gas Emissions\nTotal") +
+  labs(title = "Total GHG Emissions") +
   xlab(NULL) + ylab("ktCO2e") +
   scale_y_continuous(limits = c(50000, 72000), breaks=seq(50000, 72000, 2000),
                      expand=c(0,0), label = comma) +
-  scale_x_continuous(limits = c(1990, 2016.5), breaks=seq(1992, 2016, 2), expand=c(0,0)) +
+  scale_x_continuous(limits = c(1990, 2016.5), breaks=seq(1992, 2016, 3), expand=c(0,0)) +
   theme_soe() +
-  theme(axis.text = element_text(size = 10),
-        axis.title = element_text(size = 14),
-        plot.title = element_text(size = 14, hjust = 0.5),
-        plot.margin = unit(c(6,6,6,2),"mm"))
+  theme_lineplots
 plot(ghg_time)
 
 
@@ -48,16 +53,13 @@ plot(ghg_time)
 ## Line plot of total GHG emissions per person over time in British Columbia
 ghg_pop <- ggplot(data = bc_ghg_per_capita, aes(x = year, y = ghg_per_capita)) + 
   geom_line(colour = "#e41a1c", size = 1.5) + 
-  ggtitle("Greenhouse Gas Emissions\n per Person") +
+  ggtitle("GHG Emissions per Person") +
   xlab(NULL) + ylab("tCO2e per person") +
   scale_y_continuous(limits = c(12,17.5), breaks=seq(12, 17.5, .5),
                      expand=c(0,0)) +
-  scale_x_continuous(limits = c(1990, 2016.5),  breaks=seq(1992, 2016, 2), expand=c(0,0)) +
+  scale_x_continuous(limits = c(1990, 2016.5),  breaks=seq(1992, 2016, 3), expand=c(0,0)) +
   theme_soe() +
-  theme(axis.text = element_text(size = 10),
-        axis.title = element_text(size = 14),
-        plot.title = element_text(size = 14, hjust = 0.5),
-        plot.margin = unit(c(6,6,6,2),"mm")) 
+  theme_lineplots
 plot(ghg_pop)
 
 
@@ -66,16 +68,13 @@ plot(ghg_pop)
 ## Line plot of total GHG emisions per unit GDP over time 
 gdp_time <- ggplot(data = bc_ghg_per_capita, aes(x = year, y = ghg_per_unit_gdp)) + 
   geom_line(colour = "#e41a1c", size = 1.5) + 
-  ggtitle("Greenhouse Gas Emissions\n per Unit Gross Domestic Product") +
+  ggtitle("GHG Emissions per Unit GDP") +
   xlab (NULL) + ylab ("tCO2e per unit GDP") +
   scale_y_continuous(limits = c(215,490), breaks=seq(215, 490, 25),
                      expand=c(0,0)) +
-  scale_x_continuous(limits = c(1990, 2016.5),  breaks=seq(1992, 2016, 2), expand=c(0,0)) +
+  scale_x_continuous(limits = c(1990, 2016.5),  breaks=seq(1992, 2016, 3), expand=c(0,0)) +
   theme_soe() +
-  theme(axis.text = element_text(size = 10),
-        axis.title = element_text(size = 14),
-        plot.title = element_text(size = 14, hjust = 0.5),
-        plot.margin = unit(c(6,6,6,2),"mm")) 
+  theme_lineplots
 plot(gdp_time)
 
 
@@ -92,9 +91,9 @@ norm <- ggplot(data = normalized_measures, aes(x = year, y = estimate,
   geom_line(size = 1.5) +
   scale_y_continuous(limits = c(.9,2.01), breaks=seq(.9, 2, .1),
                      expand=c(0,0)) +
-  scale_x_continuous(limits = c(1990, 2016.5), breaks=seq(1992, 2016, 2), expand=c(0,0)) +
-  ggtitle("Relative Greenhouse Gas Emissions, Gross Domestic\n Product & Population Size") +
-  xlab(NULL) + ylab("Ratios relative to 1990 levels") +
+  scale_x_continuous(limits = c(1990, 2016.5), breaks=seq(1992, 2016, 3), expand=c(0,0)) +
+  labs(title = "Relative GHG Emissions, GDP & Population Size") +
+  xlab(NULL) + ylab("Values Indexed Relative to 1990") +
   scale_colour_manual(name="", values = normpal, guide = FALSE) +
   annotate("text", label = "GDP", colour = "#e41a1c", x = 2004.1, y = 1.56,
            size = 5) +
@@ -103,10 +102,7 @@ norm <- ggplot(data = normalized_measures, aes(x = year, y = estimate,
   annotate("text", label = "Population", colour = "#4daf4a", x = 2009, y = 1.41,
            size = 5) +
   theme_soe() +
-  theme(axis.text = element_text(size =10),
-        axis.title = element_text(size = 14),
-        plot.title = element_text(size = 14, hjust = 0.5),
-        plot.margin = unit(c(6,6,6,2),"mm")) 
+  theme_lineplots
 plot(norm)
 
 
@@ -123,24 +119,23 @@ ghg_stack <- ggplot(data = ghg_sector_sum, aes(x = year, y = sum, fill = fct_rev
   geom_area(size = .2, alpha = .6) + 
   geom_line(data = bc_ghg_sum, aes(x = year, y = ghg_estimate),
             colour = "black", size = 1, show.legend = FALSE) +
-  # ggtitle("Greenhouse Gas Emissions by Sector") +
   xlab (NULL) + ylab ("ktCO2e") +
   scale_y_continuous(limits = c(0,70000), minor_breaks = waiver(),
                      breaks=seq(0, 70000, 10000), expand=c(0,0), label = comma) +
-  scale_x_continuous(limits = c(1990, 2016.5), breaks=seq(1992, 2016, 2),
+  scale_x_continuous(limits = c(1990, 2016.5), breaks=seq(1992, 2016, 3),
                      expand=c(0,0)) +
   scale_fill_manual(name = "Sector",values = sector.pal,
                     breaks = sector.order) +
   theme_soe() +
-  theme(plot.title = element_text(hjust=0.02),
-        panel.grid.major = element_line(size = 0.5, colour = "grey85"),
+  theme(panel.grid.major = element_line(size = 0.5, colour = "grey85"),
         panel.grid.minor = element_line(size = 0.5, colour = "grey85"),
         panel.grid.minor.x = element_blank(),
         panel.grid.major.x = element_blank(),
-        axis.text = element_text(size = 12),
-        axis.title = element_text(size = 14),
-        legend.text = element_text(size = 12),
-        legend.title = element_text(size = 12), 
+        axis.text.y = element_text(size = 12),
+        axis.text.x = element_text(size = 14),
+        axis.title.y = element_text(size = 16, margin = margin(t = 0, r = 10, b = 0, l = 0, unit = "pt")),
+        legend.text = element_text(size = 14),
+        legend.title = element_text(size = 16), 
         legend.background = element_rect(colour = "white"))
 plot(ghg_stack)
 
@@ -171,19 +166,18 @@ ghg_energy_trends <- ggplot(data = ghg_energy_group,
   facet_wrap( ~ general_source, ncol = 4, 
               labeller = label_wrap_gen(width = 25, multi_line = TRUE)) + 
   xlab (NULL) + ylab ("ktCO2e") + 
-  #  ggtitle("Sources of Greenhouse Gas Emissions in the Energy Sector") +
   scale_y_continuous(limits = c(0,20000), breaks=seq(0, 20000, 4000), label = comma) +
   scale_x_continuous(limits = c(1990, 2016.5), breaks = seq(1992, 2016, 4), expand = c(0,0)) +
   scale_colour_manual(name = "Energy Subsectors:", values = subsector.pal,
                       breaks = subsector.order) +
   theme_soe_facet() +
   theme(legend.position = ("bottom"),
-        legend.title = element_text(size = 12),
-        legend.text = element_text(size = 12),
-        axis.text.x = element_text(size = 10, hjust = .8),
-        #     axis.text.x = element_text(angle = 45, size = 7, vjust = 0.5),
-        axis.text = element_text(size = 10),
-        strip.text.x = element_text(size = 12),
+        legend.title = element_text(size = 16),
+        legend.text = element_text(size = 14),
+        axis.text.x = element_text(size = 10),
+        axis.text.y = element_text(size = 10),
+        strip.text.x = element_text(size = 14),
+        axis.title.y = element_text(size = 16, margin = margin(t = 0, r = 10, b = 0, l = 0, unit = "pt")),
         plot.margin = unit(c(5,5,0,2),"mm"),
         panel.grid.major.x = element_blank(),
         legend.background = element_blank())
@@ -196,71 +190,68 @@ plot(ghg_energy_trends)
 if (!exists("out"))  dir.create('out', showWarnings = FALSE)
 
 
-## Printing plots for web in SVG formats
+## Printing plots for web in SVG formats (and PNG)
 
 #total ghg over time
-svg_px("./out/ghg_plot.svg", width = 500, height = 500)
+svg_px("./out/ghg_plot.svg", width = 500, height = 400)
 plot(ghg_time)
 dev.off()
 
-#total ghg/gdp over time
-svg_px("./out/ghg_gdp_plot.svg", width = 500, height = 500)
-plot(gdp_time)
+png_retina(filename = "./out/ghg_plot.png", width = 500, height = 400,
+           units = "px", type = "cairo-png")
+plot(ghg_time)
 dev.off()
 
+
 #total ghg per pop over time
-svg_px("./out/ghg_pop_plot.svg", width = 500, height = 500)
+svg_px("./out/ghg_pop_plot.svg", width = 500, height = 400)
 plot(ghg_pop)
 dev.off()
 
+png_retina(filename = "./out/ghg_pop_plot.png", width = 500, height = 400,
+           units = "px", type = "cairo-png")
+plot(ghg_pop)
+dev.off()
+
+
+#total ghg/gdp over time
+svg_px("./out/ghg_gdp_plot.svg", width = 500, height = 400)
+plot(gdp_time)
+dev.off()
+
+png_retina(filename = "./out/ghg_gdp_plot.png", width = 500, height = 400,
+           units = "px", type = "cairo-png")
+plot(gdp_time)
+dev.off()
+
+
 #normalized ghg, gdp and pop compared over time
-svg_px("./out/norm_plot.svg", width = 500, height = 500)
+svg_px("./out/norm_plot.svg", width = 500, height = 400)
 plot(norm)
 dev.off()
+
+png_retina(filename = "./out/norm_plot.png", width = 500, height = 400,
+           units = "px", type = "cairo-png")
+plot(norm)
+dev.off()
+
 
 #total ghg by sector over time stacked area chart
 svg_px("./out/sector_plot.svg", width = 850, height = 430)
 plot(ghg_stack)
 dev.off()
 
-#total ghg over time by source for energy sector facet plot
-svg_px("./out/energy_plot.svg", width = 836, height = 650)
-plot(ghg_energy_trends)
-dev.off()
-
-# PNG outputs
-
-#total ghg over time
-png_retina(filename = "./out/ghg_plot.png", width = 500, height = 500,
-           units = "px", type = "cairo-png")
-plot(ghg_time)
-dev.off()
-
-#total ghg/gdp over time
-png_retina(filename = "./out/ghg_gdp_plot.png", width = 500, height = 500,
-           units = "px", type = "cairo-png")
-plot(gdp_time)
-dev.off()
-
-#total ghg per pop over time
-png_retina(filename = "./out/ghg_pop_plot.png", width = 500, height = 500,
-           units = "px", type = "cairo-png")
-plot(ghg_pop)
-dev.off()
-
-#normalized ghg, gdp and pop compared over time
-png_retina(filename = "./out/norm_plot.png", width = 500, height = 500,
-           units = "px", type = "cairo-png")
-plot(norm)
-dev.off()
-
-#total ghg by sector over time stacked area chart
 png_retina(filename = "./out/sector_plot.png", width = 850, height = 430,
            units = "px", type = "cairo-png")
 plot(ghg_stack)
 dev.off()
 
+
 #total ghg over time by source for energy sector facet plot
+svg_px("./out/energy_plot.svg", width = 836, height = 650)
+plot(ghg_energy_trends)
+dev.off()
+
 png_retina(filename = "./out/energy_plot.png", width = 836, height = 650,
            units = "px", type = "cairo-png")
 plot(ghg_energy_trends)
