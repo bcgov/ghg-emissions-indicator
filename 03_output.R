@@ -173,7 +173,7 @@ ghg_energy_trends <- ggplot(data = ghg_energy_group,
   theme_soe_facet() +
   theme(legend.position = ("bottom"),
         legend.title = element_text(size = 16),
-        legend.text = element_text(size = 14),
+        legend.text = element_text(size = 16),
         axis.text.x = element_text(size = 10),
         axis.text.y = element_text(size = 10),
         strip.text.x = element_text(size = 14),
