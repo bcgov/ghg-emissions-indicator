@@ -139,7 +139,12 @@ ghg_stack <- ggplot(data = ghg_sector_sum, aes(x = year, y = sum, fill = fct_rev
         panel.grid.major.x = element_blank(),
         axis.text.y = element_text(size = 12),
         axis.text.x = element_text(size = 14),
-        axis.title.y = element_text(size = 16, margin = margin(t = 0, r = 10, b = 0, l = 0, unit = "pt")),
+        axis.title.y = element_text(size = 16,
+                                    margin = margin(t = 0,
+                                                    r = 10,
+                                                    b = 0,
+                                                    l = 0,
+                                                    unit = "pt")),
         legend.text = element_text(size = 14),
         legend.title = element_text(size = 16), 
         legend.background = element_rect(colour = "white"))
@@ -165,8 +170,9 @@ ghg_energy_group_bg <- ghg_energy_group %>%
 #facet plot
 ghg_energy_trends <- ggplot(data = ghg_energy_group,
                             aes(x = year, y = sum, colour = subsector_level1)) + 
-  geom_line(data = ghg_energy_group_bg, aes(group = general_source_line), size = .8, colour = "grey", alpha = 0.5) +
   geom_line(size = 1) +
+  geom_line(data = ghg_energy_group_bg, aes(group = general_source_line),
+            size = .8, colour = "grey", alpha = 0.5) +
   facet_wrap( ~ general_source, ncol = 4, 
               labeller = label_wrap_gen(width = 25, multi_line = TRUE)) + 
   xlab (NULL) + ylab ("ktCO2e") + 
@@ -181,7 +187,11 @@ ghg_energy_trends <- ggplot(data = ghg_energy_group,
         axis.text.x = element_text(size = 10),
         axis.text.y = element_text(size = 10),
         strip.text.x = element_text(size = 14),
-        axis.title.y = element_text(size = 16, margin = margin(t = 0, r = 10, b = 0, l = 0, unit = "pt")),
+        axis.title.y = element_text(size = 16, margin = margin(t = 0,
+                                                               r = 10,
+                                                               b = 0,
+                                                               l = 0,
+                                                               unit = "pt")),
         plot.margin = unit(c(5,5,0,2),"mm"),
         panel.grid.major.x = element_blank(),
         legend.background = element_blank())
