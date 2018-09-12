@@ -84,7 +84,7 @@ theme_print <-   theme(axis.text.y = element_text(size = 8),
 
 * In 2016, B.C.'s greenhouse gas emissions were `r ghg_est` kilotonnes of carbon dioxide equivalent. Greenhouse gas emissions have generally declined through the 2000s, with stable or small increases in total emissions in recent reporting years.
 
-* Overall, greenhouse gas emissions per person in British Columbia (also called per capita) have declined since 2004 and stabilized in recent reporting years.
+* Overall, greenhouse gas emissions per person in British Columbia---also called per capita--- have declined since 2004 and stabilized in recent reporting years.
 
 \vspace{.8cm}
 
@@ -170,7 +170,7 @@ ghg_energy_trends +
 
 ## Methods
 
-British Columbia’s total greenhouse gas emissions are based on provincial-level sources and data collected by Environment Canada for the National Inventory Report.^3^ However, B.C. includes net deforestation emissions in the provincial emissions total and makes adjustments where better data is available at the provincial level.^1^ Greenhouse gas emissions include carbon dioxide (CO~2~), methane (CH~4~), nitrous oxide (N~2~O), sulphur hexafluoride (SF~6~), perfluorocarbons (PFCs),  hydrofluorocarbons (HFCs) and nitrogen trifluoride (NF~3~) released by human activity---these emissions are reported collectively as kilotonnes of carbon dioxide equivalent (ktCO~2~e). See the [British Columbia Greenhouse Gas Emission Inventory (2016)](http://www2.gov.bc.ca/gov/content?id=50B908BE85E0446EB6D3C434B4C8C106) for further details. British Columbia population estimates ([Table: 17-10-0005-01](https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=1710000501)) and gross domestic product ([Table: 36-10-0222-01](https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=3610022201)) data were sourced from [Statistics Canada](https://www.statcan.gc.ca/eng/start). Gross domestic product (GDP) is calculated using expenditure-based GDP and reported in millions of chained 2007 dollars.
+British Columbia's total greenhouse gas emissions are based on provincial-level sources and data collected by Environment Canada for the National Inventory Report.^3^ However, B.C. includes net deforestation emissions in the provincial emissions total and makes adjustments where better data is available at the provincial level.^1^ Greenhouse gas emissions include carbon dioxide (CO~2~), methane (CH~4~), nitrous oxide (N~2~O), sulphur hexafluoride (SF~6~), perfluorocarbons (PFCs),  hydrofluorocarbons (HFCs) and nitrogen trifluoride (NF~3~) released by human activity---these emissions are reported collectively as kilotonnes of carbon dioxide equivalent (ktCO~2~e). See the [British Columbia Greenhouse Gas Emission Inventory (2016)](http://www2.gov.bc.ca/gov/content?id=50B908BE85E0446EB6D3C434B4C8C106) for further details. British Columbia population estimates ([Table: 17-10-0005-01](https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=1710000501)) and gross domestic product ([Table: 36-10-0222-01](https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=3610022201)) data were sourced from [Statistics Canada](https://www.statcan.gc.ca/eng/start). Gross domestic product (GDP) is calculated using expenditure-based GDP and reported in millions of chained 2007 dollars.
 
 The **[R](http://www.r-project.org)** code for repeating the analysis and data visualizations presented on this page is [available on GitHub](https://github.com/bcgov/ghg-emissions-indicator).
 
