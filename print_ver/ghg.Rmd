@@ -82,7 +82,7 @@ theme_print <-   theme(axis.text.y = element_text(size = 8),
 ## Greenhouse Gas Emissions in British Columbia 
 
 
-* In 2016, B.C.'s greenhouse gas emissions were 62,300 kilotonnes of carbon dioxide equivalent. Greenhouse gas emissions have generally declined through the 2000s, with stable or small increases in total emissions in recent reporting years.
+* In 2016, B.C.'s greenhouse gas emissions were `r ghg_est` kilotonnes of carbon dioxide equivalent. Greenhouse gas emissions have generally declined through the 2000s, with stable or small increases in total emissions in recent reporting years.
 
 * Overall, greenhouse gas emissions per person in British Columbia (also called per capita) have declined since 2004 and stabilized in recent reporting years.
 
