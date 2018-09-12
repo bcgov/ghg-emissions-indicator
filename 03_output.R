@@ -23,17 +23,19 @@ library(dplyr) #data munging
 ## Read in plotting data from 02_clean.R if not already in environment
 if (!exists("bc_ghg_sum")) load("tmp/clean_data.RData")
 
-## @knitr pre
 
+## Line plot theme
 theme_lineplots <- theme(axis.text.y = element_text(size = 12),
                     axis.text.x = element_text(size = 14),
                     axis.title.y = element_text(size = 16,
-                                                margin = margin(t = 0, r = 10, b = 0, l = 0, unit = "pt")),
+                                                margin = margin(t = 0,
+                                                                r = 10,
+                                                                b = 0,
+                                                                l = 0,
+                                                                unit = "pt")),
                     plot.title = element_text(size = 17, hjust = 0.5),
                     plot.margin = unit(c(6,6,6,2),"mm"))
 
-
-## @knitr ghgtrends
 
 ## Line plot of total GHG emissions over time in British Columbia
 ghg_time <- ggplot(data = bc_ghg_sum, aes(x = year, y = ghg_estimate)) + 
@@ -48,8 +50,6 @@ ghg_time <- ggplot(data = bc_ghg_sum, aes(x = year, y = ghg_estimate)) +
 plot(ghg_time)
 
 
-## @knitr ghgpop
-
 ## Line plot of total GHG emissions per person over time in British Columbia
 ghg_pop <- ggplot(data = bc_ghg_per_capita, aes(x = year, y = ghg_per_capita)) + 
   geom_line(colour = "#e41a1c", size = 1.5) + 
@@ -62,8 +62,6 @@ ghg_pop <- ggplot(data = bc_ghg_per_capita, aes(x = year, y = ghg_per_capita)) +
   theme_lineplots
 plot(ghg_pop)
 
-
-## @knitr ghggdp
 
 ## Line plot of total GHG emisions per unit GDP over time 
 gdp_time <- ggplot(data = bc_ghg_per_capita, aes(x = year, y = ghg_per_unit_gdp)) + 
@@ -78,15 +76,13 @@ gdp_time <- ggplot(data = bc_ghg_per_capita, aes(x = year, y = ghg_per_unit_gdp)
 plot(gdp_time)
 
 
-## @knitr norm
-
 ## Line plot of normalised GHG emissions, GDP and population change over time 
 #colour palette for 3 measures
 normpal <- c("norm_gdp" = "#e41a1c",
              "norm_ghg" = "#377eb8",
              "norm_population" = "#4daf4a")
 
-norm <- ggplot(data = normalized_measures, aes(x = year, y = estimate,
+norm_base <- ggplot(data = normalized_measures, aes(x = year, y = estimate,
                                              group = measure, colour = measure)) + 
   geom_line(size = 1.5) +
   scale_y_continuous(limits = c(.9,2.01), breaks=seq(.9, 2, .1),
@@ -95,20 +91,30 @@ norm <- ggplot(data = normalized_measures, aes(x = year, y = estimate,
   labs(title = "Relative GHG Emissions, GDP & Population Size") +
   xlab(NULL) + ylab("Values Indexed Relative to 1990") +
   scale_colour_manual(name="", values = normpal, guide = FALSE) +
-  annotate("text", label = "GDP", colour = "#e41a1c", x = 2004.1, y = 1.56,
-           size = 5) +
-  annotate("text", label = "GHG", colour = "#377eb8", x = 2010, y = 1.14,
-           size = 5) +
-  annotate("text", label = "Population", colour = "#4daf4a", x = 2009, y = 1.41,
-           size = 5) +
   theme_soe() +
   theme_lineplots
+
+norm <- norm_base +
+  annotate("text", label = "GDP", colour = "#e41a1c",
+           x = 2004.1, y = 1.56, size = 5) +
+  annotate("text", label = "GHG", colour = "#377eb8",
+           x = 2010, y = 1.14, size = 5) +
+  annotate("text", label = "Population", colour = "#4daf4a",
+           x = 2009, y = 1.41, size = 5)
 plot(norm)
 
+norm_print <- norm_base +
+  annotate("text", label = "GDP", colour = "#e41a1c",
+           x = 2004.1, y = 1.56, size = 3) +
+  annotate("text", label = "GHG", colour = "#377eb8",
+           x = 2010, y = 1.14, size = 3) +
+  annotate("text", label = "Population", colour = "#4daf4a",
+           x = 2009, y = 1.41, size = 3)
+plot(norm_print)
 
-## @knitr sector
+
+
 ## Stacked area chart of GHG emissions over time by sector
-
 #colour palette for sector plot
 sector.order <- rev(levels(ghg_sector_sum$sector))
 sector.no <- length(sector.order) + 1
@@ -140,9 +146,7 @@ ghg_stack <- ggplot(data = ghg_sector_sum, aes(x = year, y = sum, fill = fct_rev
 plot(ghg_stack)
 
 
-## @knitr energy 
 ## Facetted line plot of GHG emissions over time by Energy Source
-
 #creating a list for Energy subsector order 
 subsector.order <- c("Transport","Stationary Combustion Sources", 
                      "Fugitive Sources")
@@ -183,7 +187,11 @@ ghg_energy_trends <- ggplot(data = ghg_energy_group,
         legend.background = element_blank())
 plot(ghg_energy_trends)
 
-## @knitr stop
+
+# Create tmp folder if not already there and store plot objects in local repository
+if (!exists("tmp")) dir.create("tmp", showWarnings = FALSE)
+save(ghg_time, ghg_pop, gdp_time, norm, norm_print,
+     ghg_stack, ghg_energy_trends, file = "tmp/plots.RData")
 
 
 ## Create a folder in directory called out for image files
@@ -191,7 +199,6 @@ if (!exists("out"))  dir.create('out', showWarnings = FALSE)
 
 
 ## Printing plots for web in SVG formats (and PNG)
-
 #total ghg over time
 svg_px("./out/ghg_plot.svg", width = 500, height = 400)
 plot(ghg_time)
