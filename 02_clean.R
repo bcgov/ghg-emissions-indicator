@@ -36,12 +36,10 @@ bc_ghg_long <- bc_ghg %>%
 ghg_sector_sum <- bc_ghg_long %>%
   filter(sector != "OTHER LAND USE (Not included in total B.C. emissions)") %>%
   group_by(sector, year) %>%
-  summarise(sum = sum(ktCO2e, na.rm=TRUE) %>%
-              round (digits = 0)) %>% 
+  summarise(sum = sum(ktCO2e, na.rm = TRUE) %>%
+              round(digits = 0)) %>% 
   ungroup() %>% 
-  mutate(sector = str_replace(sector, "AND", "&"),
-         sector = recode(sector, 
-                         `Afforestation and Deforestation` = "AFFORESTATION & DEFORESTATION"),
+  mutate(sector = str_replace(toupper(sector), "AND", "&"),
          sector = fct_reorder(sector, sum))
   
 
@@ -49,14 +47,14 @@ ghg_sector_sum <- bc_ghg_long %>%
 bc_ghg_sum <- bc_ghg_long %>%
   filter(sector != "OTHER LAND USE (Not included in total B.C. emissions)") %>%
   group_by(year) %>%
-  summarise(ghg_estimate = round(sum(ktCO2e, na.rm=TRUE), digits = 0)) %>% 
+  summarise(ghg_estimate = round(sum(ktCO2e, na.rm = TRUE), digits = 0)) %>% 
   mutate(sector = "British Columbia") %>% 
   select(sector, year, ghg_estimate)
 
 
 ## Add ghg totals by year to bc_pop_gdp data
 bc_measures <- bc_pop_gdp %>% 
-  mutate(year = as.integer(as.character(year))) %>%
+  mutate(year = as.integer(year)) %>%
   left_join(bc_ghg_sum) %>% 
   select(-sector)
 
@@ -88,11 +86,10 @@ bc_ghg_energy <- bc_ghg_long %>%
          general_source = str_replace(general_source, "and", "&")) %>% 
   select(sector, subsector_level1, general_source, year, ktCO2e)
 
-
 ## Summarize ghg emissions in Energy sector by subsector and general sources
 ghg_energy_group <- bc_ghg_energy %>%
   group_by(sector, subsector_level1, general_source, year) %>%
-  summarise(sum = sum(ktCO2e, na.rm=TRUE) %>%
+  summarise(sum = sum(ktCO2e, na.rm = TRUE) %>%
               round(digits = 0)) %>%
   filter(subsector_level1 != "CO2 Transport and Storage") %>% 
   ungroup() %>% 
@@ -111,7 +108,7 @@ ghg_est <- bc_ghg_sum %>%
 
 ## GHG emission estimate comparison among years
 calc_inc <- function(ghg_now, ghg_then) {
-  perc <- ((ghg_now/ghg_then)-1)*100
+  perc <- ((ghg_now/ghg_then) - 1)*100
   round(perc, digits = 1)
 }
 
