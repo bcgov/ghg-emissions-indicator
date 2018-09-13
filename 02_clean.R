@@ -17,6 +17,7 @@ library(dplyr) #data munging
 library(stringr) #work with strings
 library(forcats) #work with factors
 library(scales) #comma()
+library(envreportutils) #to_titlecase()
 
 
 ## Read in raw data from 01_load.R if not already in environment
@@ -39,7 +40,7 @@ ghg_sector_sum <- bc_ghg_long %>%
   summarise(sum = sum(ktCO2e, na.rm = TRUE) %>%
               round(digits = 0)) %>% 
   ungroup() %>% 
-  mutate(sector = str_replace(toupper(sector), "AND", "&"),
+  mutate(sector = str_replace(to_titlecase(sector), "and", "&"),
          sector = fct_reorder(sector, sum))
   
 
