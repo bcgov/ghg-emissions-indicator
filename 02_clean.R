@@ -108,20 +108,26 @@ ghg_est <- bc_ghg_sum %>%
 
 
 ## GHG emission estimate comparison among years
-calc_inc <- function(ghg_now, ghg_then) {
+calc_inc <- function(ghg_vector, year_vector, since) {
+  if (length(ghg_vector) != length(year_vector)) {
+    stop("ghg and years must be the same length", call. = FALSE)
+  }
+  
+  ghg_now <- ghg_vector[which.max(year_vector)]
+  ghg_then <- ghg_vector[year_vector == since]
+  
   perc <- ((ghg_now/ghg_then) - 1)*100
   round(perc, digits = 1)
 }
 
-previous_year <- calc_inc(bc_ghg_sum$ghg_estimate[bc_ghg_sum$year == "2016"], bc_ghg_sum$ghg_estimate[bc_ghg_sum$year == "2015"])
+previous_year <- calc_inc(bc_ghg_sum$ghg_estimate, bc_ghg_sum$year, since = 2015)
 previous_year
-baseline_year <- calc_inc(bc_ghg_sum$ghg_estimate[bc_ghg_sum$year == "2016"], bc_ghg_sum$ghg_estimate[bc_ghg_sum$year == "2007"])
+baseline_year <- calc_inc(bc_ghg_sum$ghg_estimate, bc_ghg_sum$year, since = 2007)
 baseline_year
-three_year <- calc_inc(bc_ghg_sum$ghg_estimate[bc_ghg_sum$year == "2016"], bc_ghg_sum$ghg_estimate[bc_ghg_sum$year == "2013"])
+three_year <- calc_inc(bc_ghg_sum$ghg_estimate, bc_ghg_sum$year, since = 2013)
 three_year
-ten_year <- calc_inc(bc_ghg_sum$ghg_estimate[bc_ghg_sum$year == "2016"], bc_ghg_sum$ghg_estimate[bc_ghg_sum$year == "2006"])
+ten_year <- calc_inc(bc_ghg_sum$ghg_estimate, bc_ghg_sum$year, since = 2006)
 ten_year
-
 
 # Create tmp folder if not already there and store clean data in local repository
 if (!exists("tmp")) dir.create("tmp", showWarnings = FALSE)
