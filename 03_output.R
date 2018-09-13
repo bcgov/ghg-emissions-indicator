@@ -36,6 +36,10 @@ theme_lineplots <- theme(axis.text.y = element_text(size = 12),
                     plot.title = element_text(size = 17, hjust = 0.5),
                     plot.margin = unit(c(6,6,6,2),"mm"))
 
+# Set plotting parameters common to many plots:
+x_scale <- scale_x_continuous(limits = c(1990, 2016.5), 
+                              breaks = seq(1992, 2016, 3), 
+                              expand = c(0,0))
 
 ## Line plot of total GHG emissions over time in British Columbia
 ghg_time <- ggplot(data = bc_ghg_sum, aes(x = year, y = ghg_estimate)) + 
@@ -44,7 +48,7 @@ ghg_time <- ggplot(data = bc_ghg_sum, aes(x = year, y = ghg_estimate)) +
   xlab(NULL) + ylab("ktCO2e") +
   scale_y_continuous(limits = c(50000, 72000), breaks=seq(50000, 72000, 2000),
                      expand=c(0,0), label = comma) +
-  scale_x_continuous(limits = c(1990, 2016.5), breaks=seq(1992, 2016, 3), expand=c(0,0)) +
+  x_scale +
   theme_soe() +
   theme_lineplots
 plot(ghg_time)
@@ -57,7 +61,7 @@ ghg_pop <- ggplot(data = bc_ghg_per_capita, aes(x = year, y = ghg_per_capita)) +
   xlab(NULL) + ylab("tCO2e per person") +
   scale_y_continuous(limits = c(12,17.5), breaks=seq(12, 17.5, .5),
                      expand=c(0,0)) +
-  scale_x_continuous(limits = c(1990, 2016.5),  breaks=seq(1992, 2016, 3), expand=c(0,0)) +
+  x_scale +
   theme_soe() +
   theme_lineplots
 plot(ghg_pop)
@@ -70,7 +74,7 @@ gdp_time <- ggplot(data = bc_ghg_per_capita, aes(x = year, y = ghg_per_unit_gdp)
   xlab (NULL) + ylab ("tCO2e per unit GDP") +
   scale_y_continuous(limits = c(215,490), breaks=seq(215, 490, 25),
                      expand=c(0,0)) +
-  scale_x_continuous(limits = c(1990, 2016.5),  breaks=seq(1992, 2016, 3), expand=c(0,0)) +
+  x_scale +
   theme_soe() +
   theme_lineplots
 plot(gdp_time)
@@ -87,7 +91,7 @@ norm_base <- ggplot(data = normalized_measures, aes(x = year, y = estimate,
   geom_line(size = 1.5) +
   scale_y_continuous(limits = c(.9,2.01), breaks=seq(.9, 2, .1),
                      expand=c(0,0)) +
-  scale_x_continuous(limits = c(1990, 2016.5), breaks=seq(1992, 2016, 3), expand=c(0,0)) +
+  x_scale +
   labs(title = "Relative GHG Emissions, GDP & Population Size") +
   xlab(NULL) + ylab("Values Indexed Relative to 1990") +
   scale_colour_manual(name="", values = normpal, guide = FALSE) +
@@ -128,9 +132,8 @@ ghg_stack <- ggplot(data = ghg_sector_sum, aes(x = year, y = sum, fill = fct_rev
   xlab (NULL) + ylab ("ktCO2e") +
   scale_y_continuous(limits = c(0,70000), minor_breaks = waiver(),
                      breaks=seq(0, 70000, 10000), expand=c(0,0), label = comma) +
-  scale_x_continuous(limits = c(1990, 2016.5), breaks=seq(1992, 2016, 3),
-                     expand=c(0,0)) +
-  scale_fill_manual(name = "Sector",values = sector.pal,
+  x_scale +
+  scale_fill_manual(name = "Sector", values = sector.pal,
                     breaks = sector.order) +
   theme_soe() +
   theme(panel.grid.major = element_line(size = 0.5, colour = "grey85"),
