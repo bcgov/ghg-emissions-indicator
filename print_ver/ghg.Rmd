@@ -194,9 +194,14 @@ each file, as indicated below.
 
 - [British Columbia Greenhouse Gas Emissions](https://catalogue.data.gov.bc.ca/dataset/24c899ee-ef73-44a2-8569-a0d6b094e60c) (Licence: [Open Government Licence - British Columbia](https://www2.gov.bc.ca/gov/content?id=A519A56BC2BF44E4A008B33FCF527F61))
 
+----
 
 Published and Available On-Line at Environmental Reporting BC (October
-2018):
+2018):   
 <http://www.env.gov.bc.ca/soe/indicators/sustainability/ghg-emissions.html>
 
 Email correspondence to: envreportbc@gov.bc.ca
+
+Suggested Citation:  
+Environmental Reporting BC. 2018. Trends in Greenhouse Gas Emissions in B.C. (1990-2016). State of Environment Reporting, Ministry of Environment and Climate Change Strategy, British Columbia, Canada.
+
