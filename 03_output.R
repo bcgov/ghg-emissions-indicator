@@ -72,7 +72,7 @@ gdp_time <- ggplot(data = bc_ghg_per_capita,
   geom_line(colour = "#e41a1c", size = 1.5) + 
   ggtitle("GHG Emissions per Unit GDP") +
   xlab(NULL) + ylab("tCO2e per unit GDP") +
-  scale_y_continuous(limits = c(215,490), breaks = seq(215, 490, 25),
+  scale_y_continuous(limits = c(225,500), breaks = seq(225, 500, 25),
                      expand = c(0,0)) +
   x_scale +
   theme_soe() +
