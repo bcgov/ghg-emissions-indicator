@@ -26,13 +26,13 @@ if (!exists("bc_ghg_sum")) load("tmp/clean_data.RData")
 
 ## Line plot theme
 theme_lineplots <- theme(
-  axis.text.y = element_text(size = 12),
+  axis.text.y = element_text(size = 14),
   axis.text.x = element_text(size = 14),
   axis.title.y = element_text(size = 16,
                               margin = margin(t = 0, r = 10, b = 0, l = 0,
                                               unit = "pt")),
   plot.title = element_text(size = 17, hjust = 0.5),
-  plot.margin = unit(c(6,6,6,2),"mm")
+  plot.margin = unit(c(6,6,6,6),"mm")
 )
 
 # Set plotting parameters common to many plots:
@@ -44,20 +44,21 @@ x_scale <- scale_x_continuous(limits = c(1990, 2016.5),
 ghg_time <- ggplot(data = bc_ghg_sum, aes(x = year, y = ghg_estimate)) + 
   geom_line(colour = "#e41a1c", size = 1.5) + 
   labs(title = "Total GHG Emissions") +
-  xlab(NULL) + ylab("ktCO2e") +
-  scale_y_continuous(limits = c(50000, 72000), breaks = seq(50000, 72000, 2000),
+  xlab(NULL) + 
+  ylab(bquote(Mt~CO[2]*e)) +
+  scale_y_continuous(limits = c(50, 72), breaks = seq(50, 72, 2),
                      expand = c(0,0), labels = comma) +
   x_scale +
   theme_soe() +
   theme_lineplots
 plot(ghg_time)
 
-
 ## Line plot of total GHG emissions per person over time in British Columbia
 ghg_pop <- ggplot(data = bc_ghg_per_capita, aes(x = year, y = ghg_per_capita)) + 
   geom_line(colour = "#e41a1c", size = 1.5) + 
   ggtitle("GHG Emissions per Person") +
-  xlab(NULL) + ylab("tCO2e per person") +
+  xlab(NULL) + 
+  ylab(bquote(t~CO[2]*e~" per Person")) +
   scale_y_continuous(limits = c(12,17.5), breaks = seq(12, 17.5, .5),
                      expand = c(0,0)) +
   x_scale +
@@ -71,7 +72,8 @@ gdp_time <- ggplot(data = bc_ghg_per_capita,
                    aes(x = year, y = ghg_per_unit_gdp)) + 
   geom_line(colour = "#e41a1c", size = 1.5) + 
   ggtitle("GHG Emissions per Unit GDP") +
-  xlab(NULL) + ylab("tCO2e per unit GDP") +
+  xlab(NULL) + 
+  ylab(bquote(t~CO[2]*e~" per unit GDP")) +
   scale_y_continuous(limits = c(225,500), breaks = seq(225, 500, 25),
                      expand = c(0,0)) +
   x_scale +
@@ -90,14 +92,14 @@ norm_base <- ggplot(data = normalized_measures,
                     aes(x = year, y = estimate, group = measure, 
                         colour = measure)) + 
   geom_line(size = 1.5) +
-  scale_y_continuous(limits = c(.9,2.01), breaks = seq(.9, 2, .1),
+  scale_y_continuous(limits = c(.9,2.0), breaks = seq(.9, 2, .1),
                      expand = c(0,0)) +
   x_scale +
   labs(title = "Relative GHG Emissions, GDP & Population Size") +
   xlab(NULL) + ylab("Values Indexed Relative to 1990") +
   scale_colour_manual(name="", values = normpal, guide = FALSE) +
   theme_soe() +
-  theme_lineplots
+  theme_lineplots 
 
 norm <- norm_base +
   annotate("text", label = "GDP", colour = "#e41a1c",
@@ -131,9 +133,9 @@ ghg_stack <- ggplot(data = ghg_sector_sum,
   geom_area(size = .2, alpha = .6) + 
   geom_line(data = bc_ghg_sum, aes(x = year, y = ghg_estimate),
             colour = "black", size = 1, show.legend = FALSE) +
-  xlab(NULL) + ylab("ktCO2e") +
-  scale_y_continuous(limits = c(0,70000), minor_breaks = waiver(),
-                     breaks = seq(0, 70000, 10000), expand = c(0,0), 
+  xlab(NULL) +  ylab(bquote(Mt~CO[2]*e)) +
+  scale_y_continuous(limits = c(0,70), minor_breaks = waiver(),
+                     breaks = seq(0, 70, 10), expand = c(0,0), 
                      labels = comma) +
   x_scale +
   scale_fill_manual(name = "Sector", values = sector.pal,
@@ -143,7 +145,7 @@ ghg_stack <- ggplot(data = ghg_sector_sum,
         panel.grid.minor = element_line(size = 0.5, colour = "grey85"),
         panel.grid.minor.x = element_blank(),
         panel.grid.major.x = element_blank(),
-        axis.text.y = element_text(size = 12),
+        axis.text.y = element_text(size = 14),
         axis.text.x = element_text(size = 14),
         axis.title.y = element_text(size = 16,
                                     margin = margin(t = 0, r = 10, b = 0, l = 0,
@@ -178,8 +180,8 @@ ghg_energy_trends <- ggplot(data = ghg_energy_group,
   geom_line(size = 1) +
   facet_wrap( ~ general_source, ncol = 4, 
               labeller = label_wrap_gen(width = 25, multi_line = TRUE)) + 
-  xlab(NULL) + ylab("ktCO2e") + 
-  scale_y_continuous(limits = c(0,20000), breaks = seq(0, 20000, 4000), 
+  xlab(NULL) + ylab(bquote(Mt~CO[2]*e)) +
+  scale_y_continuous(limits = c(0,20), breaks = seq(0, 20, 4), 
                      labels = comma) +
   scale_x_continuous(limits = c(1990, 2016.5), breaks = seq(1992, 2016, 4), 
                      expand = c(0,0)) +
@@ -189,8 +191,8 @@ ghg_energy_trends <- ggplot(data = ghg_energy_group,
   theme(legend.position = ("bottom"),
         legend.title = element_text(size = 16),
         legend.text = element_text(size = 16),
-        axis.text.x = element_text(size = 10),
-        axis.text.y = element_text(size = 10),
+        axis.text.x = element_text(size = 11),
+        axis.text.y = element_text(size = 12),
         strip.text.x = element_text(size = 14),
         axis.title.y = element_text(size = 16, margin = margin(t = 0, r = 10, b = 0, l = 0,
                                                                unit = "pt")),
@@ -267,11 +269,11 @@ dev.off()
 
 
 #total ghg over time by source for energy sector facet plot
-svg_px("./out/energy_plot.svg", width = 836, height = 650)
+svg_px("./out/energy_plot.svg", width = 860, height = 650)
 plot(ghg_energy_trends)
 dev.off()
 
-png_retina(filename = "./out/energy_plot.png", width = 836, height = 650,
+png_retina(filename = "./out/energy_plot.png", width = 860, height = 650,
            units = "px", type = "cairo-png")
 plot(ghg_energy_trends)
 dev.off()
