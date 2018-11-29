@@ -46,14 +46,17 @@ bc_pop <- get_cansim(1710000501) %>%
 bc_gdp <- get_cansim(3610022201) %>%
   filter(GEO == "British Columbia",
          REF_DATE >= 1990 & REF_DATE <= 2016,
-         Prices == "Chained (2007) dollars",
+         Prices == "Chained (2012) dollars",
          Estimates == "Gross domestic product at market prices") %>% 
   select(year = REF_DATE, gdp_estimate = VALUE)
 
 bc_pop_gdp <- bc_pop %>% 
   left_join(bc_gdp)
 
+# Write out related indicators as CSV (pop & gdp)
+write_csv(bc_pop_gdp, "tmp/bc_ghg_related_data.csv")
 
 # Create tmp folder if not already there and store objects in local repository
 if (!exists("tmp")) dir.create("tmp", showWarnings = FALSE)
 save(bc_ghg, bc_pop_gdp, file = "tmp/raw_data.RData")
+
