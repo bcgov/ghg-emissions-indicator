@@ -46,28 +46,9 @@ theme_print <-   theme(axis.text.y = element_text(size = 8),
 ```
 
 
-\begin{center}
-\fbox{
-  \begin{minipage}[c]{14cm}
-  
-   \begingroup\centering{\textbf{DRAFT --- NOT FOR DISTRIBUTION}}
-    
-    \endgroup
-     
-    \vspace{1mm}
-    
-    \text{This DRAFT public reporting product is under review and may change. It is not intended}
-    \text{to be shared, cited or used at this time. Please contact Environmental Reporting BC program}
-    \text{staff if you have questions about the content. }
-    
-  \end{minipage}
-}
-\end{center}
-
-
 * **The climate is changing because of greenhouse gases.** Greenhouse gas emissions warm the global atmosphere and cause our climate to change. Reducing greenhouse gas emissions is a key component to limiting the increase in global average temperature and the resulting change in climate.
   
-* **Total greenhouse gas emissions in 2016 in B.C. were `r ghg_est_Mtco2e` million tonnes of carbon dioxide equivalent.** This is a `r previous_year`% increase in emissions since 2015 and a `r abs(baseline_year)`% decrease in emissions since 2007---the Government of British Columbia's baseline year for assessing reductions in greenhouse gas emissions. Greenhouse gas emission estimates reported here are from the [British Columbia Greenhouse Gas Emission Inventory (2016)](http://www2.gov.bc.ca/gov/content?id=50B908BE85E0446EB6D3C434B4C8C106)^1^ and do not include forest management offsets.
+* **Total greenhouse gas emissions in 2016 in B.C. were `r ghg_est_Mtco2e` million tonnes of carbon dioxide equivalent.** This is a `r abs(previous_year)`% increase in emissions since 2015 and a `r abs(baseline_year)`% decrease in emissions since 2007---the Government of British Columbia's baseline year for assessing reductions in greenhouse gas emissions. Greenhouse gas emission estimates reported here are from the [British Columbia Greenhouse Gas Emission Inventory (2016)](http://www2.gov.bc.ca/gov/content?id=50B908BE85E0446EB6D3C434B4C8C106)^1^ and do not include forest management offsets.
 
 * **British Columbians are generating fewer greenhouse gases.** Greenhouse gas emissions per person in B.C. have declined over the past decade and stabilized in recent years. Greenhouse gas emissions per unit gross domestic product---a measure of the size of the economy---are on the decline in B.C. 
  
@@ -180,8 +161,6 @@ The **[R](http://www.r-project.org)** code for repeating the analysis and data v
 ^2^[British Columbia Greenhouse Gas Provincial Inventory Methodology](https://www2.gov.bc.ca/assets/download/E7DBDA71B8FA4ED19B64BBCD9C749BB6)
 
 ^3^[Canada's National Greenhouse Gas Inventory](http://www.ec.gc.ca/ges-ghg/default.asp?lang=En&n=83A34A7A-1)
-
-[Climate Action in British Columbia 2016 Progress Report](http://www2.gov.bc.ca/gov/content?id=50B908BE85E0446EB6D3C434B4C8C106)
 
 [B.C. Environment Climate Change](http://www2.gov.bc.ca/gov/theme.page?id=4D9B65E26DFA11EF78C200B82FAD10BD)
 
