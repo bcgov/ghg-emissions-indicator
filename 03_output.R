@@ -202,7 +202,7 @@ ghg_energy_trends <- ggplot(data = ghg_energy_group,
 plot(ghg_energy_trends)
 
 
-# Create tmp folder if not already there and store plot objects in local repository
+## Create tmp folder if not already there and store plot objects in local repository
 if (!exists("tmp")) dir.create("tmp", showWarnings = FALSE)
 save(ghg_time, ghg_pop, gdp_time, norm, norm_print,
      ghg_stack, ghg_energy_trends, file = "tmp/plots.RData")

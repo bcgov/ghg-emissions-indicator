@@ -9,3 +9,4 @@ internal.R
 /data
 README.html
 .DS_Store
+print_ver/*.tex
