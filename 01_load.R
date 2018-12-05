@@ -17,16 +17,14 @@ library(cansim) #get Statistics Canada CANSIM data
 library(dplyr) #data munging
 
 
+
 ## Get British Columbia Greehhosue Gas Emissions estimates from B.C. Data Catalogue 
 ## from https://catalogue.data.gov.bc.ca/dataset/24c899ee-ef73-44a2-8569-a0d6b094e60c
 ## Data is released under the Open Government License - British Columbia 
 ## https://www2.gov.bc.ca/gov/content?id=A519A56BC2BF44E4A008B33FCF527F61
 
-
 bc_ghg <- read_csv("https://catalogue.data.gov.bc.ca/dataset/24c899ee-ef73-44a2-8569-a0d6b094e60c/resource/11b1da01-fabc-406c-8b13-91e87f126dec/download/bcghg_emissions_1990-2016.csv")
                    
-
-# na=c("-","","NA"))
 
 
 ## Get British Columbia Population Estimates [Table: 17-10-0005-01 
