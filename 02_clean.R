@@ -147,6 +147,6 @@ ten_year
 # Create tmp folder if not already there and store clean data in local repository
 if (!exists("tmp")) dir.create("tmp", showWarnings = FALSE)
 save(bc_ghg_long, ghg_sector_sum, bc_ghg_sum, normalized_measures,
-     bc_ghg_per_capita, bc_ghg_energy,ghg_energy_group,
+     bc_ghg_per_capita, bc_ghg_energy,ghg_energy_group, max_ghg_yr
      ghg_est_Mtco2e, previous_year, baseline_year, file = "tmp/clean_data.RData")
 

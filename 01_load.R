@@ -70,5 +70,5 @@ write_csv(bc_pop_gdp, "tmp/bc_ghg_related_data.csv")
 
 # Create tmp folder if not already there and store objects in local repository
 if (!exists("tmp")) dir.create("tmp", showWarnings = FALSE)
-save(bc_ghg, bc_pop_gdp, file = "tmp/raw_data.RData")
+save(bc_ghg, bc_pop_gdp, max_ghg_yr, file = "tmp/raw_data.RData")
 
