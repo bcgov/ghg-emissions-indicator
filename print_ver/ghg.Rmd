@@ -1,6 +1,6 @@
 ---
 topic: "sustainability"
-title: "Trends in Greenhouse Gas Emissions in B.C. (1990-2016)"
+title: "Trends in Greenhouse Gas Emissions in B.C. (1990-2017)"
 output: envreportutils.internal::print_ver
 ---
 
