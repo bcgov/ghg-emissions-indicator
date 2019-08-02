@@ -36,8 +36,8 @@ theme_lineplots <- theme(
 )
 
 # Set plotting parameters common to many plots:
-x_scale <- scale_x_continuous(limits = c(1990, 2016.5), 
-                              breaks = seq(1992, 2016, 3), 
+x_scale <- scale_x_continuous(limits = c(1990, max_ghg_yr + 1), 
+                              breaks = seq(1992, max_ghg_yr + 1, 5), 
                               expand = c(0,0))
 
 ## Line plot of total GHG emissions over time in British Columbia
@@ -92,7 +92,7 @@ norm_base <- ggplot(data = normalized_measures,
                     aes(x = year, y = estimate, group = measure, 
                         colour = measure)) + 
   geom_line(size = 1.5) +
-  scale_y_continuous(limits = c(.9,2.0), breaks = seq(.9, 2, .1),
+  scale_y_continuous(limits = c(.9,2.1), breaks = seq(.9, 2, .1),
                      expand = c(0,0)) +
   x_scale +
   labs(title = "Relative GHG Emissions, GDP & Population Size") +
@@ -127,6 +127,7 @@ sector.order <- rev(levels(ghg_sector_sum$sector))
 sector.no <- length(sector.order) + 1
 sector.pal <- brewer.pal(sector.no, "Set1")
 names(sector.pal) <- sector.order
+
 
 ghg_stack <- ggplot(data = ghg_sector_sum, 
                     aes(x = year, y = sum, fill = fct_rev(sector))) + 
@@ -172,18 +173,28 @@ ghg_energy_group_bg <- ghg_energy_group %>%
   select(-subsector_level1) %>% 
   rename(general_source_line = general_source)
 
+# generate the plot order based on highest values in most recent year
+plot.order <- ghg_energy_group %>%
+  filter(year == max_ghg_yr) %>%
+  arrange(desc(sum)) %>%
+  pull(general_source)
+
+
+ghg_energy_group$general_source_f = factor(ghg_energy_group$general_source, 
+                                           levels = plot.order)
+
 #facet plot
 ghg_energy_trends <- ggplot(data = ghg_energy_group,
                             aes(x = year, y = sum, colour = subsector_level1)) + 
   geom_line(data = ghg_energy_group_bg, aes(group = general_source_line),
             size = .8, colour = "grey", alpha = 0.5) +
   geom_line(size = 1) +
-  facet_wrap( ~ general_source, ncol = 4, 
+  facet_wrap( ~ general_source_f, ncol = 4, 
               labeller = label_wrap_gen(width = 25, multi_line = TRUE)) + 
   xlab(NULL) + ylab(bquote(Mt~CO[2]*e)) +
   scale_y_continuous(limits = c(0,20), breaks = seq(0, 20, 4), 
                      labels = comma) +
-  scale_x_continuous(limits = c(1990, 2016.5), breaks = seq(1992, 2016, 4), 
+  scale_x_continuous(limits = c(1990, max_ghg_yr + 1), breaks = seq(1992, max_ghg_yr, 5), 
                      expand = c(0,0)) +
   scale_colour_manual(name = "Energy Subsectors:", values = subsector.pal,
                       breaks = subsector.order) +
