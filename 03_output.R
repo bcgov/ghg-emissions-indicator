@@ -230,7 +230,7 @@ plot(ghg_time)
 dev.off()
 
 png_retina(filename = "./out/ghg_plot.png", width = 500, height = 400,
-           units = "px", type = "cairo-png")
+           units = "px", type = "cairo-png", antialias = "default")
 plot(ghg_time)
 dev.off()
 
@@ -241,7 +241,7 @@ plot(ghg_pop)
 dev.off()
 
 png_retina(filename = "./out/ghg_pop_plot.png", width = 500, height = 400,
-           units = "px", type = "cairo-png")
+           units = "px", type = "cairo-png", antialias = "default")
 plot(ghg_pop)
 dev.off()
 
@@ -252,7 +252,7 @@ plot(gdp_time)
 dev.off()
 
 png_retina(filename = "./out/ghg_gdp_plot.png", width = 500, height = 400,
-           units = "px", type = "cairo-png")
+           units = "px", type = "cairo-png", antialias = "default")
 plot(gdp_time)
 dev.off()
 
@@ -263,7 +263,7 @@ plot(norm)
 dev.off()
 
 png_retina(filename = "./out/norm_plot.png", width = 500, height = 400,
-           units = "px", type = "cairo-png")
+           units = "px", type = "cairo-png", antialias = "default")
 plot(norm)
 dev.off()
 
@@ -274,7 +274,7 @@ plot(ghg_stack)
 dev.off()
 
 png_retina(filename = "./out/sector_plot.png", width = 850, height = 430,
-           units = "px", type = "cairo-png")
+           units = "px", type = "cairo-png", antialias = "default")
 plot(ghg_stack)
 dev.off()
 
@@ -285,6 +285,6 @@ plot(ghg_energy_trends)
 dev.off()
 
 png_retina(filename = "./out/energy_plot.png", width = 860, height = 650,
-           units = "px", type = "cairo-png")
+           units = "px", type = "cairo-png",antialias = "default")
 plot(ghg_energy_trends)
 dev.off()
