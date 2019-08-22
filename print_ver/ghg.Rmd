@@ -53,7 +53,7 @@ theme_print <-   theme(axis.text.y = element_text(size = 8),
 * **British Columbians are generating fewer greenhouse gases.** Greenhouse gas emissions per person in B.C. have declined over the past decade and stabilized in recent years. Greenhouse gas emissions per unit gross domestic product---a measure of the size of the economy---are on the decline in B.C. 
  
 * **Most greenhouse gas emissions in B.C. come from creating and using energy.**  
-Major energy-related sources of greenhouse gas emissions include transportation, such as driving cars, and stationary combustion sources, such as heating buildings.
+Major energy-related sources of greenhouse gas emissions include transportation, such as driving cars, and stationary combustion sources, such as oil and gas extraction.
 
 
 
@@ -92,7 +92,7 @@ gdp_time + theme_print
    
 \vspace{1cm}   
 
-* Population size and gross domestic product in British Columbia have consistently increased since 2009, while greenhouse gas emissions have been either stable or have increased by relatively small increments---compared to population and gross domestic product growth---during this same time period.
+* Population size and gross domestic product in British Columbia have consistently increased since 2009, while greenhouse gas emissions have either stablized or increased by relatively small increments---compared to population and gross domestic product growth---during this same time period.
 
 \vspace{.8cm}
 
@@ -106,7 +106,7 @@ norm_print +
 
 ## Greenhouse Gas Emissions by Sector 
 
-- Greenhouse gas emissions are attributed to five defined sectors: afforestation and deforestation, agriculture, energy, industrial processes and product use and waste.
+- Greenhouse gas emissions are attributed to five defined sectors: afforestation and deforestation, agriculture, energy, industrial processes and product use, and waste.
 
 - The energy sector---which includes numerous sources relating to energy production, storage and use---produces the largest amount of greenhouse gas emissions in British Columbia.
 
@@ -129,7 +129,7 @@ ghg_stack +
 
 - The energy sector includes emissions grouped into three main energy sub-sectors: 1) transport such as road vehicles and marine and jet engines; 2) stationary combustion sources such as boilers, turbines, engines, heaters; and 3) fugitive emissions. Fugitive emissions are unintentional emissions from the processing, transmission and storage of fossil fuels. 
 
-- A few of the larger sources of greenhouse gas emissions within the energy sector include road transportation and stationary combustion sources, such as manufacturing, mining and upstream oil and gas production and heating residential buildings.
+- A few of the larger sources of greenhouse gas emissions within the energy sector include road transportation and stationary combustion sources, such as oil and gas extraction, manufacturing and heating residential buildings.
 
 \vspace{.8cm}
           
