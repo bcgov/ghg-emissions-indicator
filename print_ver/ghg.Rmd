@@ -46,7 +46,7 @@ theme_print <-   theme(axis.text.y = element_text(size = 8),
 ```
 
 
-* **The climate is changing because of greenhouse gases.** Greenhouse gas emissions warm the global atmosphere and cause our climate to change. Reducing greenhouse gas emissions is a key component to limiting the increase in global average temperature and the resulting change in climate.
+* **Greenhouse gas emissions warm the global atmosphere and cause our climate to change.** Reducing greenhouse gas emissions is a key component to limiting the increase in global average temperature and the resulting change in climate.
   
 * **Total greenhouse gas emissions in `r max_ghg_yr` in B.C. were `r ghg_est_Mtco2e` million tonnes of carbon dioxide equivalent.** This is a `r abs(previous_year)`% increase in emissions since `r max_ghg_yr - 1` and a `r abs(baseline_year)`% decrease in emissions since 2007---the Government of British Columbia's baseline year for assessing reductions in greenhouse gas emissions. Greenhouse gas emission estimates reported here are from the [British Columbia Greenhouse Gas Emission Inventory (`r max_ghg_yr`)](https://www2.gov.bc.ca/gov/content/environment/climate-change/data/provincial-inventory)^1^ and do not include forest management offsets.
 
@@ -108,7 +108,7 @@ norm_print +
 
 - Greenhouse gas emissions are attributed to five defined sectors: afforestation and deforestation, agriculture, energy, industrial processes and product use, and waste.
 
-- The energy sector---which includes numerous sources relating to energy production, storage and use---produces the largest amount of greenhouse gas emissions in British Columbia.
+- The energy sector produces the largest amount of greenhouse gas emissions in British Columbia. This sector includes numerous sources relating to energy production, storage and use. 
 
 \vspace{.8cm}
 
@@ -129,7 +129,7 @@ ghg_stack +
 
 - The energy sector includes emissions grouped into three main energy sub-sectors: 1) transport such as road vehicles and marine and jet engines; 2) stationary combustion sources such as boilers, turbines, engines, heaters; and 3) fugitive emissions. Fugitive emissions are unintentional emissions from the processing, transmission and storage of fossil fuels. 
 
-- A few of the larger sources of greenhouse gas emissions within the energy sector include road transportation and stationary combustion sources, such as oil and gas extraction, manufacturing and heating residential buildings.
+- The larger sources of greenhouse gas emissions within the energy sector include road transportation and stationary combustion sources, such as oil and gas extraction, manufacturing and heating residential buildings.
 
 \vspace{.8cm}
           
