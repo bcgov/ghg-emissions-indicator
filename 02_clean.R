@@ -32,7 +32,6 @@ bc_ghg_long <- bc_ghg %>%
   mutate(ktCO2e = as.numeric(ktCO2e),
          year = as.integer(as.character(year)))
 
-
 ## Summarize ghg emissions per sector per year and 
 ## convert to MtCO2e for (from ktCO2e) for plotting
 ghg_sector_sum <- bc_ghg_long %>%
@@ -100,14 +99,14 @@ ghg_energy_group <- bc_ghg_energy %>%
 
 ## Data summaries 
 
-## 2016 total in ktCO2e
+## total in ktCO2e for most recent year 
 ghg_est_ktco2e <- bc_ghg_long %>%
   filter(sector != "OTHER LAND USE (Not included in total B.C. emissions)") %>%
   group_by(year) %>%
   summarise(ghg_estimate = round(sum(ktCO2e, na.rm = TRUE), digits = 0)) %>% 
   mutate(sector = "British Columbia") %>% 
   select(sector, year, ghg_estimate) %>% 
-  filter(year == "2016") %>% 
+  filter(year == max_ghg_yr) %>% 
   pull()
 ghg_est_ktco2e
 
@@ -136,18 +135,18 @@ calc_inc <- function(ghg_vector, year_vector, since) {
 }
 
 ## Comparisons
-previous_year <- calc_inc(bc_ghg_sum_ktco2e$ghg_estimate, bc_ghg_sum_ktco2e$year, since = 2015)
+previous_year <- calc_inc(bc_ghg_sum_ktco2e$ghg_estimate, bc_ghg_sum_ktco2e$year, since = max_ghg_yr - 1 )
 previous_year
 baseline_year <- calc_inc(bc_ghg_sum_ktco2e$ghg_estimate, bc_ghg_sum_ktco2e$year, since = 2007)
 baseline_year
-three_year <- calc_inc(bc_ghg_sum_ktco2e$ghg_estimate, bc_ghg_sum_ktco2e$year, since = 2013)
+three_year <- calc_inc(bc_ghg_sum_ktco2e$ghg_estimate, bc_ghg_sum_ktco2e$year, since = max_ghg_yr - 3)
 three_year
-ten_year <- calc_inc(bc_ghg_sum_ktco2e$ghg_estimate, bc_ghg_sum_ktco2e$year, since = 2006)
+ten_year <- calc_inc(bc_ghg_sum_ktco2e$ghg_estimate, bc_ghg_sum_ktco2e$year, since = max_ghg_yr - 10)
 ten_year
 
 # Create tmp folder if not already there and store clean data in local repository
 if (!exists("tmp")) dir.create("tmp", showWarnings = FALSE)
 save(bc_ghg_long, ghg_sector_sum, bc_ghg_sum, normalized_measures,
-     bc_ghg_per_capita, bc_ghg_energy,ghg_energy_group,
+     bc_ghg_per_capita, bc_ghg_energy,ghg_energy_group, max_ghg_yr,
      ghg_est_Mtco2e, previous_year, baseline_year, file = "tmp/clean_data.RData")
 

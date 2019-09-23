@@ -1,6 +1,6 @@
 ---
 topic: "sustainability"
-title: "Trends in Greenhouse Gas Emissions in B.C. (1990-2016)"
+title: "Trends in Greenhouse Gas Emissions in B.C. (1990-2017)"
 output: envreportutils.internal::print_ver
 ---
 
@@ -46,14 +46,14 @@ theme_print <-   theme(axis.text.y = element_text(size = 8),
 ```
 
 
-* **The climate is changing because of greenhouse gases.** Greenhouse gas emissions warm the global atmosphere and cause our climate to change. Reducing greenhouse gas emissions is a key component to limiting the increase in global average temperature and the resulting change in climate.
+* **Greenhouse gas emissions warm the global atmosphere and cause our climate to change.** Reducing greenhouse gas emissions is a key component to limiting the increase in global average temperature and the resulting change in climate.
   
-* **Total greenhouse gas emissions in 2016 in B.C. were `r ghg_est_Mtco2e` million tonnes of carbon dioxide equivalent.** This is a `r abs(previous_year)`% increase in emissions since 2015 and a `r abs(baseline_year)`% decrease in emissions since 2007---the Government of British Columbia's baseline year for assessing reductions in greenhouse gas emissions. Greenhouse gas emission estimates reported here are from the [British Columbia Greenhouse Gas Emission Inventory (2016)](http://www2.gov.bc.ca/gov/content?id=50B908BE85E0446EB6D3C434B4C8C106)^1^ and do not include forest management offsets.
+* **Total greenhouse gas emissions in `r max_ghg_yr` in B.C. were `r ghg_est_Mtco2e` million tonnes of carbon dioxide equivalent.** This is a `r abs(previous_year)`% increase in emissions since `r max_ghg_yr - 1` and a `r abs(baseline_year)`% decrease in emissions since 2007---the Government of British Columbia's baseline year for assessing reductions in greenhouse gas emissions. Greenhouse gas emission estimates reported here are from the [British Columbia Greenhouse Gas Emission Inventory (`r max_ghg_yr`)](https://www2.gov.bc.ca/gov/content/environment/climate-change/data/provincial-inventory)^1^ and do not include forest management offsets.
 
 * **British Columbians are generating fewer greenhouse gases.** Greenhouse gas emissions per person in B.C. have declined over the past decade and stabilized in recent years. Greenhouse gas emissions per unit gross domestic product---a measure of the size of the economy---are on the decline in B.C. 
  
 * **Most greenhouse gas emissions in B.C. come from creating and using energy.**  
-Major energy-related sources of greenhouse gas emissions include transportation, such as driving cars, and stationary combustion sources, such as heating buildings.
+Major energy-related sources of greenhouse gas emissions include transportation, such as driving cars, and stationary combustion sources, such as oil and gas extraction.
 
 
 
@@ -61,7 +61,7 @@ Major energy-related sources of greenhouse gas emissions include transportation,
 
 ## Greenhouse Gas Emissions in British Columbia 
 
-* In 2016, British Columbia's total greenhouse gas emissions were `r abs(baseline_year)`% less than the 2007 baseline year, with relatively small and variable changes in total emissions in recent reporting years.
+* In `r max_ghg_yr`, British Columbia's total greenhouse gas emissions were `r abs(baseline_year)`% less than the 2007 baseline year, with relatively small and variable changes in total emissions in recent reporting years.
 
 \vspace{.8cm}
 
@@ -92,7 +92,7 @@ gdp_time + theme_print
    
 \vspace{1cm}   
 
-* Population size and gross domestic product in British Columbia have consistently increased since 2009, while greenhouse gas emissions have been either stable or have increased by relatively small increments---compared to population and gross domestic product growth---during this same time period.
+* Population size and gross domestic product in British Columbia have consistently increased since 2009, while greenhouse gas emissions have either stablized or increased by relatively small increments---compared to population and gross domestic product growth---during this same time period.
 
 \vspace{.8cm}
 
@@ -106,9 +106,9 @@ norm_print +
 
 ## Greenhouse Gas Emissions by Sector 
 
-- Greenhouse gas emissions are attributed to five defined sectors: afforestation and deforestation, agriculture, energy, industrial processes and product use and waste.
+- Greenhouse gas emissions are attributed to five defined sectors: afforestation and deforestation, agriculture, energy, industrial processes and product use, and waste.
 
-- The energy sector---which includes numerous sources relating to energy production, storage and use---produces the largest amount of greenhouse gas emissions in British Columbia.
+- The energy sector produces the largest amount of greenhouse gas emissions in British Columbia. This sector includes numerous sources relating to energy production, storage and use. 
 
 \vspace{.8cm}
 
@@ -129,7 +129,7 @@ ghg_stack +
 
 - The energy sector includes emissions grouped into three main energy sub-sectors: 1) transport such as road vehicles and marine and jet engines; 2) stationary combustion sources such as boilers, turbines, engines, heaters; and 3) fugitive emissions. Fugitive emissions are unintentional emissions from the processing, transmission and storage of fossil fuels. 
 
-- A few of the larger sources of greenhouse gas emissions within the energy sector include road transportation and stationary combustion sources, such as manufacturing, mining and upstream oil and gas production and heating residential buildings.
+- The larger sources of greenhouse gas emissions within the energy sector include road transportation and stationary combustion sources, such as oil and gas extraction, manufacturing and heating residential buildings.
 
 \vspace{.8cm}
           
@@ -149,22 +149,22 @@ ghg_energy_trends +
 
 ## Methods
 
-British Columbia's total greenhouse gas emissions are estimated using the [British Columbia Greenhouse Gas Provincial Inventory Methodology](https://www2.gov.bc.ca/assets/download/E7DBDA71B8FA4ED19B64BBCD9C749BB6)^2^, using data from provincial-level sources and [Canada's National Inventory Report](http://www.ec.gc.ca/ges-ghg/default.asp?lang=En&n=83A34A7A-1).^3^ See the [British Columbia Greenhouse Gas Emission Inventory (2016)](http://www2.gov.bc.ca/gov/content?id=50B908BE85E0446EB6D3C434B4C8C106)^1^ for details. Greenhouse gas emissions include carbon dioxide (CO~2~), methane (CH~4~), nitrous oxide (N~2~O), sulphur hexafluoride (SF~6~), perfluorocarbons (PFCs),  hydrofluorocarbons (HFCs) and nitrogen trifluoride (NF~3~) released by human activity---these emissions are reported collectively here as millions of tonnes of carbon dioxide equivalent (Mt CO~2~e).  British Columbia population estimates ([Table: 17-10-0005-01](https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=1710000501)) and gross domestic product ([Table: 36-10-0222-01](https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=3610022201)) data were sourced from [Statistics Canada](https://www.statcan.gc.ca/eng/start). Gross domestic product (GDP) is calculated using expenditure-based GDP and reported in millions of chained 2012 dollars.
+British Columbia's total greenhouse gas emissions are estimated using the [British Columbia Greenhouse Gas Provincial Inventory Methodology](https://www2.gov.bc.ca/assets/download/E7DBDA71B8FA4ED19B64BBCD9C749BB6)^2^, using data from provincial-level sources and [Canada's National Inventory Report](http://www.publications.gc.ca/site/eng/9.506002/publication.html).^3^ See the [British Columbia Greenhouse Gas Emission Inventory (2017)](https://www2.gov.bc.ca/gov/content/environment/climate-change/data/provincial-inventory)^1^ for details. Greenhouse gas emissions include carbon dioxide (CO~2~), methane (CH~4~), nitrous oxide (N~2~O), sulphur hexafluoride (SF~6~), perfluorocarbons (PFCs),  hydrofluorocarbons (HFCs) and nitrogen trifluoride (NF~3~) released by human activity---these emissions are reported collectively here as millions of tonnes of carbon dioxide equivalent (Mt CO~2~e).  British Columbia population estimates ([Table: 17-10-0005-01](https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=1710000501)) and gross domestic product ([Table: 36-10-0222-01](https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=3610022201)) data were sourced from [Statistics Canada](https://www.statcan.gc.ca/eng/start). Gross domestic product (GDP) is calculated using expenditure-based GDP and reported in millions of chained 2012 dollars.
 
 The **[R](http://www.r-project.org)** code for repeating the analysis and data visualizations presented on this page is [available on GitHub](https://github.com/bcgov/ghg-emissions-indicator).
 
 
 ## References and Other Useful Links
 
-^1^[British Columbia Greenhouse Gas Emission Inventory (2016)](http://www2.gov.bc.ca/gov/content?id=50B908BE85E0446EB6D3C434B4C8C106)
+^1^[British Columbia Greenhouse Gas Emission Inventory (`r max_ghg_yr`)](http://www2.gov.bc.ca/gov/content?id=50B908BE85E0446EB6D3C434B4C8C106)
 
 ^2^[British Columbia Greenhouse Gas Provincial Inventory Methodology](https://www2.gov.bc.ca/assets/download/E7DBDA71B8FA4ED19B64BBCD9C749BB6)
 
-^3^[Canada's National Greenhouse Gas Inventory](http://www.ec.gc.ca/ges-ghg/default.asp?lang=En&n=83A34A7A-1)
+^3^[Canada's National Greenhouse Gas Inventory](https://www.canada.ca/en/environment-climate-change/services/climate-change/greenhouse-gas-emissions/inventory.html)
 
 [B.C. Environment Climate Change](http://www2.gov.bc.ca/gov/theme.page?id=4D9B65E26DFA11EF78C200B82FAD10BD)
 
-[Canadian Environmental Sustainability Indicators: Air and Climate Indicators](http://www.ec.gc.ca/indicateurs-indicators/default.asp?lang=En&n=03603FB3-1)
+[Canadian Environmental Sustainability Indicators: Air and Climate Indicators](https://www.canada.ca/en/environment-climate-change/services/environmental-indicators.html)
 
 
 ## Data
@@ -175,12 +175,11 @@ each file, as indicated below.
 
 ----
 
-Published and Available On-Line at Environmental Reporting BC (December
-2018):   
+Published and Available On-Line at Environmental Reporting BC (August 2019):   
 <http://www.env.gov.bc.ca/soe/indicators/sustainability/ghg-emissions.html>
 
 Email correspondence to: envreportbc@gov.bc.ca
 
 *Suggested Citation*:  
-Environmental Reporting BC. 2018. Trends in Greenhouse Gas Emissions in B.C. (1990-2016). State of Environment Reporting, Ministry of Environment and Climate Change Strategy, British Columbia, Canada.
+Environmental Reporting BC. `r format(Sys.Date(), "%Y")`. Trends in Greenhouse Gas Emissions in B.C. (1990-`r max_ghg_yr`). State of Environment Reporting, Ministry of Environment and Climate Change Strategy, British Columbia, Canada.
 

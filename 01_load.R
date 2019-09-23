@@ -23,8 +23,18 @@ library(dplyr) #data munging
 ## Data is released under the Open Government License - British Columbia 
 ## https://www2.gov.bc.ca/gov/content?id=A519A56BC2BF44E4A008B33FCF527F61
 
-bc_ghg <- read_csv("https://catalogue.data.gov.bc.ca/dataset/24c899ee-ef73-44a2-8569-a0d6b094e60c/resource/11b1da01-fabc-406c-8b13-91e87f126dec/download/bcghg_emissions_1990-2016.csv")
-                   
+
+# for 2019 data use temp file: 
+library(envreportutils)
+
+bc_ghg <- read_csv("https://catalogue.data.gov.bc.ca/dataset/24c899ee-ef73-44a2-8569-a0d6b094e60c/resource/11b1da01-fabc-406c-8b13-91e87f126dec/download/bcghg_emissions_1990-2017.csv")
+
+# get the most recent year in numeric format 
+bc_ghg_yr <- bc_ghg %>%
+  select(max(matches("^2"))) %>%
+  colnames()
+
+max_ghg_yr <- as.numeric(bc_ghg_yr)
 
 
 ## Get British Columbia Population Estimates [Table: 17-10-0005-01 
@@ -36,7 +46,7 @@ bc_ghg <- read_csv("https://catalogue.data.gov.bc.ca/dataset/24c899ee-ef73-44a2-
 
 bc_pop <- get_cansim(1710000501) %>% 
   filter(GEO == "British Columbia",
-         REF_DATE >= 1990 & REF_DATE <= 2016,
+         REF_DATE >= 1990 & REF_DATE <= max_ghg_yr,
          Sex == "Both sexes",
          `Age group` == "All ages") %>% 
   select(year = REF_DATE, population_estimate = VALUE)
@@ -44,7 +54,7 @@ bc_pop <- get_cansim(1710000501) %>%
 
 bc_gdp <- get_cansim(3610022201) %>%
   filter(GEO == "British Columbia",
-         REF_DATE >= 1990 & REF_DATE <= 2016,
+         REF_DATE >= 1990 & REF_DATE <= max_ghg_yr,
          Prices == "Chained (2012) dollars",
          Estimates == "Gross domestic product at market prices") %>% 
   select(year = REF_DATE, gdp_estimate = VALUE)
@@ -57,5 +67,5 @@ write_csv(bc_pop_gdp, "tmp/bc_ghg_related_data.csv")
 
 # Create tmp folder if not already there and store objects in local repository
 if (!exists("tmp")) dir.create("tmp", showWarnings = FALSE)
-save(bc_ghg, bc_pop_gdp, file = "tmp/raw_data.RData")
+save(bc_ghg, bc_pop_gdp, max_ghg_yr, file = "tmp/raw_data.RData")
 
