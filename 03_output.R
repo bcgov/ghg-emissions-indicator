@@ -37,7 +37,7 @@ theme_lineplots <- theme(
 
 # Set plotting parameters common to many plots:
 x_scale <- scale_x_continuous(limits = c(1990, max_ghg_yr + 1), 
-                              breaks = seq(1992, max_ghg_yr + 1, 5), 
+                              breaks = c(1990, seq(1993, max_ghg_yr + 1, 5)), 
                               expand = c(0,0))
 
 ## Line plot of total GHG emissions over time in British Columbia
@@ -140,7 +140,7 @@ ghg_stack <- ggplot(data = ghg_sector_sum,
                      labels = comma) +
   x_scale +
   scale_fill_manual(name = "Sector", values = sector.pal,
-                    breaks = sector.order) +
+                    limits = sector.order) +
   theme_soe() +
   theme(panel.grid.major = element_line(size = 0.5, colour = "grey85"),
         panel.grid.minor = element_line(size = 0.5, colour = "grey85"),
@@ -159,7 +159,7 @@ plot(ghg_stack)
 
 ## Facetted line plot of GHG emissions over time by Energy Source
 #creating a list for Energy subsector order 
-subsector.order <- c("Transport","Stationary Combustion Sources", 
+subsector.order <- c("Transport", "Stationary Combustion Sources", 
                      "Fugitive Sources")
 
 #creating colour palette for Energy subsector graphs
@@ -194,10 +194,10 @@ ghg_energy_trends <- ggplot(data = ghg_energy_group,
   xlab(NULL) + ylab(bquote(Mt~CO[2]*e)) +
   scale_y_continuous(limits = c(0,20), breaks = seq(0, 20, 4), 
                      labels = comma) +
-  scale_x_continuous(limits = c(1990, max_ghg_yr + 1), breaks = seq(1992, max_ghg_yr, 5), 
+  scale_x_continuous(limits = c(1990, max_ghg_yr + 1), breaks = seq(1993, max_ghg_yr, 5), 
                      expand = c(0,0)) +
   scale_colour_manual(name = "Energy Subsectors:", values = subsector.pal,
-                      breaks = subsector.order) +
+                      limits = subsector.order) +
   theme_soe_facet() +
   theme(legend.position = ("bottom"),
         legend.title = element_text(size = 16),
