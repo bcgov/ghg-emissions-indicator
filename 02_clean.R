@@ -41,7 +41,11 @@ bc_ghg_long <- bc_ghg %>%
   mutate(ktCO2e = as.numeric(ktCO2e),
          year = as.integer(as.character(year))) %>% 
   elevate_sectors(c("IPPU, AGRICULTURE, AND WASTE", "AFFORESTATION AND DEFORESTATION")) %>% 
-  mutate(across(contains("sector"), ~ str_replace(to_titlecase(.), "and", "&")))
+  mutate(across(contains("sector"), ~ {
+    x <- str_replace(to_titlecase(.x), "(\\b)and(\\b)", "\\1&\\2")
+    str_remove(x, regex("\\s\\(ippu\\)", ignore_case = TRUE))
+    }
+    ))
 
 
 ## Summarize ghg emissions per sector per year and 
