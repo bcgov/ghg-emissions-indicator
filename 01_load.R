@@ -27,7 +27,9 @@ library(dplyr) #data munging
 # for 2019 data use temp file: 
 library(envreportutils)
 
-bc_ghg <- read_csv("https://catalogue.data.gov.bc.ca/dataset/24c899ee-ef73-44a2-8569-a0d6b094e60c/resource/11b1da01-fabc-406c-8b13-91e87f126dec/download/bcghg_emissions_1990-2017.csv")
+# bc_ghg <- read_csv("https://catalogue.data.gov.bc.ca/dataset/24c899ee-ef73-44a2-8569-a0d6b094e60c/resource/11b1da01-fabc-406c-8b13-91e87f126dec/download/bcghg_emissions_1990-2017.csv")
+
+bc_ghg <- read_csv("tmp/2018_bc_ghg_emissions.csv")
 
 # get the most recent year in numeric format 
 bc_ghg_yr <- bc_ghg %>%
@@ -35,7 +37,6 @@ bc_ghg_yr <- bc_ghg %>%
   colnames()
 
 max_ghg_yr <- as.numeric(bc_ghg_yr)
-
 
 ## Get British Columbia Population Estimates [Table: 17-10-0005-01 
 ## (formerly CANSIM  051-0001)] and Gross Domestic Product 

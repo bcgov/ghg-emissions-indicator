@@ -71,7 +71,7 @@ ghg_time + theme_print
 
 \vspace{1cm}
 
-* Overall, greenhouse gas emissions per person in British Columbia---also called per capita---have declined since the 2007 baseline year, however they have shown increases in recent reporting years.
+* Overall, greenhouse gas emissions per person in British Columbia---also called per capita---have declined since the 2007 baseline year, however they have shown increases in recent reporting years. These increases come largely from energy use - mostly from transportation, and oil and gas extraction to a lesser degree.
 
 \vspace{.8cm}
 
