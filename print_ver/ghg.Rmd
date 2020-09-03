@@ -71,7 +71,7 @@ ghg_time + theme_print
 
 \vspace{1cm}
 
-* Overall, greenhouse gas emissions per person in British Columbia---also called per capita---have declined since the 2007 baseline year, however they have shown increases in recent reporting years. These recent increases come largely from the energy sector---mostly from transportation and oil and gas extraction.
+* Overall, greenhouse gas emissions per person in British Columbia---also called per capita---have declined since the 2007 baseline year, however they have shown increases in recent reporting years.
 
 \vspace{.8cm}
 
@@ -108,7 +108,7 @@ norm_print +
 
 - Greenhouse gas emissions are attributed to five defined sectors: afforestation and deforestation, agriculture, energy, industrial processes and product use, and waste.
 
-- The energy sector produces the largest amount of greenhouse gas emissions in British Columbia. This sector includes numerous sources relating to energy production, storage and use. 
+- The energy sector produces the largest amount of greenhouse gas emissions in British Columbia. This sector includes numerous sources relating to energy production, storage and use. Recent increases in greenhouse gas emissions in B.C. come largely from this sector---mostly from transportation and oil and gas extraction.
 
 \vspace{.8cm}
 
