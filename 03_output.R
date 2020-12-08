@@ -269,7 +269,6 @@ save(ghg_time, ghg_pop, gdp_time, norm, norm_print,
      ghg_sector, ghg_abs_diff, file = "tmp/plots.RData")
 
 ## Printing plots for web in SVG formats (and PNG) 
-#FIXME add code to save added plots
 #total ghg over time
 svg_px("./out/ghg_plot.svg", width = 500, height = 400)
 plot(ghg_time)
