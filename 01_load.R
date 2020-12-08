@@ -38,6 +38,10 @@ bc_ghg_yr <- bc_ghg %>%
 
 max_ghg_yr <- as.numeric(bc_ghg_yr)
 
+#bring in economic sector data
+
+ghg_econ <- read_csv("tmp/2018_bc_ghg_emissions_by_economic_sector.csv")
+
 ## Get British Columbia Population Estimates [Table: 17-10-0005-01 
 ## (formerly CANSIM  051-0001)] and Gross Domestic Product 
 ## [Table: 36-10-0222-01 (formerly CANSIM  384-0038)] from Statistics Canada
@@ -68,5 +72,5 @@ write_csv(bc_pop_gdp, "tmp/bc_ghg_related_data.csv")
 
 # Create tmp folder if not already there and store objects in local repository
 if (!exists("tmp")) dir.create("tmp", showWarnings = FALSE)
-save(bc_ghg, bc_pop_gdp, max_ghg_yr, file = "tmp/raw_data.RData")
+save(bc_ghg, bc_pop_gdp, max_ghg_yr, ghg_econ, file = "tmp/raw_data.RData")
 

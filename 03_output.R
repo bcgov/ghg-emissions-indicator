@@ -16,8 +16,11 @@ library(ggplot2) #plotting
 library(envreportutils) #for theme_soe and theme_soe_facet
 library(scales) #for label = comma
 library(forcats) # fct_rev() for stacking order
-library(RColorBrewer) #for colour palette
+library(RColorBrewer)#for colour palette
+library(plyr)
 library(dplyr) #data munging
+library(reshape2) #data melting
+library(ggrepel)
 
 
 ## Read in plotting data from 02_clean.R if not already in environment
@@ -94,7 +97,7 @@ norm_base <- ggplot(data = normalized_measures,
   geom_line(size = 1.5) +
   scale_y_continuous(limits = c(.9,2.1), breaks = seq(.9, 2, .1),
                      expand = c(0,0)) +
-  x_scale +
+  x_scale+
   labs(title = "Relative GHG Emissions, GDP & Population Size") +
   xlab(NULL) + ylab("Values Indexed Relative to 1990") +
   scale_colour_manual(name="", values = normpal, guide = FALSE) +
@@ -119,28 +122,80 @@ norm_print <- norm_base +
            x = 2009, y = 1.41, size = 3)
 plot(norm_print)
 
+####################################### 2020 Changes begin here
 
+# Remove sectors with no data in any year
+econ_sector_sum_data <- econ_sector_sum %>%
+  group_by(sector) %>%
+  filter(sum(sum)!=0)%>%
+  ungroup()
 
-## Stacked area chart of GHG emissions over time by sector
-#colour palette for sector plot
-sector.order <- rev(levels(ghg_sector_sum$sector))
+# Set colour palette for sector plot
+sector.order <- rev(levels(droplevels(econ_sector_sum_data$sector))) #gets rid of unused factors
 sector.no <- length(sector.order) + 1
-sector.pal <- brewer.pal(sector.no, "Set1")
+nb.cols<-9
+sector.pal <- colorRampPalette(brewer.pal(sector.no, "Dark2"))(nb.cols)
+col_db <- melt(data.frame(sector.order,sector.pal)) #for use in plotting individual sectors
 names(sector.pal) <- sector.order
 
 
-ghg_stack <- ggplot(data = ghg_sector_sum, 
-                    aes(x = year, y = sum, fill = fct_rev(sector))) + 
-  geom_area(size = .2, alpha = .6) + 
-  geom_line(data = bc_ghg_sum, aes(x = year, y = ghg_estimate),
-            colour = "black", size = 1, show.legend = FALSE) +
-  xlab(NULL) +  ylab(bquote(Mt~CO[2]*e)) +
-  scale_y_continuous(limits = c(0,70), minor_breaks = waiver(),
-                     breaks = seq(0, 70, 10), expand = c(0,0), 
-                     labels = comma) +
+label_static <- econ_sector_sum_data %>%
+  filter(year==max(year))
+
+
+# Line plot of each sector sum over time 
+ghg_sector <- ggplot(econ_sector_sum_data, aes(x=year, y=sum, color=fct_rev(sector))) + 
+  geom_line(size = 1) +
+  scale_color_manual(values = sector.pal) +
+  geom_text_repel(aes(label=sector, size=1),
+                data = label_static, 
+                nudge_x=2, direction = "y", 
+                segment.size = 0.5,
+                xlim = c(max(label_static$year),
+                         max(label_static$year) + 5))+
+  xlab(NULL) +  ylab(bquote(Mt~CO[2]*e~" by Economic Sector")) +
+  scale_x_continuous(limits = c(1990, max_ghg_yr+1), 
+                     breaks = c(1990, seq(1993, max_ghg_yr + 1, 5)), 
+                     expand = c(0,0))+
+
+  coord_cartesian(clip = "off") +
+  theme_soe()+ 
+  theme(panel.grid.major = element_line(size = 0.5, colour = "grey85"),
+         panel.grid.minor = element_line(size = 0.5, colour = "grey85"),
+         panel.grid.minor.x = element_blank(),
+         panel.grid.major.x = element_blank(),
+         axis.text.y = element_text(size = 12),
+         axis.text.x = element_text(size = 12),
+         axis.title.y = element_text(size = 12,
+                                     margin = margin(t = 0, r = 10, b = 0, l = 0,
+                                                     unit = "pt")))+
+  theme(plot.margin = unit(c(0.5,3.5,0.5,0.5), "cm")) +
+  theme(legend.position = "none")
+
+plot(ghg_sector)
+
+
+# Absolute difference in CO2e emissions by economic sector
+abs_diff_econ <- plyr::ddply(econ_sector_sum_data, .(sector), 
+                             transform, abs.diff = (sum - sum[year==1990])) 
+
+abs_label_static <- abs_diff_econ %>%
+  filter(year==max(year)) %>%
+  select(-sum)
+
+ghg_abs_diff <- ggplot(data = abs_diff_econ, 
+                       aes(x = year, y = abs.diff, color = fct_rev(sector))) + 
+  geom_line(size=1) +
+  xlab(NULL) +  ylab(bquote("Annual Change in "~Mt~CO[2]*e~" from 1990 by Sector")) +
   x_scale +
-  scale_fill_manual(name = "Sector", values = sector.pal,
-                    limits = sector.order) +
+  scale_color_manual(values = sector.pal) +
+  geom_text_repel(aes(label=sector, size=1),
+                  data = abs_label_static, 
+                  nudge_x=2, direction = "y", 
+                  segment.size = 0.5,
+                  xlim = c(max(abs_label_static$year),
+                           max(abs_label_static$year) + 5))+
+  coord_cartesian(clip = "off") +
   theme_soe() +
   theme(panel.grid.major = element_line(size = 0.5, colour = "grey85"),
         panel.grid.minor = element_line(size = 0.5, colour = "grey85"),
@@ -150,80 +205,68 @@ ghg_stack <- ggplot(data = ghg_sector_sum,
         axis.text.x = element_text(size = 14),
         axis.title.y = element_text(size = 16,
                                     margin = margin(t = 0, r = 10, b = 0, l = 0,
-                                                    unit = "pt")),
-        legend.text = element_text(size = 14),
-        legend.title = element_text(size = 16), 
-        legend.background = element_rect(colour = "white"))
-plot(ghg_stack)
+                                                    unit = "pt")))+
+        theme(plot.margin = unit(c(0.5,3.5,0.5,0.5), "cm")) +
+        theme(legend.position = "none")
 
-
-## Facetted line plot of GHG emissions over time by Energy Source
-#creating a list for Energy subsector order 
-subsector.order <- c("Transport", "Stationary Combustion Sources", 
-                     "Fugitive Sources")
-
-#creating colour palette for Energy subsector graphs
-subsector.no <- length(subsector.order)
-subsector.pal <- brewer.pal(subsector.no, "Set1")
-names(subsector.pal) <- subsector.order
-
-#generate a background dataset
-ghg_energy_group_bg <- ghg_energy_group %>% 
-  ungroup() %>% 
-  select(-subsector_level1) %>% 
-  rename(general_source_line = general_source)
-
-# generate the plot order based on highest values in most recent year
-plot.order <- ghg_energy_group %>%
-  filter(year == max_ghg_yr) %>%
-  arrange(desc(sum)) %>%
-  pull(general_source)
-
-
-ghg_energy_group$general_source_f = factor(ghg_energy_group$general_source, 
-                                           levels = plot.order)
-
-#facet plot
-ghg_energy_trends <- ggplot(data = ghg_energy_group,
-                            aes(x = year, y = sum, colour = subsector_level1)) + 
-  geom_line(data = ghg_energy_group_bg, aes(group = general_source_line),
-            size = .8, colour = "grey", alpha = 0.5) +
-  geom_line(size = 1) +
-  facet_wrap( ~ general_source_f, ncol = 4, 
-              labeller = label_wrap_gen(width = 25, multi_line = TRUE)) + 
-  xlab(NULL) + ylab(bquote(Mt~CO[2]*e)) +
-  scale_y_continuous(limits = c(0,20), breaks = seq(0, 20, 4), 
-                     labels = comma) +
-  scale_x_continuous(limits = c(1990, max_ghg_yr + 1), breaks = seq(1993, max_ghg_yr, 5), 
-                     expand = c(0,0)) +
-  scale_colour_manual(name = "Energy Subsectors:", values = subsector.pal,
-                      limits = subsector.order) +
-  theme_soe_facet() +
-  theme(legend.position = ("bottom"),
-        legend.title = element_text(size = 16),
-        legend.text = element_text(size = 16),
-        axis.text.x = element_text(size = 11),
-        axis.text.y = element_text(size = 12),
-        strip.text.x = element_text(size = 14),
-        axis.title.y = element_text(size = 16, margin = margin(t = 0, r = 10, b = 0, l = 0,
-                                                               unit = "pt")),
-        plot.margin = unit(c(5,5,0,2),"mm"),
-        panel.grid.major.x = element_blank(),
-        legend.background = element_blank())
-plot(ghg_energy_trends)
-
-
-## Create tmp folder if not already there and store plot objects in local repository
-if (!exists("tmp")) dir.create("tmp", showWarnings = FALSE)
-save(ghg_time, ghg_pop, gdp_time, norm, norm_print,
-     ghg_stack, ghg_energy_trends, file = "tmp/plots.RData")
+plot(ghg_abs_diff)
 
 
 ## Create a folder in directory called out for image files
 if (!exists("out"))  dir.create('out', showWarnings = FALSE)
 
 
-## Printing plots for web in SVG formats (and PNG)
+for (i in 1:length(sector.order)){
+  
+  x <- sector.order[i]
+  plotcolor <- sector.pal[i]
+  p <- ghg_econ_sub %>% filter(sector == x)
+  s <- nlevels(as.factor(p$subsector_final))
+  
+  
+  g <- ggplot(p, aes(x = year, y = sum)) +
+    geom_area(fill = "gray85", alpha = 0.6) +
+    facet_wrap(~fct_reorder(subsector_final, MtCO2e, .desc=TRUE),
+               nrow = ifelse(s > 3, 2, 1), 
+               labeller = label_wrap_gen(width = 25, multi_line = TRUE)) +
+    xlab(NULL) + ylab(bquote(Mt~CO[2]*e)) +
+    scale_x_continuous(limits = c(1990, max_ghg_yr + 1), breaks = seq(1993, max_ghg_yr, 5), 
+                       expand = c(0,0)) +
+    theme_soe_facet() +
+    theme(legend.position = ("none"),
+          axis.text.x = element_text(size = 11),
+          axis.text.y = element_text(size = 12),
+          strip.text.x = element_text(size = 14),
+          axis.title.y = element_text(size = 16, margin = margin(t = 0, r = 10, b = 0, l = 0,
+                                                                 unit = "pt")),
+          plot.margin = unit(c(5,5,0,2),"mm"),
+          panel.grid.major.x = element_blank(),
+          legend.background = element_blank())
+  
+  g <- g + geom_area(data = p, aes(x = year, y = MtCO2e, fill = sector), size = 0.2, alpha = 0.8)+
+    scale_fill_manual(values = plotcolor)
+  
+  plot(g)
+  
+  svg_px(paste0("./out/",x,".svg"), width = 850, height = 430)
+  plot(g)
+  dev.off()
+  
+  png_retina(filename = paste0("./out/",x,".png"), width = 850, height = 430,
+             units = "px", type = "cairo-png", antialias = "default")
+  plot(g)
+  dev.off()
+  
+}
+
+
+## Create tmp folder if not already there and store plot objects in local repository
+if (!exists("tmp")) dir.create("tmp", showWarnings = FALSE)
+save(ghg_time, ghg_pop, gdp_time, norm, norm_print,
+     ghg_sector, ghg_abs_diff, file = "tmp/plots.RData")
+
+## Printing plots for web in SVG formats (and PNG) 
+#FIXME add code to save added plots
 #total ghg over time
 svg_px("./out/ghg_plot.svg", width = 500, height = 400)
 plot(ghg_time)
@@ -267,24 +310,24 @@ png_retina(filename = "./out/norm_plot.png", width = 500, height = 400,
 plot(norm)
 dev.off()
 
-
 #total ghg by sector over time stacked area chart
-svg_px("./out/sector_plot.svg", width = 850, height = 430)
-plot(ghg_stack)
+svg_px("./out/ghg_sector.svg", width = 850, height = 430)
+plot(ghg_sector)
 dev.off()
 
-png_retina(filename = "./out/sector_plot.png", width = 850, height = 430,
+png_retina(filename = "./out/ghg_sector.png", width = 850, height = 430,
            units = "px", type = "cairo-png", antialias = "default")
-plot(ghg_stack)
+plot(ghg_sector)
 dev.off()
 
-
-#total ghg over time by source for energy sector facet plot
-svg_px("./out/energy_plot.svg", width = 860, height = 650)
-plot(ghg_energy_trends)
+# absolute difference in co2e from 1990
+svg_px("./out/econ_sector_abs_diff.svg", width = 850, height = 430)
+plot(ghg_abs_diff)
 dev.off()
 
-png_retina(filename = "./out/energy_plot.png", width = 860, height = 650,
-           units = "px", type = "cairo-png",antialias = "default")
-plot(ghg_energy_trends)
+png_retina(filename = "./out/econ_sector_abs_diff.png", width = 850, height = 430,
+           units = "px", type = "cairo-png", antialias = "default")
+plot(ghg_abs_diff)
 dev.off()
+
+#END

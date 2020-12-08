@@ -91,25 +91,46 @@ bc_ghg_per_capita <- bc_measures %>%
   select(year, ghg_per_capita, ghg_per_unit_gdp)
 
 
-## Create separate ENERGY dataframe
-bc_ghg_energy <- bc_ghg_long %>% 
-  filter(sector == "Energy") %>% 
-  mutate(general_source = case_when(subsector_level2 == "Road Transportation" ~ "Road",
-                                    subsector_level2 == "Railways" ~ "Railway",
-                                    subsector_level3 == "Pipeline Transport" ~ "Pipeline Transport",
-                                    subsector_level2 == "Other Transportation" ~ "Off-Road",
-                                    TRUE ~ subsector_level2),
-         general_source = str_replace(general_source, "and", "&")) %>% 
-  select(sector, subsector_level1, general_source, year, ktCO2e)
+# Cleaning steps for economic sector data
+## Convert economic sector data from wide to long format, modifying original function
 
-## Summarize ghg emissions in Energy sector by subsector and general sources 
-## and convert to MtCO2e (from ktCO2e) for plotting
-ghg_energy_group <- bc_ghg_energy %>%
-  group_by(sector, subsector_level1, general_source, year) %>%
-  summarise(sum = round(sum(ktCO2e, na.rm = TRUE)/1000, digits = 1)) %>%
-  filter(subsector_level1 != "CO2 Transport and Storage") %>% 
+## Convert ghg data from wide to long format 
+ghg_econ_long <- ghg_econ %>% 
+  gather(key =  year, value = ktCO2e,
+         -sector, -subsector_level1,
+         -subsector_level2) %>%
+  mutate(ktCO2e = as.numeric(ktCO2e),
+         year = as.integer(as.character(year))) %>% 
+  mutate(across(contains("sector"), ~ {
+    x <- str_replace(to_titlecase(.x), "(\\b)and(\\b)", "\\1&\\2")
+    str_remove(x, regex("\\s\\(ippu\\)", ignore_case = TRUE))
+  }
+  ))
+
+# To shorten names for plotting
+ghg_econ_long <- ghg_econ_long %>%
+  mutate(sector = case_when(sector == "Light Manufacturing, Construction, & Forest Resources" ~ "Other Industry",
+                            sector == "Afforestation & Deforestation" ~ "Deforestation",
+                            TRUE ~ sector))
+
+# Summarise by economic sector, convert to MtCo2
+econ_sector_sum <- ghg_econ_long %>%
+  filter(!grepl("other emissions not included", sector, ignore.case = TRUE)) %>%
+  group_by(sector, year) %>%
+  summarise(sum = round(sum(ktCO2e, na.rm = TRUE)/1000, digits = 1)) %>% 
   ungroup() %>% 
-  mutate(general_source = fct_reorder(general_source, -sum))
+  mutate(sector = fct_reorder(sector, sum))
+
+# Summarise by subsector - use the smallest sector level as final (i.e. subsector_level2 if it exists, if not subsector_level1)
+ghg_econ_sub <- ghg_econ_long %>%
+  filter(!grepl("other emissions not included", sector, ignore.case = TRUE)) %>%
+  mutate(subsector_final = if_else(is.na(subsector_level2), subsector_level1, subsector_level2)) %>%
+  mutate(MtCO2e = ktCO2e/1000)%>%
+  arrange(subsector_final, year) %>% 
+  select(sector, year, subsector_final, MtCO2e) %>% 
+  mutate(subsector_final=if_else(is.na(subsector_final), sector, subsector_final)) 
+
+ghg_econ_sub <- ghg_econ_sub %>% left_join(econ_sector_sum, by= c('sector', 'year')) #add in sector sums for each year
 
 
 ## Data summaries 
@@ -162,6 +183,8 @@ ten_year
 # Create tmp folder if not already there and store clean data in local repository
 if (!exists("tmp")) dir.create("tmp", showWarnings = FALSE)
 save(bc_ghg_long, ghg_sector_sum, bc_ghg_sum, normalized_measures,
-     bc_ghg_per_capita, bc_ghg_energy,ghg_energy_group, max_ghg_yr,
-     ghg_est_Mtco2e, previous_year, baseline_year, file = "tmp/clean_data.RData")
+     bc_ghg_per_capita, max_ghg_yr,
+     ghg_est_Mtco2e, previous_year, baseline_year, 
+     ghg_econ_long, econ_sector_sum, ghg_econ_sub, 
+     file = "tmp/clean_data.RData")
 
