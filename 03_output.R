@@ -21,6 +21,7 @@ library(plyr)
 library(dplyr) #data munging
 library(reshape2) #data melting
 library(ggrepel)
+library(filesstrings) #for removing spaces in filename
 
 
 ## Read in plotting data from 02_clean.R if not already in environment
@@ -258,6 +259,8 @@ for (i in 1:length(sector.order)){
   dev.off()
   
 }
+
+remove_filename_spaces(dir = "out", pattern = " ", replacement = "") #remove spaces in filenames
 
 
 ## Create tmp folder if not already there and store plot objects in local repository
