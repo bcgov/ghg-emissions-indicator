@@ -1,5 +1,7 @@
 <a rel="Delivery" href="https://github.com/BCDevExchange/assets/blob/master/README.md"><img alt="In production, but maybe in Alpha or Beta. Intended to persist and be supported." style="border-width:0" src="https://assets.bcdevexchange.org/images/badges/delivery.svg" title="In production, but maybe in Alpha or Beta. Intended to persist and be supported." /></a>[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
+![img](https://img.shields.io/badge/Lifecycle-Stable-97ca00)
+
 # Trends in Greenhouse Gas Emissions in B.C.  
  
 A set of R scripts to populate an indicator on trends in greenhouse gas emissions in British Columbia. These scripts reproduce the results and graphs published on [Environmental Reporting BC](http://www.env.gov.bc.ca/soe/indicators/sustainability/ghg-emissions.html).
