@@ -47,7 +47,10 @@ x_scale <- scale_x_continuous(limits = c(1990, max_ghg_yr + 1),
 
 ## Line plot of total GHG emissions over time in British Columbia
 ghg_time <- ggplot(data = bc_ghg_sum, aes(x = year, y = ghg_estimate)) + 
-  geom_line(colour = "#e41a1c", size = 1.5) + 
+  geom_line(colour = "#e41a1c", size = 1.5) +
+  geom_hline(yintercept=(clean_bc_2025/1000), linetype = "dashed", 
+             size=1.5)+
+  geom_label(x=1998, y=53.3, label="CleanBC 2025 emission target")+
   labs(title = "Total GHG Emissions") +
   xlab(NULL) + 
   ylab(bquote(Mt~CO[2]*e)) +
@@ -178,10 +181,9 @@ plot(ghg_sector)
 
 ## Interactive sector plot for ggplotly html output
 
-Sector<-fct_rev(econ_sector_sum_data$sector)
 
 ghg_sector_html <- ggplot(econ_sector_sum_data) + 
-  geom_line(aes(x = year, y = sum, color=Sector),
+  geom_line(aes(x = year, y = sum, color=fct_rev(sector)),
             size = 1) +
   scale_color_manual(name = "Economic Sector", values = sector.pal,
                      limits = sector.order) +
@@ -201,6 +203,7 @@ ghg_sector_html <- ggplot(econ_sector_sum_data) +
         legend.title = element_text(size = 12), 
         legend.background = element_rect(colour = "white"))
 
+plot(ghg_sector_html)
 
 ### Absolute difference in CO2e emissions by economic sector
 abs_diff_econ <- plyr::ddply(econ_sector_sum_data, .(sector), 
@@ -240,15 +243,13 @@ plot(ghg_abs_diff)
 
 ## Interactive abs diff plot for ggplotly html output
 
-Sector<-fct_rev(abs_diff_econ$sector)
-
 ghg_abs_diff_html <- ggplot(abs_diff_econ) + 
-  geom_line(aes(x = year, y = abs.diff, color=Sector),
+  geom_line(aes(x = year, y = abs.diff, color=fct_rev(sector)),
             size = 1) +
   scale_color_manual(name = "Economic Sector", values = sector.pal,
                      limits = sector.order) +
   x_scale +
-  #xlab("Year") +  ylab(bquote("Annual "~Mt~CO[2]*e~" by Economic Sector")) +
+  #xlab("Year") +  ylab(bquote(Mt~CO[2]*e~" by Economic Sector")) +
   theme_soe() +
   theme(panel.grid.major = element_line(size = 0.5, colour = "grey85"),
         panel.grid.minor = element_line(size = 0.5, colour = "grey85"),
