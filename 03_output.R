@@ -22,6 +22,7 @@ library(dplyr) #data munging
 library(reshape2) #data melting
 library(ggrepel)
 library(filesstrings) #for removing spaces in filename
+library(plotly)
 
 
 ## Read in plotting data from 02_clean.R if not already in environment
@@ -123,7 +124,7 @@ norm_print <- norm_base +
            x = 2009, y = 1.41, size = 3)
 plot(norm_print)
 
-####################################### 2020 Changes begin here
+## Setting up data to provide information on economic sectors
 
 # Remove sectors with no data in any year
 econ_sector_sum_data <- econ_sector_sum %>%
@@ -175,8 +176,33 @@ ghg_sector <- ggplot(econ_sector_sum_data, aes(x=year, y=sum, color=fct_rev(sect
 
 plot(ghg_sector)
 
+## Interactive sector plot for ggplotly html output
 
-# Absolute difference in CO2e emissions by economic sector
+Sector<-fct_rev(econ_sector_sum_data$sector)
+
+ghg_sector_html <- ggplot(econ_sector_sum_data) + 
+  geom_line(aes(x = year, y = sum, color=Sector),
+            size = 1) +
+  scale_color_manual(name = "Economic Sector", values = sector.pal,
+                     limits = sector.order) +
+  x_scale +
+  #xlab("Year") +  ylab(bquote("Annual "~Mt~CO[2]*e~" by Economic Sector")) +
+  theme_soe() +
+  theme(panel.grid.major = element_line(size = 0.5, colour = "grey85"),
+        panel.grid.minor = element_line(size = 0.5, colour = "grey85"),
+        panel.grid.minor.x = element_blank(),
+        panel.grid.major.x = element_blank(),
+        axis.text.y = element_text(size = 12),
+        axis.text.x = element_text(size = 12),
+        axis.title.y = element_text(size = 12,
+                                    margin = margin(t = 0, r = 10, b = 0, l = 0,
+                                                    unit = "pt")),
+        legend.text = element_text(size = 10),
+        legend.title = element_text(size = 12), 
+        legend.background = element_rect(colour = "white"))
+
+
+### Absolute difference in CO2e emissions by economic sector
 abs_diff_econ <- plyr::ddply(econ_sector_sum_data, .(sector), 
                              transform, abs.diff = (sum - sum[year==1990])) 
 
@@ -211,6 +237,33 @@ ghg_abs_diff <- ggplot(data = abs_diff_econ,
         theme(legend.position = "none")
 
 plot(ghg_abs_diff)
+
+## Interactive abs diff plot for ggplotly html output
+
+Sector<-fct_rev(abs_diff_econ$sector)
+
+ghg_abs_diff_html <- ggplot(abs_diff_econ) + 
+  geom_line(aes(x = year, y = abs.diff, color=Sector),
+            size = 1) +
+  scale_color_manual(name = "Economic Sector", values = sector.pal,
+                     limits = sector.order) +
+  x_scale +
+  #xlab("Year") +  ylab(bquote("Annual "~Mt~CO[2]*e~" by Economic Sector")) +
+  theme_soe() +
+  theme(panel.grid.major = element_line(size = 0.5, colour = "grey85"),
+        panel.grid.minor = element_line(size = 0.5, colour = "grey85"),
+        panel.grid.minor.x = element_blank(),
+        panel.grid.major.x = element_blank(),
+        axis.text.y = element_text(size = 12),
+        axis.text.x = element_text(size = 12),
+        axis.title.y = element_text(size = 12,
+                                    margin = margin(t = 0, r = 10, b = 0, l = 0,
+                                                    unit = "pt")),
+        legend.text = element_text(size = 10),
+        legend.title = element_text(size = 12), 
+        legend.background = element_rect(colour = "white"))
+
+plot(ghg_abs_diff_html)
 
 
 ## Create a folder in directory called out for image files
@@ -249,6 +302,9 @@ for (i in 1:length(sector.order)){
   
   plot(g)
   
+  if (!exists("tmp")) dir.create("tmp", showWarnings = FALSE)
+  save(x, file = paste0("tmp/",x,".RData"))
+  
   svg_px(paste0("./out/",x,".svg"), width = 850, height = 430)
   plot(g)
   dev.off()
@@ -261,12 +317,13 @@ for (i in 1:length(sector.order)){
 }
 
 remove_filename_spaces(dir = "out", pattern = " ", replacement = "") #remove spaces in filenames
-
+remove_filename_spaces(dir = "tmp", pattern = " ", replacement = "") 
 
 ## Create tmp folder if not already there and store plot objects in local repository
 if (!exists("tmp")) dir.create("tmp", showWarnings = FALSE)
 save(ghg_time, ghg_pop, gdp_time, norm, norm_print,
-     ghg_sector, ghg_abs_diff, file = "tmp/plots.RData")
+     ghg_sector, ghg_sector_html, ghg_abs_diff,ghg_abs_diff_html,
+     file = "tmp/plots.RData")
 
 ## Printing plots for web in SVG formats (and PNG) 
 #total ghg over time
