@@ -180,11 +180,23 @@ three_year
 ten_year <- calc_inc(bc_ghg_sum_ktco2e$ghg_estimate, bc_ghg_sum_ktco2e$year, since = max_ghg_yr - 10)
 ten_year
 
+# Calculate CleanBC target level for 2025 compared to 2007 baseline
+
+baseline_2007 <- bc_ghg_sum_ktco2e$ghg_estimate[bc_ghg_sum_ktco2e$year==2007]
+
+clean_bc_2025 <- baseline_2007 * 0.84 #based on Clean BC target of 16% reduction from 2007 levels
+
+current_2018 <- bc_ghg_sum_ktco2e$ghg_estimate[bc_ghg_sum_ktco2e$year==2018]
+
+reduction_2018 <- round((current_2018/clean_bc_2025-1)*100, digits=1)
+
 # Create tmp folder if not already there and store clean data in local repository
 if (!exists("tmp")) dir.create("tmp", showWarnings = FALSE)
 save(bc_ghg_long, ghg_sector_sum, bc_ghg_sum, normalized_measures,
      bc_ghg_per_capita, max_ghg_yr,
      ghg_est_Mtco2e, previous_year, baseline_year, 
      ghg_econ_long, econ_sector_sum, ghg_econ_sub, 
+     baseline_2007, clean_bc_2025, current_2018, 
+     reduction_2018,
      file = "tmp/clean_data.RData")
 
