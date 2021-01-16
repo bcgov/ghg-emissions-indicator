@@ -188,7 +188,7 @@ ghg_sector_html <- ggplot(econ_sector_sum_data) +
   scale_color_manual(name = "Economic Sector", values = sector.pal,
                      limits = sector.order) +
   x_scale +
-  #xlab("Year") +  ylab(bquote("Annual "~Mt~CO[2]*e~" by Economic Sector")) +
+  labs(x="Year", y="Annual Emissions by Sector (Mt)")+
   theme_soe() +
   theme(panel.grid.major = element_line(size = 0.5, colour = "grey85"),
         panel.grid.minor = element_line(size = 0.5, colour = "grey85"),
@@ -249,7 +249,7 @@ ghg_abs_diff_html <- ggplot(abs_diff_econ) +
   scale_color_manual(name = "Economic Sector", values = sector.pal,
                      limits = sector.order) +
   x_scale +
-  #xlab("Year") +  ylab(bquote(Mt~CO[2]*e~" by Economic Sector")) +
+  labs(x="Year", y="Difference in Emissions Compared to 1990 (Mt)")+
   theme_soe() +
   theme(panel.grid.major = element_line(size = 0.5, colour = "grey85"),
         panel.grid.minor = element_line(size = 0.5, colour = "grey85"),
