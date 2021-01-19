@@ -65,7 +65,7 @@ theme_summary <- theme(axis.text.y = element_text(size = 8),
   
 * **Total greenhouse gas emissions in `r max_ghg_yr` in B.C. were `r ghg_est_Mtco2e` million tonnes of carbon dioxide equivalent.** This is a `r abs(previous_year)`% increase in emissions since `r max_ghg_yr - 1` and a `r abs(baseline_year)`% `r ifelse(baseline_year > 0, "increase", "decrease")` in emissions since 2007---the Government of British Columbia's baseline year for assessing reductions in greenhouse gas emissions. Greenhouse gas emission estimates reported here are from the [British Columbia Greenhouse Gas Emission Inventory (`r max_ghg_yr`)](https://www2.gov.bc.ca/gov/content/environment/climate-change/data/provincial-inventory)^1^ and do not include forest management offsets.
 
-* **Total greenhouse gas emissions in `r max_ghg_yr` in B.C. were `r abs(cleanbc_reduction)`% `r ifelse(cleanbc_reduction > 0, "higher", "lower")` than the CleanBC 2025 emission target.** CleanBC's near-term emission target requires greenhouse gas emissions in 2025 to be 16% less than 2007 levels. More information on emission targets is available in the [2020 Climate Change Accountability Report](https://www2.gov.bc.ca/assets/gov/environment/climate-change/action/cleanbc/2020_climate_change_accountability_report.pdf).
+* **Total greenhouse gas emissions in `r max_ghg_yr` in B.C. were `r abs(cleanbc_reduction)`% `r ifelse(cleanbc_reduction > 0, "higher", "lower")` than the CleanBC emission target for 2025.** CleanBC's near-term emission target requires greenhouse gas emissions in 2025 to be 16% less than 2007 levels. More information on emission targets is available in the [2020 Climate Change Accountability Report](https://www2.gov.bc.ca/assets/gov/environment/climate-change/action/cleanbc/2020_climate_change_accountability_report.pdf).
 
 * **Greenhouse gas emissions per person are rising in recent years after declining for nearly two decades.** Greenhouse gas emissions per person in B.C. consistently declined from 2004 to 2015 but have been increasing since 2015.  Greenhouse gas emissions per unit gross domestic product---a measure of the size of the B.C. economy---have consistently declined over the past two decades. 
  
@@ -79,7 +79,7 @@ Major transportation-related sources of greenhouse gas emissions include cars, t
 ## Greenhouse Gas Emissions in British Columbia 
 
 * In `r max_ghg_yr`, B.C. emitted  `r abs(baseline_year)`% `r ifelse(baseline_year > 0, "more", "less")` greenhouse gases than the 2007 baseline year. 
-*`r max_ghg_yr` emissions were `r abs(cleanbc_reduction)`% `r ifelse(cleanbc_reduction > 0, "more", "less")`than the 2025 CleanBC target. 
+* `r max_ghg_yr` emissions were `r abs(cleanbc_reduction)`% `r ifelse(cleanbc_reduction > 0, "more", "less")`than the 2025 CleanBC target. 
 
 \vspace{.8cm}
 
@@ -158,19 +158,87 @@ ggplotly(ghg_sector_html, dynamicTicks = TRUE) %>%
 
 ## How have greenhouse gas emissions changed within economic sectors? 
 
-- The amount of carbon dioxide equivalent emitted annually by each economic sector was compared to 1990. Sectors that have increased emissions from 1990 include transportation and fossil fuels. The largest increase in emissions over the past decade was in the transportation sector. The fossil fuel industry has also seen consistent increases in emissions, with levels peaking from 2011 to 2014. Buildings, agriculture, other industry, electricity and waste sectors emitted similar levels of carbon dioxide equivalent in 2018 as 1990. Deforestation and heavy industry emissions have declined from 1990. Deforestation emissions have declined consistently since 1990. Heavy industry has decreased annual emissions consistently from 2004 to 2013, with slight increases in recent years. 
+- The amount of carbon dioxide equivalent emitted annually by each economic sector was compared to 1990 levels. Sectors that have increased emissions since 1990 include transportation and fossil fuels. The largest increase in emissions over the past decade was in the transportation sector. The fossil fuel industry has also seen consistent increases in emissions, with levels peaking from 2011 to 2014. Buildings, agriculture, other industry, electricity and waste sectors emitted similar levels of carbon dioxide equivalent in 2018 as 1990. Deforestation and heavy industry emissions have declined from 1990. Deforestation emissions have declined consistently since 1990. Heavy industry has decreased annual emissions consistently from 2004 to 2013, with slight increases in recent years. 
 
-- Each economic sector was broken down into more specific categories. This information is provided in Appendix A. 
+- Each economic sector was broken down into more specific categories where available. This information is provided below.  
 
 
 \vspace{.8cm}
           
-```{r ghg_abs_diff}
+```{r include=knitr::is_latex_output()}
 include_graphics(path="C://tmp//ghg-emissions-indicator//out//econ_sector_abs_diff.png")
+```
+
+```{r include=knitr::is_html_output()}
+
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = ">",
+  out.width = "100%"
+) 
+
+
+
+ggplotly(ghg_abs_diff_html, dynamicTicks = TRUE) %>%
+  rangeslider() %>%
+  layout(hovermode = "x")
+
+```
 ```
 
 
 \newpage
+
+## Results by Economic Sector {.tabset}
+
+### Transportation
+```{r include=knitr::is_html_output()}
+
+include_graphics(path="C://tmp//ghg-emissions-indicator//out//Transportation.png")
+
+```      
+  
+### Fossil Fuel Industry
+```{r include=knitr::is_html_output()}
+
+include_graphics(path="C://tmp//ghg-emissions-indicator//out//FossilFuelIndustry.png") 
+```      
+
+### Buildings
+```{r include=knitr::is_html_output()}
+
+include_graphics(path="C://tmp//ghg-emissions-indicator//out//Buildings.png")
+```      
+ 
+### Heavy Industry
+```{r include=knitr::is_html_output()}
+
+include_graphics(path="C://tmp//ghg-emissions-indicator//out//HeavyIndustry.png")
+```      
+
+### Waste
+```{r include=knitr::is_html_output()}
+
+include_graphics(path="C://tmp//ghg-emissions-indicator//out//Waste.png")
+```      
+
+### Agriculture
+```{r include=knitr::is_html_output()}
+
+include_graphics(path="C://tmp//ghg-emissions-indicator//out//Agriculture.png")
+``` 
+
+### Other Industry
+```{r include=knitr::is_html_output()}
+
+include_graphics(path="C://tmp//ghg-emissions-indicator//out//OtherIndustry.png")
+```      
+   
+### Deforestation
+```{r include=knitr::is_html_output()}
+
+include_graphics(path="C://tmp//ghg-emissions-indicator//out//Deforestation.png")
+``` 
 
 
 ## Methods
@@ -209,70 +277,10 @@ Email correspondence to: envreportbc@gov.bc.ca
 *Suggested Citation*:  
 Environmental Reporting BC. `r format(Sys.Date(), "%Y")`. Trends in Greenhouse Gas Emissions in B.C. (1990-`r max_ghg_yr`). State of Environment Reporting, Ministry of Environment and Climate Change Strategy, British Columbia, Canada.
 
-\newpage
+```{r include=knitr::is_latex_output()}
 
-## Appendix A: Breakdown of Economic Sectors
+knit_child('pdf_appendix.rmd')
 
-- Economic sectors were broken down into subsectors, where subsectors were available. Further information on the emissions categorized in each subsector are provided in the [British Columbia Greenhouse Gas Provincial Inventory Methodology](https://www2.gov.bc.ca/assets/gov/environment/climate-change/data/provincial-inventory/2018/bc_provincial_ghg_inventory_1990-2018_-_methodology_book.pdf)^2^.
+```
 
-
-### Transportation Sector
-\vspace{.8cm}
-```{r transportation}
-
-include_graphics(path="C://tmp//ghg-emissions-indicator//out//Transportation.png")
-
-```      
-  
-### Fossil Fuel Industry Sector
-\vspace{.8cm}
-```{r fossilfuelindustry}
-
-include_graphics(path="C://tmp//ghg-emissions-indicator//out//FossilFuelIndustry.png") 
-```      
-
-\newpage
-### Buildings Sector
-\vspace{.8cm}
-```{r Buildings}
-
-include_graphics(path="C://tmp//ghg-emissions-indicator//out//Buildings.png")
-```      
- 
-### Heavy Industry Sector
-\vspace{.8cm}
-```{r HeavyIndustry}
-
-include_graphics(path="C://tmp//ghg-emissions-indicator//out//HeavyIndustry.png")
-```      
-
-\newpage
-### Waste Sector
-\vspace{.8cm}
-```{r Waste}
-
-include_graphics(path="C://tmp//ghg-emissions-indicator//out//Waste.png")
-```      
-
-### Agriculture Sector
-\vspace{.8cm}
-```{r Agriculture}
-
-include_graphics(path="C://tmp//ghg-emissions-indicator//out//Agriculture.png")
-``` 
-
-\newpage
-### Other Industry Sector
-\vspace{.8cm}
-```{r OtherIndustry}
-
-include_graphics(path="C://tmp//ghg-emissions-indicator//out//OtherIndustry.png")
-```      
-   
-### Deforestation
-\vspace{.8cm}
-```{r Deforestation}
-
-include_graphics(path="C://tmp//ghg-emissions-indicator//out//Deforestation.png")
-``` 
 
