@@ -1,8 +1,7 @@
 ---
 topic: "sustainability"
 title: "Trends in Greenhouse Gas Emissions in B.C. (1990-2018): Appendix"
-output:
-  pdf_document: envreportutils.internal::print_ver
+output: "pdf_document"
 ---
 
 <!--
@@ -19,8 +18,6 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and limitations under the License.
 -->
 
-```
-
 ## Appendix A: Breakdown of Economic Sectors
 
 - Economic sectors were broken down into subsectors, where subsectors were available. Further information on the emissions categorized in each subsector are provided in the [British Columbia Greenhouse Gas Provincial Inventory Methodology](https://www2.gov.bc.ca/assets/gov/environment/climate-change/data/provincial-inventory/2018/bc_provincial_ghg_inventory_1990-2018_-_methodology_book.pdf)^2^.
@@ -29,7 +26,7 @@ See the License for the specific language governing permissions and limitations 
 \vspace{.8cm}
 ```{r include=knitr::is_latex_output()}
 
-include_graphics(path="C://tmp//ghg-emissions-indicator//out//Transportation.png")
+include_graphics(path = here("out", "Transportation.png"))
 
 ```      
 
@@ -38,14 +35,14 @@ include_graphics(path="C://tmp//ghg-emissions-indicator//out//Transportation.png
 \vspace{.8cm}
 ```{r include=knitr::is_latex_output()}
 
-include_graphics(path="C://tmp//ghg-emissions-indicator//out//FossilFuelIndustry.png") 
+include_graphics(path = here("out", "FossilFuelIndustry.png"))
 ```      
 
 ### Buildings Sector
 \vspace{.8cm}
 ```{r include=knitr::is_latex_output()}
 
-include_graphics(path="C://tmp//ghg-emissions-indicator//out//Buildings.png")
+include_graphics(path = here("out", "Buildings.png"))
 ```      
 
 \newpage 
@@ -53,14 +50,14 @@ include_graphics(path="C://tmp//ghg-emissions-indicator//out//Buildings.png")
 \vspace{.8cm}
 ```{r include=knitr::is_latex_output()}
 
-include_graphics(path="C://tmp//ghg-emissions-indicator//out//HeavyIndustry.png")
+include_graphics(path = here("out", "HeavyIndustry.png"))
 ```      
 
 ### Waste Sector
 \vspace{.8cm}
 ```{r include=knitr::is_latex_output()}
 
-include_graphics(path="C://tmp//ghg-emissions-indicator//out//Waste.png")
+include_graphics(path = here("out", "Waste.png"))
 ```      
 
 \newpage
@@ -68,7 +65,7 @@ include_graphics(path="C://tmp//ghg-emissions-indicator//out//Waste.png")
 \vspace{.8cm}
 ```{r include=knitr::is_latex_output()}
 
-include_graphics(path="C://tmp//ghg-emissions-indicator//out//Agriculture.png")
+include_graphics(path = here("out", "Agriculture.png"))
 ``` 
 
 
@@ -76,7 +73,7 @@ include_graphics(path="C://tmp//ghg-emissions-indicator//out//Agriculture.png")
 \vspace{.8cm}
 ```{r include=knitr::is_latex_output()}
 
-include_graphics(path="C://tmp//ghg-emissions-indicator//out//OtherIndustry.png")
+include_graphics(path = here("out", "OtherIndustry.png"))
 ```      
 
 \newpage   
@@ -84,7 +81,5 @@ include_graphics(path="C://tmp//ghg-emissions-indicator//out//OtherIndustry.png"
 \vspace{.8cm}
 ```{r include=knitr::is_latex_output()}
 
-include_graphics(path="C://tmp//ghg-emissions-indicator//out//Deforestation.png")
+include_graphics(path = here("out", "Deforestation.png"))
 ``` 
-
-

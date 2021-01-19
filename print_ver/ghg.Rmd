@@ -2,8 +2,8 @@
 topic: "sustainability"
 title: "Trends in Greenhouse Gas Emissions in B.C. (1990-2018)"
 output: 
-  html_document: default
   pdf_document: envreportutils.internal::print_ver
+  html_document: default
 ---
 
 <!--
@@ -58,6 +58,8 @@ theme_summary <- theme(axis.text.y = element_text(size = 8),
                        plot.title = element_text(size = 10, hjust = 0.5),
                        plot.margin = unit(c(0.5,3.5,0.5,0.5), "cm"))
 
+is_html <- knitr::is_html_output()
+is_pdf <- knitr::is_latex_output()
 ```
 
 
@@ -133,12 +135,12 @@ norm_print +
 
 \vspace{.8cm}
 
-```{r include=knitr::is_latex_output()}
+```{r include=is_pdf, eval=is_pdf}
 
-include_graphics(path="C://tmp//ghg-emissions-indicator//out//ghg_sector.png")
+include_graphics(path = here("out", "ghg_sector.png"))
 ```      
 
-```{r include=knitr::is_html_output()}
+```{r include=is_html, eval=is_html}
 
 knitr::opts_chunk$set(
   collapse = TRUE,
@@ -164,11 +166,11 @@ ggplotly(ghg_sector_html, tooltip="text", dynamicTicks = TRUE) %>%
 
 \vspace{.8cm}
           
-```{r include=knitr::is_latex_output()}
-include_graphics(path="C://tmp//ghg-emissions-indicator//out//econ_sector_abs_diff.png")
+```{r include=is_pdf, eval=is_pdf}
+include_graphics(path = here("out", "econ_sector_abs_diff.png"))
 ```
 
-```{r include=knitr::is_html_output()}
+```{r include=is_html, eval=is_html}
 
 knitr::opts_chunk$set(
   collapse = TRUE,
@@ -182,7 +184,6 @@ ggplotly(ghg_abs_diff_html, tooltip="text", dynamicTicks = TRUE) %>%
   rangeslider()
 
 ```
-```
 
 
 \newpage
@@ -190,52 +191,52 @@ ggplotly(ghg_abs_diff_html, tooltip="text", dynamicTicks = TRUE) %>%
 ## Results by Economic Sector {.tabset}
 
 ### Transportation
-```{r include=knitr::is_html_output()}
+```{r include=is_html, eval=is_html}
 
-include_graphics(path="C://tmp//ghg-emissions-indicator//out//Transportation.png")
+include_graphics(path = here("out", "Transportation.png"))
 
 ```      
   
 ### Fossil Fuel Industry
-```{r include=knitr::is_html_output()}
+```{r include=is_html, eval=is_html}
 
-include_graphics(path="C://tmp//ghg-emissions-indicator//out//FossilFuelIndustry.png") 
+include_graphics(path = here("out", "FossilFuelIndustry.png") )
 ```      
 
 ### Buildings
-```{r include=knitr::is_html_output()}
+```{r include=is_html, eval=is_html}
 
-include_graphics(path="C://tmp//ghg-emissions-indicator//out//Buildings.png")
+include_graphics(path = here("out", "Buildings.png"))
 ```      
  
 ### Heavy Industry
-```{r include=knitr::is_html_output()}
+```{r include=is_html, eval=is_html}
 
-include_graphics(path="C://tmp//ghg-emissions-indicator//out//HeavyIndustry.png")
+include_graphics(path = here("out", "HeavyIndustry.png"))
 ```      
 
 ### Waste
-```{r include=knitr::is_html_output()}
+```{r include=is_html, eval=is_html}
 
-include_graphics(path="C://tmp//ghg-emissions-indicator//out//Waste.png")
+include_graphics(path = here("out", "Waste.png"))
 ```      
 
 ### Agriculture
-```{r include=knitr::is_html_output()}
+```{r include=is_html, eval=is_html}
 
-include_graphics(path="C://tmp//ghg-emissions-indicator//out//Agriculture.png")
+include_graphics(path = here("out", "Agriculture.png"))
 ``` 
 
 ### Other Industry
-```{r include=knitr::is_html_output()}
+```{r include=is_html, eval=is_html}
 
-include_graphics(path="C://tmp//ghg-emissions-indicator//out//OtherIndustry.png")
+include_graphics(path = here("out", "OtherIndustry.png"))
 ```      
    
 ### Deforestation
-```{r include=knitr::is_html_output()}
+```{r include=is_html, eval=is_html}
 
-include_graphics(path="C://tmp//ghg-emissions-indicator//out//Deforestation.png")
+include_graphics(path = here("out", "Deforestation.png"))
 ``` 
 
 
@@ -275,10 +276,8 @@ Email correspondence to: envreportbc@gov.bc.ca
 *Suggested Citation*:  
 Environmental Reporting BC. `r format(Sys.Date(), "%Y")`. Trends in Greenhouse Gas Emissions in B.C. (1990-`r max_ghg_yr`). State of Environment Reporting, Ministry of Environment and Climate Change Strategy, British Columbia, Canada.
 
-```{r include=knitr::is_latex_output()}
-
+```{r include=is_pdf, eval=is_pdf}
 knit_child('pdf_appendix.rmd')
-
 ```
 
 
