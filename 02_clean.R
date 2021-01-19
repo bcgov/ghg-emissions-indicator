@@ -199,6 +199,6 @@ save(bc_ghg_long, ghg_sector_sum, bc_ghg_sum, normalized_measures,
      ghg_est_Mtco2e, previous_year, baseline_year, 
      ghg_econ_long, econ_sector_sum, ghg_econ_sub, 
      baseline_2007, clean_bc_2025, current_ghg, 
-     cleanbc_reduction,
+     cleanbc_reduction, reduction_mt,
      file = "tmp/clean_data.RData")
 
