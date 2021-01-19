@@ -48,7 +48,7 @@ x_scale <- scale_x_continuous(limits = c(1990, max_ghg_yr + 1),
 ## Line plot of total GHG emissions over time in British Columbia
 ghg_time <- ggplot(data = bc_ghg_sum, aes(x = year, y = ghg_estimate)) + 
   geom_line(colour = "#e41a1c", size = 1.5) +
-  geom_hline(yintercept=(clean_bc_2025/1000), linetype = "dashed", 
+  geom_hline(yintercept=(clean_bc_2025), linetype = "dashed", 
              size=1.5)+
   geom_label(x=1998, y=53.3, label="CleanBC 2025 emission target")+
   labs(title = "Total GHG Emissions") +
@@ -194,13 +194,13 @@ ghg_sector_html <- ggplot(econ_sector_sum_data) +
         panel.grid.minor = element_line(size = 0.5, colour = "grey85"),
         panel.grid.minor.x = element_blank(),
         panel.grid.major.x = element_blank(),
-        axis.text.y = element_text(size = 12),
-        axis.text.x = element_text(size = 12),
-        axis.title.y = element_text(size = 12,
+        axis.text.y = element_text(size = 8),
+        axis.text.x = element_text(size = 10),
+        axis.title.y = element_text(size = 10,
                                     margin = margin(t = 0, r = 10, b = 0, l = 0,
                                                     unit = "pt")),
-        legend.text = element_text(size = 10),
-        legend.title = element_text(size = 12), 
+        legend.text = element_text(size = 8),
+        legend.title = element_text(size = 10), 
         legend.background = element_rect(colour = "white"))
 
 plot(ghg_sector_html)
@@ -255,13 +255,13 @@ ghg_abs_diff_html <- ggplot(abs_diff_econ) +
         panel.grid.minor = element_line(size = 0.5, colour = "grey85"),
         panel.grid.minor.x = element_blank(),
         panel.grid.major.x = element_blank(),
-        axis.text.y = element_text(size = 12),
-        axis.text.x = element_text(size = 12),
-        axis.title.y = element_text(size = 12,
+        axis.text.y = element_text(size = 8),
+        axis.text.x = element_text(size = 10),
+        axis.title.y = element_text(size = 10,
                                     margin = margin(t = 0, r = 10, b = 0, l = 0,
                                                     unit = "pt")),
-        legend.text = element_text(size = 10),
-        legend.title = element_text(size = 12), 
+        legend.text = element_text(size = 8),
+        legend.title = element_text(size = 10), 
         legend.background = element_rect(colour = "white"))
 
 plot(ghg_abs_diff_html)
