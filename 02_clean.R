@@ -184,11 +184,13 @@ ten_year
 
 baseline_2007 <- bc_ghg_sum_ktco2e$ghg_estimate[bc_ghg_sum_ktco2e$year==2007]
 
-clean_bc_2025 <- baseline_2007 * 0.84 #based on Clean BC target of 16% reduction from 2007 levels
+clean_bc_2025 <- ((baseline_2007 * 0.84)/1000) #based on Clean BC target of 16% reduction from 2007 levels
 
 current_ghg <- bc_ghg_sum_ktco2e$ghg_estimate[bc_ghg_sum_ktco2e$year==max_ghg_yr]
 
-cleanbc_reduction <- round((current_ghg/clean_bc_2025-1)*100, digits=1)
+cleanbc_reduction <- round((1-(clean_bc_2025/ghg_est_Mtco2e))*100, digits=1)
+
+reduction_mt <- ghg_est_Mtco2e - clean_bc_2025
 
 # Create tmp folder if not already there and store clean data in local repository
 if (!exists("tmp")) dir.create("tmp", showWarnings = FALSE)
