@@ -142,12 +142,6 @@ include_graphics(path = here("out", "ghg_sector.png"))
 
 ```{r include=is_html, eval=is_html}
 
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = ">",
-  out.width = "100%"
-) 
-
 ggplotly(ghg_sector_html, tooltip="text", dynamicTicks = TRUE) %>%
   rangeslider()
 
@@ -159,7 +153,7 @@ ggplotly(ghg_sector_html, tooltip="text", dynamicTicks = TRUE) %>%
 
 ## How have greenhouse gas emissions changed within economic sectors? 
 
-- The amount of carbon dioxide equivalent emitted annually by each economic sector was compared to 1990 levels. Sectors that have increased emissions since 1990 include transportation and fossil fuels. The largest increase in emissions over the past decade was in the transportation sector. The fossil fuel industry has also seen consistent increases in emissions, with levels peaking from 2011 to 2014. Buildings, agriculture, other industry, electricity and waste sectors emitted similar levels of carbon dioxide equivalent in 2018 as 1990. Deforestation and heavy industry emissions have declined from 1990. Deforestation emissions have declined consistently since 1990. Heavy industry has decreased annual emissions consistently from 2004 to 2013, with slight increases in recent years. 
+- The amount of carbon dioxide equivalent emitted annually by each economic sector was compared to 1990 levels. Sectors that have increased emissions since 1990 include transportation and fossil fuels. The largest increase in annual emissions in any sector over the past decade was the transportation sector. The fossil fuel industry has also seen consistent increases in annual emissions, with levels peaking from 2011 to 2014. Buildings, agriculture, other industry, electricity and waste sectors emitted similar levels of carbon dioxide equivalent in 2018 as 1990. Deforestation and heavy industry annual emissions have declined from 1990. Deforestation emissions have declined consistently since 1990. Heavy industry has decreased annual emissions consistently from 2004 to 2013, with slight increases in recent years. 
 
 - Each economic sector was broken down into more specific categories where available. This information is provided below.  
 
@@ -172,14 +166,6 @@ include_graphics(path = here("out", "econ_sector_abs_diff.png"))
 
 ```{r include=is_html, eval=is_html}
 
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = ">",
-  out.width = "100%"
-) 
-
-
-
 ggplotly(ghg_abs_diff_html, tooltip="text", dynamicTicks = TRUE) %>%
   rangeslider()
 
@@ -191,6 +177,8 @@ ggplotly(ghg_abs_diff_html, tooltip="text", dynamicTicks = TRUE) %>%
 
 ```{r include=is_html, eval=is_html, results='asis'}
 cat("## Results by Economic Sector {.tabset}\n")
+
+cat("- Economic sectors were broken down into subsectors, where subsectors were available. Further information on the emissions categorized in each subsector are provided in the [British Columbia Greenhouse Gas Provincial Inventory Methodology](https://www2.gov.bc.ca/assets/gov/environment/climate-change/data/provincial-inventory/2018/bc_provincial_ghg_inventory_1990-2018_-_methodology_book.pdf)^2^.\n")
 
 cat("\n### Transportation\n\n")
 
@@ -254,13 +242,15 @@ each file, as indicated below.
 
 ----
 
-Published and Available On-Line at Environmental Reporting BC (September 2020):   
+Published and Available On-Line at Environmental Reporting BC:   
 <http://www.env.gov.bc.ca/soe/indicators/sustainability/ghg-emissions.html>
 
 Email correspondence to: envreportbc@gov.bc.ca
 
 *Suggested Citation*:  
 Environmental Reporting BC. `r format(Sys.Date(), "%Y")`. Trends in Greenhouse Gas Emissions in B.C. (1990-`r max_ghg_yr`). State of Environment Reporting, Ministry of Environment and Climate Change Strategy, British Columbia, Canada.
+
+\newpage
 
 ```{r child=if (is_pdf) here("print_ver", "pdf_appendix.Rmd")}
 ```
