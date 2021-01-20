@@ -2,8 +2,8 @@
 topic: "sustainability"
 title: "Trends in Greenhouse Gas Emissions in B.C. (1990-2018)"
 output: 
-  pdf_document: envreportutils.internal::print_ver
   html_document: default
+  pdf_document: envreportutils.internal::print_ver
 ---
 
 <!--
@@ -188,53 +188,39 @@ ggplotly(ghg_abs_diff_html, tooltip="text", dynamicTicks = TRUE) %>%
 
 \newpage
 
-## Results by Economic Sector {.tabset}
 
-### Transportation
-```{r include=is_html, eval=is_html}
+```{r include=is_html, eval=is_html, results='asis'}
+cat("## Results by Economic Sector {.tabset}\n")
+
+cat("\n### Transportation\n\n")
 
 include_graphics(path = here("out", "Transportation.png"))
 
-```      
-  
-### Fossil Fuel Industry
-```{r include=is_html, eval=is_html}
+cat("\n\n### Fossil Fuel Industry\n\n")
 
 include_graphics(path = here("out", "FossilFuelIndustry.png") )
-```      
 
-### Buildings
-```{r include=is_html, eval=is_html}
+cat("\n\n### Buildings\n\n")
 
 include_graphics(path = here("out", "Buildings.png"))
-```      
- 
-### Heavy Industry
-```{r include=is_html, eval=is_html}
+
+cat("\n\n### Heavy Industry\n\n")
 
 include_graphics(path = here("out", "HeavyIndustry.png"))
-```      
 
-### Waste
-```{r include=is_html, eval=is_html}
+cat("\n\n### Waste\n\n")
 
 include_graphics(path = here("out", "Waste.png"))
-```      
 
-### Agriculture
-```{r include=is_html, eval=is_html}
+cat("\n\n### Agriculture\n\n")
 
 include_graphics(path = here("out", "Agriculture.png"))
-``` 
 
-### Other Industry
-```{r include=is_html, eval=is_html}
+cat("\n\n### Other Industry\n\n")
 
 include_graphics(path = here("out", "OtherIndustry.png"))
-```      
-   
-### Deforestation
-```{r include=is_html, eval=is_html}
+
+cat("\n\n### Deforestation\n\n")
 
 include_graphics(path = here("out", "Deforestation.png"))
 ``` 
@@ -276,8 +262,7 @@ Email correspondence to: envreportbc@gov.bc.ca
 *Suggested Citation*:  
 Environmental Reporting BC. `r format(Sys.Date(), "%Y")`. Trends in Greenhouse Gas Emissions in B.C. (1990-`r max_ghg_yr`). State of Environment Reporting, Ministry of Environment and Climate Change Strategy, British Columbia, Canada.
 
-```{r include=is_pdf, eval=is_pdf}
-knit_child('pdf_appendix.rmd')
+```{r child=if (is_pdf) here("print_ver", "pdf_appendix.Rmd")}
 ```
 
 
