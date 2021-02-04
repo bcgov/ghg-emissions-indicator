@@ -48,15 +48,16 @@ x_scale <- scale_x_continuous(limits = c(1990, max_ghg_yr + 1),
 ## Line plot of total GHG emissions over time in British Columbia
 ghg_time <- ggplot(data = bc_ghg_sum, aes(x = year, y = ghg_estimate)) + 
   geom_line(colour = "#e41a1c", size = 1.5) +
-  geom_hline(yintercept=(clean_bc_2025), linetype = "dashed", 
-             size=1.5)+
-  geom_label(x=1998, y=53.3, label="CleanBC 2025 emission target")+
+  geom_point(x=2025, y=clean_bc_2025, color="black", shape=19, size=2)+
+  annotate("text", x=2020, y=clean_bc_2025, label="B.C. 2025 emission target")+
   labs(title = "Total GHG Emissions") +
   xlab(NULL) + 
   ylab(bquote(Mt~CO[2]*e)) +
   scale_y_continuous(limits = c(50, 72), breaks = seq(50, 72, 2),
                      expand = c(0,0), labels = comma) +
-  x_scale +
+  scale_x_continuous(limits = c(1990, 2026), 
+                     breaks = c(1990, seq(1995, 2025, 5)), 
+                     expand = c(0,0))+
   theme_soe() +
   theme_lineplots
 plot(ghg_time)

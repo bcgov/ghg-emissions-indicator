@@ -2,8 +2,9 @@
 topic: "sustainability"
 title: "Trends in Greenhouse Gas Emissions in B.C. (1990-2018)"
 output: 
-  html_document: default
   pdf_document: envreportutils.internal::print_ver
+  html_document:
+    self_contained: yes
 ---
 
 <!--
@@ -67,7 +68,9 @@ is_pdf <- knitr::is_latex_output()
   
 * **Total greenhouse gas emissions in `r max_ghg_yr` in B.C. were `r ghg_est_Mtco2e` million tonnes of carbon dioxide equivalent.** This is a `r abs(previous_year)`% increase in emissions since `r max_ghg_yr - 1` and a `r abs(baseline_year)`% `r ifelse(baseline_year > 0, "increase", "decrease")` in emissions since 2007---the Government of British Columbia's baseline year for assessing reductions in greenhouse gas emissions. Greenhouse gas emission estimates reported here are from the [British Columbia Greenhouse Gas Emission Inventory (`r max_ghg_yr`)](https://www2.gov.bc.ca/gov/content/environment/climate-change/data/provincial-inventory)^1^ and do not include forest management offsets.
 
-* **Greenhouse gas emissions in B.C. need to decrease by `r abs(cleanbc_reduction)`% from  `r max_ghg_yr` levels to meet the CleanBC emission target for 2025.** More information on emission targets is available in the [2020 Climate Change Accountability Report](https://www2.gov.bc.ca/assets/gov/environment/climate-change/action/cleanbc/2020_climate_change_accountability_report.pdf).
+* **B.C. has set targets for reducing greenhouse gas emissions over the next 30 years.** The targets are 40% less by 2030, 60% by 2040 and 80% by 2050, compared to 2007 levels. To keep B.C. on track, an interim target of reducing greenhouse gas emissions 16% from 2007 levels by 2025 was also set. More information on emission targets is available in the [2020 Climate Change Accountability Report](https://www2.gov.bc.ca/assets/gov/environment/climate-change/action/cleanbc/2020_climate_change_accountability_report.pdf). 
+
+* **Greenhouse gas emissions in B.C. need to decrease by `r abs(cleanbc_reduction)`% from  `r max_ghg_yr` levels to meet the interim emission target for 2025.** 
 
 * **Greenhouse gas emissions per person are rising in recent years after declining for nearly two decades.** Greenhouse gas emissions per person in B.C. consistently declined from 2004 to 2015 but have been increasing since 2015.  Greenhouse gas emissions per unit gross domestic product---a measure of the size of the B.C. economy---have consistently declined over the past two decades. 
  
@@ -81,7 +84,7 @@ Major transportation-related sources of greenhouse gas emissions include cars, t
 ## Greenhouse Gas Emissions in British Columbia 
 
 * In `r max_ghg_yr`, B.C. emitted  `r abs(baseline_year)`% `r ifelse(baseline_year > 0, "more", "less")` greenhouse gases than the 2007 baseline year. 
-* `r max_ghg_yr` emissions were `r round(reduction_mt, digits=1)` million tonnes of carbon dioxide equivalent `r ifelse(cleanbc_reduction > 0, "more", "less")` than the 2025 CleanBC target. 
+* `r max_ghg_yr` emissions were `r round(reduction_mt, digits=1)` million tonnes of carbon dioxide equivalent `r ifelse(cleanbc_reduction > 0, "more", "less")` than B.C.'s interim 2025 target. 
 
 \vspace{.8cm}
 
@@ -135,7 +138,7 @@ norm_print +
 
 \vspace{.8cm}
 
-```{r include=is_pdf, eval=is_pdf}
+```{r include=is_pdf, eval=is_pdf, out.width="100%"}
 
 include_graphics(path = here("out", "ghg_sector.png"))
 ```      
@@ -160,7 +163,7 @@ ggplotly(ghg_sector_html, tooltip="text", dynamicTicks = TRUE) %>%
 
 \vspace{.8cm}
           
-```{r include=is_pdf, eval=is_pdf}
+```{r include=is_pdf, eval=is_pdf, out.width="100%"}
 include_graphics(path = here("out", "econ_sector_abs_diff.png"))
 ```
 
