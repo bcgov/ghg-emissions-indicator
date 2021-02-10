@@ -80,9 +80,9 @@ plot(ghg_pop)
 gdp_time <- ggplot(data = bc_ghg_per_capita, 
                    aes(x = year, y = ghg_per_unit_gdp)) + 
   geom_line(colour = "#e41a1c", size = 1.5) + 
-  ggtitle("GHG Emissions per Unit GDP") +
+  ggtitle("GHG Emissions per Million Dollars of  GDP") +
   xlab(NULL) + 
-  ylab(bquote(t~CO[2]*e~" per unit GDP")) +
+  ylab(bquote(t~CO[2]*e~" per million dollars of GDP")) +
   scale_y_continuous(limits = c(225,500), breaks = seq(225, 500, 25),
                      expand = c(0,0)) +
   x_scale +
@@ -217,7 +217,7 @@ abs_label_static <- abs_diff_econ %>%
 ghg_abs_diff <- ggplot(data = abs_diff_econ, 
                        aes(x = year, y = abs.diff, color = fct_rev(sector))) + 
   geom_line(size=1) +
-  xlab(NULL) +  ylab(bquote("Annual Change in "~Mt~CO[2]*e~" from 1990 by Sector")) +
+  xlab(NULL) +  ylab(bquote("Annual Change in "~Mt~CO[2]*e~" from 1990 by Economic Sector")) +
   x_scale +
   scale_color_manual(values = sector.pal) +
   geom_text_repel(aes(label=sector, size=1),
