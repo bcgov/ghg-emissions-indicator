@@ -132,7 +132,14 @@ ghg_econ_sub <- ghg_econ_long %>%
 
 ghg_econ_sub <- ghg_econ_sub %>% left_join(econ_sector_sum, by= c('sector', 'year')) #add in sector sums for each year
 
-
+#change names for clarity
+ghg_econ_sub <- ghg_econ_sub %>%
+  mutate(subsector_final = case_when
+         (subsector_final == "Bus, Rail, & Domestic Aviation" ~ "Passenger: Bus, Rail, & Domestic Aviation",
+           subsector_final == "Domestic Aviation & Marine" ~ "Freight: Domestic Aviation & Marine",
+           subsector_final == "Cars, Trucks, & Motorcycles" ~ "Passenger: Cars, Trucks, & Motorcycles",
+           subsector_final == "Heavy-Duty Trucks & Rail" ~ "Freight: Heavy-Duty Trucks & Rail",
+                            TRUE ~ subsector_final))
 ## Data summaries 
 
 ## total in ktCO2e for most recent year 
