@@ -47,9 +47,11 @@ x_scale <- scale_x_continuous(limits = c(1990, max_ghg_yr + 1),
 
 ## Line plot of total GHG emissions over time in British Columbia
 ghg_time <- ggplot(data = bc_ghg_sum, aes(x = year, y = ghg_estimate)) + 
-  geom_line(colour = "#e41a1c", size = 1.5) +
+  geom_line(colour = "#1B9E77", size = 1.5) +
   geom_point(x=2025, y=clean_bc_2025, color="black", shape=19, size=2)+
+  geom_point(x=2007, y=baseline_2007/1000, color="black", shape=19, size=2)+
   annotate("text", x=2020, y=clean_bc_2025, label="B.C. 2025 emission target")+
+  annotate("text", x=2008, y=65, label = "2007 baseline")+
   labs(title = "Total GHG Emissions") +
   xlab(NULL) + 
   ylab(bquote(Mt~CO[2]*e)) +
@@ -64,7 +66,7 @@ plot(ghg_time)
 
 ## Line plot of total GHG emissions per person over time in British Columbia
 ghg_pop <- ggplot(data = bc_ghg_per_capita, aes(x = year, y = ghg_per_capita)) + 
-  geom_line(colour = "#e41a1c", size = 1.5) + 
+  geom_line(colour = "#7570B3", size = 1.5) + 
   ggtitle("GHG Emissions per Person") +
   xlab(NULL) + 
   ylab(bquote(t~CO[2]*e~" per Person")) +
@@ -79,7 +81,7 @@ plot(ghg_pop)
 ## Line plot of total GHG emisions per unit GDP over time 
 gdp_time <- ggplot(data = bc_ghg_per_capita, 
                    aes(x = year, y = ghg_per_unit_gdp)) + 
-  geom_line(colour = "#e41a1c", size = 1.5) + 
+  geom_line(colour = "#D95F02", size = 1.5) + 
   ggtitle("GHG Emissions per Million Dollars of  GDP") +
   xlab(NULL) + 
   ylab(bquote(t~CO[2]*e~" per million dollars of GDP")) +
@@ -93,9 +95,11 @@ plot(gdp_time)
 
 ## Line plot of normalised GHG emissions, GDP and population change over time 
 #colour palette for 3 measures
-normpal <- c("norm_gdp" = "#e41a1c",
-             "norm_ghg" = "#377eb8",
-             "norm_population" = "#4daf4a")
+
+norm.order <- unique(normalized_measures$measure) #gets rid of unused factors
+norm.cols<-3
+norm.pal <- brewer.pal(norm.cols, "Dark2")
+names(norm.pal) <- norm.order
 
 norm_base <- ggplot(data = normalized_measures, 
                     aes(x = year, y = estimate, group = measure, 
@@ -106,25 +110,25 @@ norm_base <- ggplot(data = normalized_measures,
   x_scale+
   labs(title = "Relative GHG Emissions, GDP & Population Size") +
   xlab(NULL) + ylab("Values Indexed Relative to 1990") +
-  scale_colour_manual(name="", values = normpal, guide = FALSE) +
+  scale_colour_manual(name="", values = norm.pal, guide = FALSE) +
   theme_soe() +
   theme_lineplots 
 
 norm <- norm_base +
-  annotate("text", label = "GDP", colour = "#e41a1c",
+  annotate("text", label = "GDP", colour = "#D95F02",
            x = 2004.1, y = 1.56, size = 5) +
-  annotate("text", label = "GHG", colour = "#377eb8",
+  annotate("text", label = "GHG", colour = "#1B9E77",
            x = 2010, y = 1.14, size = 5) +
-  annotate("text", label = "Population", colour = "#4daf4a",
+  annotate("text", label = "Population", colour = "#7570B3",
            x = 2009, y = 1.41, size = 5)
 plot(norm)
 
 norm_print <- norm_base +
-  annotate("text", label = "GDP", colour = "#e41a1c",
+  annotate("text", label = "GDP", colour = "#D95F02",
            x = 2004.1, y = 1.56, size = 3) +
-  annotate("text", label = "GHG", colour = "#377eb8",
+  annotate("text", label = "GHG", colour = "#1B9E77",
            x = 2010, y = 1.14, size = 3) +
-  annotate("text", label = "Population", colour = "#4daf4a",
+  annotate("text", label = "Population", colour = "#7570B3",
            x = 2009, y = 1.41, size = 3)
 plot(norm_print)
 
