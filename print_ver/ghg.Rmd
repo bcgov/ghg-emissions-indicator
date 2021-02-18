@@ -3,7 +3,7 @@ topic: "sustainability"
 title: "Trends in Greenhouse Gas Emissions in B.C. (1990-2018)"
 output: 
   html_document:
-    self_contained: yes
+    self_contained: false
   pdf_document: envreportutils.internal::print_ver
 ---
 
@@ -66,7 +66,7 @@ is_pdf <- knitr::is_latex_output()
 
 * **Greenhouse gas emissions warm the global atmosphere and cause our climate to change.** Reducing greenhouse gas emissions is a key component to limiting the increase in global average temperature and the resulting change in climate.
   
-* **Total greenhouse gas emissions in `r max_ghg_yr` in B.C. were `r ghg_est_Mtco2e` million tonnes of carbon dioxide equivalent.** This is a `r abs(previous_year)`% increase in emissions since `r max_ghg_yr - 1` and a `r abs(baseline_year)`% `r ifelse(baseline_year > 0, "increase", "decrease")` in emissions since 2007---the Government of British Columbia's baseline year for assessing reductions in greenhouse gas emissions. Greenhouse gas emission estimates reported here are from the [British Columbia Greenhouse Gas Emission Inventory (`r max_ghg_yr`)](https://www2.gov.bc.ca/gov/content/environment/climate-change/data/provincial-inventory)^1^ and do not include forest management offsets.
+* **Total greenhouse gas emissions in `r max_ghg_yr` in B.C. were `r ghg_est_Mtco2e` million tonnes of carbon dioxide equivalent.** This is a `r abs(previous_year)`% increase in emissions since `r max_ghg_yr - 1` and a `r abs(baseline_year)`% `r ifelse(baseline_year > 0, "increase", "decrease")` in emissions since 2007---the Government of British Columbia's baseline year for assessing reductions in greenhouse gas emissions. Greenhouse gas emission estimates reported here are from the [British Columbia Greenhouse Gas Emission Inventory (`r max_ghg_yr`)](https://www2.gov.bc.ca/gov/content/environment/climate-change/data/provincial-inventory)^1^.
 
 * **B.C. has set targets for reducing greenhouse gas emissions over the next 30 years.** The targets are 40% less by 2030, 60% by 2040 and 80% by 2050, compared to 2007 levels. To keep B.C. on track, an interim target of reducing greenhouse gas emissions 16% from 2007 levels by 2025 was also set. More information on emission targets is available in the [2020 Climate Change Accountability Report](https://www2.gov.bc.ca/assets/gov/environment/climate-change/action/cleanbc/2020_climate_change_accountability_report.pdf). 
 
@@ -181,9 +181,9 @@ ggplotly(ghg_abs_diff_html, tooltip="text", dynamicTicks = TRUE) %>%
 ```{r include=is_html, eval=is_html, results='asis'}
 cat("## Results by Economic Sector {.tabset}\n")
 
-cat("- Economic sectors were broken down into subsectors, where subsectors were available. Further information on the emissions categorized in each subsector are provided in the [British Columbia Greenhouse Gas Provincial Inventory Methodology](https://www2.gov.bc.ca/assets/gov/environment/climate-change/data/provincial-inventory/2018/bc_provincial_ghg_inventory_1990-2018_-_methodology_book.pdf)^2^.")
+cat("- Economic sectors were broken down into subsectors, where subsectors were available. Further information on the emissions categorized in each subsector are provided in the [British Columbia Greenhouse Gas Provincial Inventory Methodology](https://www2.gov.bc.ca/assets/gov/environment/climate-change/data/provincial-inventory/2018/bc_provincial_ghg_inventory_1990-2018_-_methodology_book.pdf)^2^.\n")
 
-cat("- Each subsector contributes varying amounts of emissions to the sector total. Examining these breakdowns further can give us a greater insight into the sources of emissions in B.C.")
+cat("- Each subsector contributes varying amounts of emissions to the sector total. Examining these breakdowns further can give us a greater insight into the sources of emissions in B.C.\n")
 
 cat("- In each economic sector figure below, the grey background shows the total emissions from each sector over time and the color sections show the contribution of each subsector compared to the sector total.\n")
 
