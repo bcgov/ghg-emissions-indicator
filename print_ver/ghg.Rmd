@@ -66,15 +66,15 @@ is_pdf <- knitr::is_latex_output()
 
 * **Greenhouse gas emissions warm the global atmosphere and cause our climate to change.** Reducing greenhouse gas emissions is a key component to limiting the increase in global average temperature and the resulting change in climate.
   
-* **Total greenhouse gas emissions in `r max_ghg_yr` in B.C. were `r ghg_est_Mtco2e` million tonnes of carbon dioxide equivalent.** This is a `r abs(previous_year)`% increase in emissions since `r max_ghg_yr - 1` and a `r abs(baseline_year)`% `r ifelse(baseline_year > 0, "increase", "decrease")` in emissions since 2007---the Government of British Columbia's baseline year for assessing reductions in greenhouse gas emissions. Greenhouse gas emission estimates reported here are from the [British Columbia Greenhouse Gas Emission Inventory (`r max_ghg_yr`)](https://www2.gov.bc.ca/gov/content/environment/climate-change/data/provincial-inventory)^1^.
+* **Total greenhouse gas emissions in `r max_ghg_yr` in B.C. were `r ghg_est_Mtco2e` million tonnes of carbon dioxide equivalent.** This is a `r abs(previous_year)`% increase in emissions since `r max_ghg_yr - 1` and a `r abs(baseline_year)`% `r ifelse(baseline_year > 0, "increase", "decrease")` in emissions since 2007---the Government of British Columbia's baseline year for assessing reductions in greenhouse gas emissions.  The greenhouse gas emission estimates reported here are the gross totals from the [British Columbia Greenhouse Gas Emission Inventory (`r max_ghg_yr`)](https://www2.gov.bc.ca/gov/content/environment/climate-change/data/provincial-inventory)^1^ and do not account for any emission reductions from offset projects.
 
 * **B.C. has set targets for reducing greenhouse gas emissions over the next 30 years.** The targets are 40% less by 2030, 60% by 2040 and 80% by 2050, compared to 2007 levels. To keep B.C. on track, an interim target of reducing greenhouse gas emissions 16% from 2007 levels by 2025 was also set. More information on emission targets is available in the [2020 Climate Change Accountability Report](https://www2.gov.bc.ca/assets/gov/environment/climate-change/action/cleanbc/2020_climate_change_accountability_report.pdf). 
 
 * **Greenhouse gas emissions in B.C. need to decrease by `r abs(cleanbc_reduction)`% from  `r max_ghg_yr` levels to meet the interim emission target for 2025.** 
 
-* **Greenhouse gas emissions per person are rising in recent years after declining for nearly two decades.** Greenhouse gas emissions per person in B.C. consistently declined from 2004 to 2015 but have been increasing since 2015.  Greenhouse gas emissions per unit gross domestic product---a measure of the size of the B.C. economy---have consistently declined over the past two decades. 
+* **Greenhouse gas emissions per person are rising in recent years after declining for nearly two decades.** Greenhouse gas emissions per person in B.C. consistently declined from 2004 to 2015 but have been increasing since 2015.  Greenhouse gas emissions per unit gross domestic product have consistently declined over the past two decades. 
  
-* **The transportation and fossil fuel industry produce the most greenhouse gas emissions in B.C.**  
+* **The transportation and fossil fuel sectors produce the most greenhouse gas emissions in B.C.**  
 Major transportation-related sources of greenhouse gas emissions include cars, trucks, heavy-duty trucks, and rail.  The major fossil fuel industry source is natural gas production and processing.
 
 
@@ -84,7 +84,7 @@ Major transportation-related sources of greenhouse gas emissions include cars, t
 ## Greenhouse Gas Emissions in British Columbia 
 
 * In `r max_ghg_yr`, B.C. emitted `r abs(baseline_year)`% `r ifelse(baseline_year > 0, "more", "less")` greenhouse gases than the 2007 baseline year. 
-* `r max_ghg_yr` emissions were `r round(reduction_mt, digits=1)` million tonnes of carbon dioxide equivalent `r ifelse(cleanbc_reduction > 0, "more", "less")` than B.C.'s interim 2025 target. 
+* `r max_ghg_yr` emissions were `r round(reduction_mt, digits=1)` million tonnes of carbon dioxide equivalent (Mt CO~2~e) `r ifelse(cleanbc_reduction > 0, "more", "less")` than B.C.'s interim 2025 target. 
 
 \vspace{.8cm}
 
@@ -94,7 +94,8 @@ ghg_time + theme_print
 
 \vspace{1cm}
 
-* Overall, the greenhouse gases produced per person in B.C.---also called per capita---were less in 2018 than the 2007 baseline year, however per capita emissions have been increasing since 2015.
+* Overall, the tonnes of carbon dioxide equivalent (t CO~2~e) emitted per person in B.C. were less in 2018 than the 2007 baseline year, however per capita emissions have been increasing since 2015. ^[To compare to per capita emissions from other jurisdictions, the afforestation and deforestation emissions included in the B.C. inventory (more details on these emissions available in [Greenhouse Gas Emissions by Economic Sector]) were removed for this calculation as these emission sources are not tracked everywhere.]
+
 
 \vspace{.8cm}
 
@@ -131,7 +132,7 @@ norm_print +
 
 - Greenhouse gas emissions are sorted into the following economic sectors: fossil fuels, electricity, transportation, heavy industry, buildings, agriculture, waste, afforestation and deforestation, and other industry (includes light manufacturing, construction, and forest resources). 
 
-- The transportation sector produces the largest amount of greenhouse gas emissions in British Columbia. Passenger transport, including cars, trucks, motorcycles, and freight transport, using heavy duty trucks and rail, produce the largest emissions of carbon dioxide equivalent. 
+- The transportation sector produces the largest amount of greenhouse gas emissions in B.C. Passenger transport, including cars, trucks, motorcycles, and freight transport, including heavy duty trucks and rail, produce the largest emissions of carbon dioxide equivalent. 
 
 - The fossil fuel sector produces the second largest amount of greenhouse gas emissions in British Columbia. This sector includes production, refining and distribution activities. 
 
@@ -156,7 +157,11 @@ ggplotly(ghg_sector_html, tooltip="text", dynamicTicks = TRUE) %>%
 
 ## How have greenhouse gas emissions changed within economic sectors? 
 
-- The amount of carbon dioxide equivalent emitted annually by each economic sector was compared to 1990 levels. Sectors that have increased emissions since 1990 include transportation and fossil fuels. The largest increase in annual emissions in any sector over the past decade was the transportation sector. The fossil fuel industry has also seen consistent increases in annual emissions, with levels peaking from 2011 to 2014. Buildings, agriculture, other industry, electricity and waste sectors emitted similar levels of carbon dioxide equivalent in 2018 as 1990. Deforestation and heavy industry annual emissions have declined from 1990. Deforestation emissions have declined consistently since 1990. Heavy industry has decreased annual emissions consistently from 2004 to 2013, with slight increases in recent years. 
+- The amount of carbon dioxide equivalent emitted annually by each economic sector was compared to 1990 levels. The transportation sector had the largest increase in annual emissions of any sector over the past decade. The fossil fuel sector also had consistent increases in annual emissions, with levels peaking from 2011 to 2014.
+
+- Buildings, agriculture, other industry, electricity and waste sectors emitted similar levels of carbon dioxide equivalent in 2018 as 1990.  
+
+- Deforestation emissions declined consistently since 1990. Heavy industry decreased annual emissions consistently from 2004 to 2013, with slight increases observed in recent years. 
 
 - Each economic sector was broken down into more specific categories where available. This information is provided below.  
 
@@ -224,7 +229,7 @@ include_graphics(path = here("out", "Deforestation.png"))
 
 ## Methods
 
-British Columbia's total greenhouse gas emissions are estimated using the [British Columbia Greenhouse Gas Provincial Inventory Methodology](https://www2.gov.bc.ca/assets/gov/environment/climate-change/data/provincial-inventory/2018/bc_provincial_ghg_inventory_1990-2018_-_methodology_book.pdf)^2^, using data from the [Canada's National Inventory Report (NIR)](http://www.publications.gc.ca/site/eng/9.506002/publication.html).^3^ In addition to using the NIR data, the B.C. Provincial Inventory generally follows the same methods and uses the same categories. Any deviations from the NIR methodology or categorization is described in detail in the B.C. Provincial Inventory Methodology^2^. Additional information is also available in the [British Columbia Greenhouse Gas Emission Inventory Report (2018)](https://www2.gov.bc.ca/gov/content/environment/climate-change/data/provincial-inventory)^1^. 
+The [British Columbia Greenhouse Gas Provincial Inventory Methodology](https://www2.gov.bc.ca/assets/gov/environment/climate-change/data/provincial-inventory/2018/bc_provincial_ghg_inventory_1990-2018_-_methodology_book.pdf)^2^ provides a description of the methodologies and data sources used in preparing B.C.'s greenhouse gas emissions inventory. Currently, most of the Provincial Inventory data comes from [Canada's National Inventory Report (NIR)](http://www.publications.gc.ca/site/eng/9.506002/publication.html).^3^ In addition to using the NIR data, the B.C. Provincial Inventory generally follows the same methods and uses the same categories. Any deviations from the NIR methodology or categorization is described in detail in the B.C. Provincial Inventory Methodology^2^. Additional information is also available in the [British Columbia Greenhouse Gas Emission Inventory Report (2018)](https://www2.gov.bc.ca/gov/content/environment/climate-change/data/provincial-inventory)^1^. 
 
 Greenhouse gas emissions include carbon dioxide (CO~2~), methane (CH~4~), nitrous oxide (N~2~O), sulphur hexafluoride (SF~6~), perfluorocarbons (PFCs),  hydrofluorocarbons (HFCs) and nitrogen trifluoride (NF~3~) released by human activity---these emissions are reported collectively here as millions of tonnes of carbon dioxide equivalent (Mt CO~2~e).  British Columbia population estimates ([Table: 17-10-0005-01](https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=1710000501)) and gross domestic product ([Table: 36-10-0222-01](https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=3610022201)) data were sourced from [Statistics Canada](https://www.statcan.gc.ca/eng/start). Gross domestic product (GDP) is calculated using expenditure-based GDP and reported in millions of chained 2012 dollars.
 
