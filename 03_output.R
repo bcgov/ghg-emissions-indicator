@@ -82,7 +82,7 @@ plot(ghg_pop)
 gdp_time <- ggplot(data = bc_ghg_per_capita, 
                    aes(x = year, y = ghg_per_unit_gdp)) + 
   geom_line(colour = "#D95F02", size = 1.5) + 
-  ggtitle("GHG Emissions per Million Dollars of  GDP") +
+  ggtitle("GHG Emissions per Million Dollars of GDP") +
   xlab(NULL) + 
   ylab(bquote(t~CO[2]*e~" per million dollars of GDP")) +
   scale_y_continuous(limits = c(225,500), breaks = seq(225, 500, 25),
@@ -174,9 +174,9 @@ ghg_sector <- ggplot(econ_sector_sum_data, aes(x=year, y=sum, color=fct_rev(sect
          panel.grid.minor = element_line(size = 0.5, colour = "grey85"),
          panel.grid.minor.x = element_blank(),
          panel.grid.major.x = element_blank(),
-         axis.text.y = element_text(size = 12),
-         axis.text.x = element_text(size = 12),
-         axis.title.y = element_text(size = 12,
+         axis.text.y = element_text(size = 14),
+         axis.text.x = element_text(size = 14),
+         axis.title.y = element_text(size = 16,
                                      margin = margin(t = 0, r = 10, b = 0, l = 0,
                                                      unit = "pt")))+
   theme(plot.margin = unit(c(0.5,3.5,0.5,0.5), "cm")) +
@@ -193,7 +193,7 @@ ghg_sector_html <- ggplot(econ_sector_sum_data) +
   scale_color_manual(name = "Economic Sector", values = sector.pal,
                      limits = sector.order) +
   x_scale +
-  labs(x="Year", y="Emissions by Sector (Mt)")+
+  labs(x="Year", y="Emissions (Mt) by Economic Sector")+
   theme_soe() +
   theme(panel.grid.major = element_line(size = 0.5, colour = "grey85"),
         panel.grid.minor = element_line(size = 0.5, colour = "grey85"),
@@ -254,7 +254,7 @@ ghg_abs_diff_html <- ggplot(abs_diff_econ) +
   scale_color_manual(name = "Economic Sector", values = sector.pal,
                      limits = sector.order) +
   x_scale +
-  labs(x="Year", y="Emissions Compared to 1990 (Mt)")+
+  labs(x="Year", y="Annual Change in Emissions (Mt) from 1990")+
   theme_soe() +
   theme(panel.grid.major = element_line(size = 0.5, colour = "grey85"),
         panel.grid.minor = element_line(size = 0.5, colour = "grey85"),
@@ -376,21 +376,21 @@ plot(norm)
 dev.off()
 
 #total ghg by sector over time stacked area chart
-svg_px("./out/ghg_sector.svg", width = 850, height = 430)
+svg_px("./out/ghg_sector.svg", width = 850, height = 500)
 plot(ghg_sector)
 dev.off()
 
-png_retina(filename = "./out/ghg_sector.png", width = 850, height = 430,
+png_retina(filename = "./out/ghg_sector.png", width = 850, height = 500,
            units = "px", type = "cairo-png", antialias = "default")
 plot(ghg_sector)
 dev.off()
 
 # absolute difference in co2e from 1990
-svg_px("./out/econ_sector_abs_diff.svg", width = 850, height = 430)
+svg_px("./out/econ_sector_abs_diff.svg", width = 850, height = 500)
 plot(ghg_abs_diff)
 dev.off()
 
-png_retina(filename = "./out/econ_sector_abs_diff.png", width = 850, height = 430,
+png_retina(filename = "./out/econ_sector_abs_diff.png", width = 850, height = 500,
            units = "px", type = "cairo-png", antialias = "default")
 plot(ghg_abs_diff)
 dev.off()

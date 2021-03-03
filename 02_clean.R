@@ -66,19 +66,26 @@ bc_ghg_sum <- bc_ghg_long %>%
   mutate(sector = "British Columbia") %>% 
   select(sector, year, ghg_estimate)
 
+bc_ghg_sum_no_forest <- bc_ghg_long %>%
+  filter(!grepl("other emissions not included", sector, ignore.case = TRUE)) %>%
+  filter(sector != "Afforestation & Deforestation") %>%
+  group_by(year) %>%
+  summarise(ghg_no_forest = round(sum(ktCO2e, na.rm = TRUE)/1000, digits = 1)) %>% 
+  mutate(sector = "British Columbia") %>% 
+  select(sector, year, ghg_no_forest)
 
 ## Add ghg totals in MtCO2e by year to bc_pop_gdp data
 bc_measures <- bc_pop_gdp %>% 
   mutate(year = as.integer(year)) %>%
-  left_join(bc_ghg_sum) %>% 
+  left_join(bc_ghg_sum_no_forest) %>% 
+  left_join(bc_ghg_sum)%>%
   select(-sector)
-
 
 ## Make normalized dateframe for relative comparisons and convert to long format
 normalized_measures <- bc_measures %>% 
-  mutate(norm_ghg = ghg_estimate/ghg_estimate[year == min(year)],
-         norm_gdp = gdp_estimate/gdp_estimate[year == min(year)],
-         norm_population = population_estimate/population_estimate[year == min(year)]) %>% 
+  mutate(norm_ghg = ghg_estimate/ghg_estimate[year == 1990],
+         norm_gdp = gdp_estimate/gdp_estimate[year == 1990],
+         norm_population = population_estimate/population_estimate[year == 1990]) %>% 
   select(year, starts_with("norm")) %>% 
   gather(key = measure, value = estimate, -year)
 
@@ -86,7 +93,7 @@ normalized_measures <- bc_measures %>%
 ## Calculate GHG emissions per capita & per unit GDP 
 ## and convert to tCO2e (from MtCO2e) for plotting
 bc_ghg_per_capita <- bc_measures %>% 
-  mutate(ghg_per_capita = (ghg_estimate/population_estimate)*1000000,
+  mutate(ghg_per_capita = (ghg_no_forest/population_estimate)*1000000,
          ghg_per_unit_gdp = (ghg_estimate/gdp_estimate)*1000000) %>% 
   select(year, ghg_per_capita, ghg_per_unit_gdp)
 
@@ -201,7 +208,7 @@ reduction_mt <- ghg_est_Mtco2e - clean_bc_2025
 
 # Create tmp folder if not already there and store clean data in local repository
 if (!exists("tmp")) dir.create("tmp", showWarnings = FALSE)
-save(bc_ghg_long, ghg_sector_sum, bc_ghg_sum, normalized_measures,
+save(bc_ghg_long, ghg_sector_sum, bc_ghg_sum, bc_ghg_sum_no_forest, normalized_measures,
      bc_ghg_per_capita, max_ghg_yr,
      ghg_est_Mtco2e, previous_year, baseline_year, 
      ghg_econ_long, econ_sector_sum, ghg_econ_sub, 
