@@ -64,7 +64,7 @@ is_pdf <- knitr::is_latex_output()
 ```
 
 
-* **Greenhouse gas emissions warm the global atmosphere and cause our climate to change.** Reducing greenhouse gas emissions is a key component to limiting the increase in global average temperature and the resulting change in climate.
+* **Greenhouse gas emissions warm the global atmosphere and cause our climate to change.** Reducing greenhouse gas emissions is a key component to limiting the increase in global average temperature and the resulting changes in climate.
   
 * **Total greenhouse gas emissions in `r max_ghg_yr` in B.C. were `r ghg_est_Mtco2e` million tonnes of carbon dioxide equivalent.** This is a `r abs(previous_year)`% increase in emissions since `r max_ghg_yr - 1` and a `r abs(baseline_year)`% `r ifelse(baseline_year > 0, "increase", "decrease")` in emissions since 2007---the Government of British Columbia's baseline year for assessing reductions in greenhouse gas emissions.  The greenhouse gas emission estimates reported here are the gross totals from the [British Columbia Greenhouse Gas Emission Inventory (`r max_ghg_yr`)](https://www2.gov.bc.ca/gov/content/environment/climate-change/data/provincial-inventory)^1^ and do not account for any emission reductions from offset projects.
 
@@ -132,6 +132,8 @@ norm_print +
 
 - Greenhouse gas emissions are sorted into the following economic sectors: fossil fuels, electricity, transportation, heavy industry, buildings, agriculture, waste, afforestation and deforestation, and other industry (includes light manufacturing, construction, and forest resources). 
 
+- By looking at the greenhouse gas contributions across the different sectors, we can see where the majority of B.C.'s emissions are coming from, as well as the trends in emissions from those sectors.
+
 - The transportation sector produces the largest amount of greenhouse gas emissions in B.C. Passenger transport, including cars, trucks, motorcycles, and freight transport, including heavy duty trucks and rail, produce the largest emissions of carbon dioxide equivalent. 
 
 - The fossil fuel sector produces the second largest amount of greenhouse gas emissions in British Columbia. This sector includes production, refining and distribution activities. 
@@ -190,7 +192,7 @@ cat("- Economic sectors were broken down into subsectors, where subsectors were 
 
 cat("- Each subsector contributes varying amounts of emissions to the sector total. Examining these breakdowns further can give us a greater insight into the sources of emissions in B.C.\n")
 
-cat("- In each economic sector figure below, the grey background shows the total emissions from each sector over time and the color sections show the contribution of each subsector compared to the sector total.\n")
+cat("- In each economic sector figure below, the grey background shows the total emissions from each sector over time and the coloured sections show the contribution of each subsector compared to the sector total.\n")
 
 
 cat("\n### Transportation\n\n")
