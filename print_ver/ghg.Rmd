@@ -94,13 +94,17 @@ ghg_time + theme_print
 
 \vspace{1cm}
 
-* Overall, the tonnes of carbon dioxide equivalent (t CO~2~e) emitted per person in B.C. were less in 2018 than the 2007 baseline year, however per capita emissions have been increasing since 2015. ^[To compare to per capita emissions from other jurisdictions, the afforestation and deforestation emissions included in the B.C. inventory (more details on these emissions available in [Greenhouse Gas Emissions by Economic Sector]) were removed for this calculation as these emission sources are not tracked everywhere.]
+* Overall, the tonnes of carbon dioxide equivalent (t CO~2~e) emitted per person in B.C. were less in 2018 than the 2007 baseline year, however per capita emissions have been increasing since 2015*.
 
 
 \vspace{.8cm}
 
 ```{r ghgpop}
-ghg_pop + theme_print
+ghg_pop + theme_print + 
+  labs(caption = 
+    "\n* To compare to per capita emissions from other jurisdictions, the afforestation and deforestation emissions 
+    included in the B.C. inventory were removed for this calculation, as these emission sources are not 
+    tracked everywhere. More details on these emissions are available below.")
 ```
  
 \newpage 
