@@ -37,7 +37,7 @@ library(plotly)
 if (!exists("ghg_time")) load(here("tmp", "plots.RData"))
 if (!exists("ghg_est")) load(here("tmp", "clean_data.RData"))
 
-opts_chunk$set(echo=FALSE, cache=FALSE, warning=FALSE, message=FALSE, error=FALSE, fig.height=3.5, fig.width=8)
+opts_chunk$set(echo=FALSE, cache=FALSE, warning=FALSE, message=FALSE, error=FALSE, fig.height=3.5, fig.width=8, fig.align = "center")
 
 
 theme_print <-   theme(axis.text.y = element_text(size = 8),
