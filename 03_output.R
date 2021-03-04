@@ -188,12 +188,14 @@ plot(ghg_sector)
 
 
 ghg_sector_html <- ggplot(econ_sector_sum_data) + 
-  geom_line(aes(x = year, y = sum, color=fct_rev(sector)),
+  geom_line(aes(x = year, y = sum, color=fct_rev(sector), 
+                text = paste0(sector, " (", year, "): ", sum, " MtCO<sub>2</sub>eq"),
+                group = sector),
             size = 1) +
   scale_color_manual(name = "Economic Sector", values = sector.pal,
                      limits = sector.order) +
   x_scale +
-  labs(x="Year", y="Emissions (Mt) by Economic Sector")+
+  labs(x="Year", y="Emissions (MtCO<sub>2</sub>eq)<br>by Economic Sector")+
   theme_soe() +
   theme(panel.grid.major = element_line(size = 0.5, colour = "grey85"),
         panel.grid.minor = element_line(size = 0.5, colour = "grey85"),
@@ -249,12 +251,14 @@ plot(ghg_abs_diff)
 ## Interactive abs diff plot for ggplotly html output
 
 ghg_abs_diff_html <- ggplot(abs_diff_econ) + 
-  geom_line(aes(x = year, y = abs.diff, color=fct_rev(sector)),
+  geom_line(aes(x = year, y = abs.diff, color=fct_rev(sector), 
+                text = paste0(sector, " (", year, "): ", abs.diff, " MtCO<sub>2</sub>eq"),
+                group = sector),
             size = 1) +
   scale_color_manual(name = "Economic Sector", values = sector.pal,
                      limits = sector.order) +
   x_scale +
-  labs(x="Year", y="Annual Change in Emissions (Mt) from 1990")+
+  labs(x="Year", y="Annual Change in Emissions from 1990<br>(MtCO<sub>2</sub>eq)")+
   theme_soe() +
   theme(panel.grid.major = element_line(size = 0.5, colour = "grey85"),
         panel.grid.minor = element_line(size = 0.5, colour = "grey85"),

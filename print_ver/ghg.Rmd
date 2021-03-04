@@ -144,7 +144,7 @@ norm_print +
 include_graphics(path = here("out", "ghg_sector.png"))
 ```      
 
-```{r include=is_html, eval=is_html}
+```{r include=is_html, eval=is_html, fig.height=5, fig.width=9}
 
 ggplotly(ghg_sector_html, tooltip="text", dynamicTicks = TRUE) %>%
   rangeslider()
@@ -172,7 +172,7 @@ ggplotly(ghg_sector_html, tooltip="text", dynamicTicks = TRUE) %>%
 include_graphics(path = here("out", "econ_sector_abs_diff.png"))
 ```
 
-```{r include=is_html, eval=is_html}
+```{r include=is_html, eval=is_html, fig.height=5, fig.width=9}
 
 ggplotly(ghg_abs_diff_html, tooltip="text", dynamicTicks = TRUE) %>%
   rangeslider()
