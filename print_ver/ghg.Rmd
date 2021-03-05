@@ -37,7 +37,7 @@ library(plotly)
 if (!exists("ghg_time")) load(here("tmp", "plots.RData"))
 if (!exists("ghg_est")) load(here("tmp", "clean_data.RData"))
 
-opts_chunk$set(echo=FALSE, cache=FALSE, warning=FALSE, message=FALSE, error=FALSE, fig.height=3.5, fig.width=8, fig.align = "center")
+opts_chunk$set(echo=FALSE, cache=FALSE, warning=FALSE, message=FALSE, error=FALSE, fig.height=3.5, fig.width=8)
 
 
 theme_print <-   theme(axis.text.y = element_text(size = 8),
@@ -61,6 +61,8 @@ theme_summary <- theme(axis.text.y = element_text(size = 8),
 
 is_html <- knitr::is_html_output()
 is_pdf <- knitr::is_latex_output()
+
+if (is_html) opts_chunk$set(fig.align = 'center')
 ```
 
 
@@ -88,7 +90,7 @@ Major transportation-related sources of greenhouse gas emissions include cars, t
 
 \vspace{.8cm}
 
-```{r ghgtrends}
+```{r ghgtrends, fig.alt="Greenhouse gas emissions plotted over time from 1990 to 2018. The 2007 baseline and the 2025 emission target are highlighted on the graph."}
 ghg_time + theme_print
 ```
 
@@ -99,12 +101,12 @@ ghg_time + theme_print
 
 \vspace{.8cm}
 
-```{r ghgpop}
+```{r ghgpop, fig.alt="Greenhouse gas emissions per capita plotted over time from 1990 to 2018"}
 ghg_pop + theme_print + 
   labs(caption = 
-    "\n* To compare to per capita emissions from other jurisdictions, the afforestation and deforestation emissions 
-    included in the B.C. inventory were removed for this calculation, as these emission sources are not 
-    tracked everywhere. More details on these emissions are available below.")
+    "\n* To compare to per capita emissions from other jurisdictions, the afforestation and deforestation emissions included
+         in the B.C. inventory were removed for this calculation, as these emission sources are not tracked everywhere. 
+         More details on these emissions are available below.")
 ```
  
 \newpage 
@@ -114,7 +116,7 @@ ghg_pop + theme_print +
 
 \vspace{.8cm}
 
-```{r ghggdp}
+```{r ghggdp, fig.alt="Greenhouse gas emissions per million dollars of GDP plotted over time from 1990 to 2018."}
 gdp_time + theme_print
 ```
    
@@ -124,7 +126,7 @@ gdp_time + theme_print
 
 \vspace{.8cm}
 
-```{r norm}
+```{r norm, fig.alt="GDP, population, and greenhouse gas emissions are plotted as three separate lines from 1990 to 2018."}
 norm_print + 
   theme_print
 ```
@@ -150,7 +152,7 @@ norm_print +
 include_graphics(path = here("out", "ghg_sector.png"))
 ```      
 
-```{r include=is_html, eval=is_html, fig.height=5, fig.width=9}
+```{r include=is_html, eval=is_html, fig.height=5, fig.width=9, fig.alt= "An interactive plot shows the greenhouse gas emissions from each economic sector from 1990 to 2018."}
 
 ggplotly(ghg_sector_html, tooltip="text", dynamicTicks = TRUE) %>%
   rangeslider()
@@ -178,7 +180,7 @@ ggplotly(ghg_sector_html, tooltip="text", dynamicTicks = TRUE) %>%
 include_graphics(path = here("out", "econ_sector_abs_diff.png"))
 ```
 
-```{r include=is_html, eval=is_html, fig.height=5, fig.width=9}
+```{r include=is_html, eval=is_html, fig.height=5, fig.width=9, fig.alt = "An interactive plot shows the difference between annual emissions and 1990 levels for each economic sector."}
 
 ggplotly(ghg_abs_diff_html, tooltip="text", dynamicTicks = TRUE) %>%
   rangeslider()
@@ -189,7 +191,7 @@ ggplotly(ghg_abs_diff_html, tooltip="text", dynamicTicks = TRUE) %>%
 \newpage
 
 
-```{r include=is_html, eval=is_html, results='asis'}
+```{r include=is_html, eval=is_html, results='asis', fig.alt= "A tabbed interactive plot that shows a breakdown of greenhouse gas emissions by subsectors within a sector from 1990 to 2018." }
 cat("## Results by Economic Sector {.tabset}\n")
 
 cat("- Economic sectors were broken down into subsectors, where subsectors were available. Further information on the emissions categorized in each subsector are provided in the [British Columbia Greenhouse Gas Provincial Inventory Methodology](https://www2.gov.bc.ca/assets/gov/environment/climate-change/data/provincial-inventory/2018/bc_provincial_ghg_inventory_1990-2018_-_methodology_book.pdf)^2^.\n")
