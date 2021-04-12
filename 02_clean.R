@@ -23,6 +23,15 @@ library(envreportutils) #to_titlecase()
 ## Read in raw data from 01_load.R if not already in environment
 if (!exists("bc_ghg")) load("tmp/raw_data.RData")
 
+elevate_sectors <- function(df, sectors) {
+  mutate(df, 
+  elevate = sector %in% sectors,
+  sector = ifelse(elevate, subsector_level1, sector),
+  subsector_level1 = ifelse(elevate, subsector_level2, subsector_level1),
+  subsector_level2 = ifelse(elevate, subsector_level3, subsector_level2), 
+  subsector_level3 = ifelse(elevate, NA_character_, subsector_level3)) %>% 
+  select(-elevate)
+}
 
 ## Convert ghg data from wide to long format 
 bc_ghg_long <- bc_ghg %>% 
@@ -30,40 +39,53 @@ bc_ghg_long <- bc_ghg %>%
        -sector, -subsector_level1,
        -subsector_level2, -subsector_level3) %>%
   mutate(ktCO2e = as.numeric(ktCO2e),
-         year = as.integer(as.character(year)))
+         year = as.integer(as.character(year))) %>% 
+  elevate_sectors(c("IPPU, AGRICULTURE, AND WASTE", "AFFORESTATION AND DEFORESTATION")) %>% 
+  mutate(across(contains("sector"), ~ {
+    x <- str_replace(to_titlecase(.x), "(\\b)and(\\b)", "\\1&\\2")
+    str_remove(x, regex("\\s\\(ippu\\)", ignore_case = TRUE))
+    }
+    ))
+
 
 ## Summarize ghg emissions per sector per year and 
 ## convert to MtCO2e for (from ktCO2e) for plotting
 ghg_sector_sum <- bc_ghg_long %>%
-  filter(sector != "OTHER LAND USE (Not included in total B.C. emissions)") %>%
+  filter(!grepl("other emissions not included", sector, ignore.case = TRUE)) %>%
   group_by(sector, year) %>%
   summarise(sum = round(sum(ktCO2e, na.rm = TRUE)/1000, digits = 1)) %>% 
   ungroup() %>% 
-  mutate(sector = str_replace(to_titlecase(sector), "and", "&"),
-         sector = fct_reorder(sector, sum))
+  mutate(sector = fct_reorder(sector, sum))
   
 
 ## Calculate ghg annual totals and convert to MtCO2e (from ktCO2e) for plotting
 bc_ghg_sum <- bc_ghg_long %>%
-  filter(sector != "OTHER LAND USE (Not included in total B.C. emissions)") %>%
+  filter(!grepl("other emissions not included", sector, ignore.case = TRUE)) %>%
   group_by(year) %>%
   summarise(ghg_estimate = round(sum(ktCO2e, na.rm = TRUE)/1000, digits = 1)) %>% 
   mutate(sector = "British Columbia") %>% 
   select(sector, year, ghg_estimate)
 
+bc_ghg_sum_no_forest <- bc_ghg_long %>%
+  filter(!grepl("other emissions not included", sector, ignore.case = TRUE)) %>%
+  filter(sector != "Afforestation & Deforestation") %>%
+  group_by(year) %>%
+  summarise(ghg_no_forest = round(sum(ktCO2e, na.rm = TRUE)/1000, digits = 1)) %>% 
+  mutate(sector = "British Columbia") %>% 
+  select(sector, year, ghg_no_forest)
 
 ## Add ghg totals in MtCO2e by year to bc_pop_gdp data
 bc_measures <- bc_pop_gdp %>% 
   mutate(year = as.integer(year)) %>%
-  left_join(bc_ghg_sum) %>% 
+  left_join(bc_ghg_sum_no_forest) %>% 
+  left_join(bc_ghg_sum)%>%
   select(-sector)
-
 
 ## Make normalized dateframe for relative comparisons and convert to long format
 normalized_measures <- bc_measures %>% 
-  mutate(norm_ghg = ghg_estimate/ghg_estimate[year == min(year)],
-         norm_gdp = gdp_estimate/gdp_estimate[year == min(year)],
-         norm_population = population_estimate/population_estimate[year == min(year)]) %>% 
+  mutate(norm_ghg = ghg_estimate/ghg_estimate[year == 1990],
+         norm_gdp = gdp_estimate/gdp_estimate[year == 1990],
+         norm_population = population_estimate/population_estimate[year == 1990]) %>% 
   select(year, starts_with("norm")) %>% 
   gather(key = measure, value = estimate, -year)
 
@@ -71,37 +93,65 @@ normalized_measures <- bc_measures %>%
 ## Calculate GHG emissions per capita & per unit GDP 
 ## and convert to tCO2e (from MtCO2e) for plotting
 bc_ghg_per_capita <- bc_measures %>% 
-  mutate(ghg_per_capita = (ghg_estimate/population_estimate)*1000000,
+  mutate(ghg_per_capita = (ghg_no_forest/population_estimate)*1000000,
          ghg_per_unit_gdp = (ghg_estimate/gdp_estimate)*1000000) %>% 
   select(year, ghg_per_capita, ghg_per_unit_gdp)
 
 
-## Create separate ENERGY dataframe
-bc_ghg_energy <- bc_ghg_long %>% 
-  filter(sector == "ENERGY") %>% 
-  mutate(general_source = case_when(subsector_level2 == "Road Transportation" ~ "Road",
-                                    subsector_level2 == "Railways" ~ "Railway",
-                                    subsector_level3 == "Pipeline Transport" ~ "Pipeline Transport",
-                                    subsector_level2 == "Other Transportation" ~ "Off-Road",
-                                    TRUE ~ subsector_level2),
-         general_source = str_replace(general_source, "and", "&")) %>% 
-  select(sector, subsector_level1, general_source, year, ktCO2e)
+# Cleaning steps for economic sector data
+## Convert economic sector data from wide to long format, modifying original function
 
-## Summarize ghg emissions in Energy sector by subsector and general sources 
-## and convert to MtCO2e (from ktCO2e) for plotting
-ghg_energy_group <- bc_ghg_energy %>%
-  group_by(sector, subsector_level1, general_source, year) %>%
-  summarise(sum = round(sum(ktCO2e, na.rm = TRUE)/1000, digits = 1)) %>%
-  filter(subsector_level1 != "CO2 Transport and Storage") %>% 
+## Convert ghg data from wide to long format 
+ghg_econ_long <- ghg_econ %>% 
+  gather(key =  year, value = ktCO2e,
+         -sector, -subsector_level1,
+         -subsector_level2) %>%
+  mutate(ktCO2e = as.numeric(ktCO2e),
+         year = as.integer(as.character(year))) %>% 
+  mutate(across(contains("sector"), ~ {
+    x <- str_replace(to_titlecase(.x), "(\\b)and(\\b)", "\\1&\\2")
+    str_remove(x, regex("\\s\\(ippu\\)", ignore_case = TRUE))
+  }
+  ))
+
+# To shorten names for plotting
+ghg_econ_long <- ghg_econ_long %>%
+  mutate(sector = case_when(sector == "Light Manufacturing, Construction, & Forest Resources" ~ "Other Industry",
+                            sector == "Afforestation & Deforestation" ~ "Deforestation",
+                            TRUE ~ sector))
+
+# Summarise by economic sector, convert to MtCo2
+econ_sector_sum <- ghg_econ_long %>%
+  filter(!grepl("other emissions not included", sector, ignore.case = TRUE)) %>%
+  group_by(sector, year) %>%
+  summarise(sum = round(sum(ktCO2e, na.rm = TRUE)/1000, digits = 1)) %>% 
   ungroup() %>% 
-  mutate(general_source = fct_reorder(general_source, -sum))
+  mutate(sector = fct_reorder(sector, sum))
 
+# Summarise by subsector - use the smallest sector level as final (i.e. subsector_level2 if it exists, if not subsector_level1)
+ghg_econ_sub <- ghg_econ_long %>%
+  filter(!grepl("other emissions not included", sector, ignore.case = TRUE)) %>%
+  mutate(subsector_final = if_else(is.na(subsector_level2), subsector_level1, subsector_level2)) %>%
+  mutate(MtCO2e = ktCO2e/1000)%>%
+  arrange(subsector_final, year) %>% 
+  select(sector, year, subsector_final, MtCO2e) %>% 
+  mutate(subsector_final=if_else(is.na(subsector_final), sector, subsector_final)) 
 
+ghg_econ_sub <- ghg_econ_sub %>% left_join(econ_sector_sum, by= c('sector', 'year')) #add in sector sums for each year
+
+#change names for clarity
+ghg_econ_sub <- ghg_econ_sub %>%
+  mutate(subsector_final = case_when
+         (subsector_final == "Bus, Rail, & Domestic Aviation" ~ "Passenger: Bus, Rail, & Domestic Aviation",
+           subsector_final == "Domestic Aviation & Marine" ~ "Freight: Domestic Aviation & Marine",
+           subsector_final == "Cars, Trucks, & Motorcycles" ~ "Passenger: Cars, Trucks, & Motorcycles",
+           subsector_final == "Heavy-Duty Trucks & Rail" ~ "Freight: Heavy-Duty Trucks & Rail",
+                            TRUE ~ subsector_final))
 ## Data summaries 
 
 ## total in ktCO2e for most recent year 
 ghg_est_ktco2e <- bc_ghg_long %>%
-  filter(sector != "OTHER LAND USE (Not included in total B.C. emissions)") %>%
+  filter(!grepl("other emissions not included", sector, ignore.case = TRUE)) %>%
   group_by(year) %>%
   summarise(ghg_estimate = round(sum(ktCO2e, na.rm = TRUE), digits = 0)) %>% 
   mutate(sector = "British Columbia") %>% 
@@ -114,7 +164,7 @@ ghg_est_Mtco2e <- round(ghg_est_ktco2e/1000, digits = 1)
 
 ## Calculate ghg annual totals in ktCO2e
 bc_ghg_sum_ktco2e <- bc_ghg_long %>%
-  filter(sector != "OTHER LAND USE (Not included in total B.C. emissions)") %>%
+  filter(!grepl("other emissions not included", sector, ignore.case = TRUE)) %>%
   group_by(year) %>%
   summarise(ghg_estimate = round(sum(ktCO2e, na.rm = TRUE), digits = 0)) %>% 
   mutate(sector = "British Columbia") %>% 
@@ -144,9 +194,25 @@ three_year
 ten_year <- calc_inc(bc_ghg_sum_ktco2e$ghg_estimate, bc_ghg_sum_ktco2e$year, since = max_ghg_yr - 10)
 ten_year
 
+# Calculate CleanBC target level for 2025 compared to 2007 baseline
+
+baseline_2007 <- bc_ghg_sum_ktco2e$ghg_estimate[bc_ghg_sum_ktco2e$year==2007]
+
+clean_bc_2025 <- ((baseline_2007 * 0.84)/1000) #based on Clean BC target of 16% reduction from 2007 levels
+
+current_ghg <- bc_ghg_sum_ktco2e$ghg_estimate[bc_ghg_sum_ktco2e$year==max_ghg_yr]
+
+cleanbc_reduction <- round((1-(clean_bc_2025/ghg_est_Mtco2e))*100, digits=1)
+
+reduction_mt <- ghg_est_Mtco2e - clean_bc_2025
+
 # Create tmp folder if not already there and store clean data in local repository
 if (!exists("tmp")) dir.create("tmp", showWarnings = FALSE)
-save(bc_ghg_long, ghg_sector_sum, bc_ghg_sum, normalized_measures,
-     bc_ghg_per_capita, bc_ghg_energy,ghg_energy_group, max_ghg_yr,
-     ghg_est_Mtco2e, previous_year, baseline_year, file = "tmp/clean_data.RData")
+save(bc_ghg_long, ghg_sector_sum, bc_ghg_sum, bc_ghg_sum_no_forest, normalized_measures,
+     bc_ghg_per_capita, max_ghg_yr,
+     ghg_est_Mtco2e, previous_year, baseline_year, 
+     ghg_econ_long, econ_sector_sum, ghg_econ_sub, 
+     baseline_2007, clean_bc_2025, current_ghg, 
+     cleanbc_reduction, reduction_mt,
+     file = "tmp/clean_data.RData")
 
