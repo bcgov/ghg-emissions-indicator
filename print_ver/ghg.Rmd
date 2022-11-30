@@ -227,9 +227,9 @@ cat("\n\n### Other Industry\n\n")
 
 include_graphics(path = here("out", "OtherIndustry.png"))
 
-cat("\n\n### Deforestation\n\n")
+#cat("\n\n### Deforestation\n\n")
 
-include_graphics(path = here("out", "Deforestation.png"))
+#include_graphics(path = here("out", "Deforestation.png"))
 ``` 
 
 

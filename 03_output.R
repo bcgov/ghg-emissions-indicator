@@ -24,6 +24,7 @@ library(ggrepel)
 library(filesstrings) #for removing spaces in filename
 library(plotly)
 
+rm(list = ls())
 
 ## Read in plotting data from 02_clean.R if not already in environment
 if (!exists("bc_ghg_sum")) load("tmp/clean_data.RData")
@@ -46,11 +47,11 @@ x_scale <- scale_x_continuous(limits = c(1990, max_ghg_yr + 1),
                               expand = c(0,0))
 
 ## Line plot of total GHG emissions over time in British Columbia
-ghg_time <- ggplot(data = bc_ghg_sum, aes(x = year, y = ghg_estimate)) + 
+ghg_time = ggplot(data = bc_ghg_sum, aes(x = year, y = ghg_estimate)) + 
   geom_line(colour = "#1B9E77", size = 1.5) +
   geom_point(x=2025, y=clean_bc_2025, color="black", shape=19, size=2)+
-  geom_point(x=2007, y=baseline_2007/1000, color="black", shape=19, size=2)+
-  annotate("text", x=2020, y=clean_bc_2025, label="B.C. 2025 emission target")+
+  geom_point(x=2007, y=baseline_2007, color="black", shape=19, size=2)+
+  annotate("text", x=2021.5, y=clean_bc_2025, label="B.C. 2025 emission target")+
   annotate("text", x=2008, y=65, label = "2007 baseline")+
   labs(title = "Total GHG Emissions") +
   xlab(NULL) + 
@@ -142,8 +143,8 @@ econ_sector_sum_data <- econ_sector_sum %>%
 
 # Set colour palette for sector plot
 sector.order <- rev(levels(droplevels(econ_sector_sum_data$sector))) #gets rid of unused factors
-sector.no <- length(sector.order) + 1
-nb.cols<-9
+sector.no <- length(sector.order)# + 1
+nb.cols<- sector.no
 sector.pal <- colorRampPalette(brewer.pal(sector.no, "Dark2"))(nb.cols)
 col_db <- melt(data.frame(sector.order,sector.pal)) #for use in plotting individual sectors
 names(sector.pal) <- sector.order
@@ -158,27 +159,27 @@ ghg_sector <- ggplot(econ_sector_sum_data, aes(x=year, y=sum, color=fct_rev(sect
   geom_line(size = 1) +
   scale_color_manual(values = sector.pal) +
   geom_text_repel(aes(label=sector, size=1),
-                data = label_static, 
-                nudge_x=2, direction = "y", 
-                segment.size = 0.5,
-                xlim = c(max(label_static$year),
-                         max(label_static$year) + 5))+
+                  data = label_static, 
+                  nudge_x=2, direction = "y", 
+                  segment.size = 0.5,
+                  xlim = c(max(label_static$year),
+                           max(label_static$year) + 5))+
   xlab(NULL) +  ylab(bquote(Mt~CO[2]*e~" by Economic Sector")) +
   scale_x_continuous(limits = c(1990, max_ghg_yr+1), 
                      breaks = c(1990, seq(1993, max_ghg_yr + 1, 5)), 
                      expand = c(0,0))+
-
+  
   coord_cartesian(clip = "off") +
   theme_soe()+ 
   theme(panel.grid.major = element_line(size = 0.5, colour = "grey85"),
-         panel.grid.minor = element_line(size = 0.5, colour = "grey85"),
-         panel.grid.minor.x = element_blank(),
-         panel.grid.major.x = element_blank(),
-         axis.text.y = element_text(size = 14),
-         axis.text.x = element_text(size = 14),
-         axis.title.y = element_text(size = 16,
-                                     margin = margin(t = 0, r = 10, b = 0, l = 0,
-                                                     unit = "pt")))+
+        panel.grid.minor = element_line(size = 0.5, colour = "grey85"),
+        panel.grid.minor.x = element_blank(),
+        panel.grid.major.x = element_blank(),
+        axis.text.y = element_text(size = 14),
+        axis.text.x = element_text(size = 14),
+        axis.title.y = element_text(size = 16,
+                                    margin = margin(t = 0, r = 10, b = 0, l = 0,
+                                                    unit = "pt")))+
   theme(plot.margin = unit(c(0.5,3.5,0.5,0.5), "cm")) +
   theme(legend.position = "none")
 
@@ -243,8 +244,8 @@ ghg_abs_diff <- ggplot(data = abs_diff_econ,
         axis.title.y = element_text(size = 16,
                                     margin = margin(t = 0, r = 10, b = 0, l = 0,
                                                     unit = "pt")))+
-        theme(plot.margin = unit(c(0.5,3.5,0.5,0.5), "cm")) +
-        theme(legend.position = "none")
+  theme(plot.margin = unit(c(0.5,3.5,0.5,0.5), "cm")) +
+  theme(legend.position = "none")
 
 plot(ghg_abs_diff)
 
@@ -281,6 +282,8 @@ if (!exists("out"))  dir.create('out', showWarnings = FALSE)
 
 
 for (i in 1:length(sector.order)){
+  
+  print(i)
   
   x <- sector.order[i]
   plotcolor <- sector.pal[i]
