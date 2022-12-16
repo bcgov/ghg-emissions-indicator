@@ -21,7 +21,7 @@ See the License for the specific language governing permissions and limitations 
 ```
 ## Appendix A: Breakdown of Economic Sectors
 
--   Economic sectors were broken down into subsectors, where subsectors were available. Further information on the emissions categorized in each subsector are provided in the [British Columbia Greenhouse Gas Provincial Inventory Methodology](https://www2.gov.bc.ca/assets/gov/environment/climate-change/data/provincial-inventory/2018/bc_provincial_ghg_inventory_1990-2018_-_methodology_book.pdf)^2^.
+-   Economic sectors were broken down into subsectors, where subsectors were available. Further information on the emissions categorized in each subsector are provided in the [British Columbia Greenhouse Gas Provincial Inventory Methodology](https://www2.gov.bc.ca/assets/gov/environment/climate-change/data/provincial-inventory/2019/provincial_inventory_methodology_book_1990-2019.pdf)^2^.
 -   Each subsector contributes varying amounts of emissions to the sector total. Examining these breakdowns further can give us a greater insight into the sources of emissions in B.C.
 -   In each economic subsector figure below, the grey background shows the total emissions from each sector over time and the color sections show the contribution of each sub-sector compared to the sector total.
 

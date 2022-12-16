@@ -33,7 +33,7 @@ if (!exists("bc_ghg_sum")) load("tmp/clean_data.RData")
 ## Line plot theme
 theme_lineplots <- theme(
   axis.text.y = element_text(size = 14),
-  axis.text.x = element_text(size = 14),
+  axis.text.x = element_text(size = 14, vjust = -2),
   axis.title.y = element_text(size = 16,
                               margin = margin(t = 0, r = 10, b = 0, l = 0,
                                               unit = "pt")),
@@ -43,26 +43,28 @@ theme_lineplots <- theme(
 
 # Set plotting parameters common to many plots:
 x_scale <- scale_x_continuous(limits = c(1990, max_ghg_yr + 1), 
-                              breaks = c(1990, seq(1993, max_ghg_yr + 1, 5)), 
+                              breaks = seq(1990, 2020, 5), 
                               expand = c(0,0))
 
 ## Line plot of total GHG emissions over time in British Columbia
 ghg_time = ggplot(data = bc_ghg_sum, aes(x = year, y = ghg_estimate)) + 
   geom_line(colour = "#1B9E77", size = 1.5) +
-  geom_point(x=2025, y=clean_bc_2025, color="black", shape=19, size=2)+
-  geom_point(x=2007, y=baseline_2007, color="black", shape=19, size=2)+
-  annotate("text", x=2021.5, y=clean_bc_2025, label="B.C. 2025 emission target")+
-  annotate("text", x=2008, y=65, label = "2007 baseline")+
+  geom_point(x=2025, y=clean_bc_2025, color="black", shape=19, size=3)+
+  geom_point(x=2007, y=baseline_2007, color="black", shape=19, size=3)+
+  geom_segment(aes(x = 2006, xend = 2007, y = 64.2, yend = 65.5), size = 1) +
+  annotate("text", x=2021, y=clean_bc_2025, label="B.C. 2025 emission target", size = 5)+
+  annotate("text", x=2006, y=64, label = "2007 baseline", size = 5)+
   labs(title = "Total GHG Emissions") +
   xlab(NULL) + 
   ylab(bquote(Mt~CO[2]*e)) +
-  scale_y_continuous(limits = c(50, 72), breaks = seq(50, 72, 2),
+  scale_y_continuous(limits = c(50, 72), breaks = seq(52, 72, 2),
                      expand = c(0,0), labels = comma) +
   scale_x_continuous(limits = c(1990, 2026), 
-                     breaks = c(1990, seq(1995, 2025, 5)), 
-                     expand = c(0,0))+
+                     breaks = seq(1990, 2025, 5), 
+                     expand = c(0,0)) +
   theme_soe() +
   theme_lineplots
+# theme(axis.text.x = element_text(vjust = -2))
 plot(ghg_time)
 
 ## Line plot of total GHG emissions per person over time in British Columbia
@@ -71,7 +73,7 @@ ghg_pop <- ggplot(data = bc_ghg_per_capita, aes(x = year, y = ghg_per_capita)) +
   ggtitle("GHG Emissions per Person") +
   xlab(NULL) + 
   ylab(bquote(t~CO[2]*e~" per Person")) +
-  scale_y_continuous(limits = c(12,17.5), breaks = seq(12, 17.5, .5),
+  scale_y_continuous(limits = c(12,17.5), breaks = seq(12.5, 17.5, .5),
                      expand = c(0,0)) +
   x_scale +
   theme_soe() +
@@ -86,7 +88,7 @@ gdp_time <- ggplot(data = bc_ghg_per_capita,
   ggtitle("GHG Emissions per Million Dollars of GDP") +
   xlab(NULL) + 
   ylab(bquote(t~CO[2]*e~" per million dollars of GDP")) +
-  scale_y_continuous(limits = c(225,500), breaks = seq(225, 500, 25),
+  scale_y_continuous(limits = c(225,500), breaks = seq(250, 500, 25),
                      expand = c(0,0)) +
   x_scale +
   theme_soe() +
@@ -106,7 +108,7 @@ norm_base <- ggplot(data = normalized_measures,
                     aes(x = year, y = estimate, group = measure, 
                         colour = measure)) + 
   geom_line(size = 1.5) +
-  scale_y_continuous(limits = c(.9,2.1), breaks = seq(.9, 2, .1),
+  scale_y_continuous(limits = c(.9,2.2), breaks = seq(1, 2.2, .1),
                      expand = c(0,0)) +
   x_scale+
   labs(title = "Relative GHG Emissions, GDP & Population Size") +
@@ -158,30 +160,31 @@ label_static <- econ_sector_sum_data %>%
 ghg_sector <- ggplot(econ_sector_sum_data, aes(x=year, y=sum, color=fct_rev(sector))) + 
   geom_line(size = 1) +
   scale_color_manual(values = sector.pal) +
-  geom_text_repel(aes(label=sector, size=1),
-                  data = label_static, 
-                  nudge_x=2, direction = "y", 
-                  segment.size = 0.5,
-                  xlim = c(max(label_static$year),
-                           max(label_static$year) + 5))+
+  # geom_text_repel(aes(label=sector),
+  #                 data = label_static, 
+  #                 nudge_x=2, direction = "y", 
+  #                 segment.size = 0.5,
+  #                 xlim = c(max(label_static$year),
+  #                          max(label_static$year) + 5))+
   xlab(NULL) +  ylab(bquote(Mt~CO[2]*e~" by Economic Sector")) +
-  scale_x_continuous(limits = c(1990, max_ghg_yr+1), 
-                     breaks = c(1990, seq(1993, max_ghg_yr + 1, 5)), 
-                     expand = c(0,0))+
+  x_scale +
   
   coord_cartesian(clip = "off") +
+  labs(title = "GHG Emissions by Sector",
+       color = "Sector") +
   theme_soe()+ 
   theme(panel.grid.major = element_line(size = 0.5, colour = "grey85"),
         panel.grid.minor = element_line(size = 0.5, colour = "grey85"),
         panel.grid.minor.x = element_blank(),
         panel.grid.major.x = element_blank(),
+        title = element_text(size = 16),
         axis.text.y = element_text(size = 14),
         axis.text.x = element_text(size = 14),
         axis.title.y = element_text(size = 16,
                                     margin = margin(t = 0, r = 10, b = 0, l = 0,
                                                     unit = "pt")))+
-  theme(plot.margin = unit(c(0.5,3.5,0.5,0.5), "cm")) +
-  theme(legend.position = "none")
+  theme(plot.margin = unit(c(0.5,3.5,0.5,0.5), "cm"))
+  # theme(legend.position = "none")
 
 plot(ghg_sector)
 
@@ -227,25 +230,29 @@ ghg_abs_diff <- ggplot(data = abs_diff_econ,
   xlab(NULL) +  ylab(bquote("Annual Change in "~Mt~CO[2]*e~" from 1990 by Economic Sector")) +
   x_scale +
   scale_color_manual(values = sector.pal) +
-  geom_text_repel(aes(label=sector, size=1),
-                  data = abs_label_static, 
-                  nudge_x=2, direction = "y", 
-                  segment.size = 0.5,
-                  xlim = c(max(abs_label_static$year),
-                           max(abs_label_static$year) + 5))+
+  scale_size_continuous(guide = 'none') +
+  # geom_text_repel(aes(label=sector, size=1),
+  #                 data = abs_label_static, 
+  #                 nudge_x=2, direction = "y", 
+  #                 segment.size = 0.5,
+  #                 xlim = c(max(abs_label_static$year),
+  #                          max(abs_label_static$year) + 5))+
+  labs(title = "Change in GHG Emissions by Sector",
+       color = "Sector") +
   coord_cartesian(clip = "off") +
   theme_soe() +
   theme(panel.grid.major = element_line(size = 0.5, colour = "grey85"),
         panel.grid.minor = element_line(size = 0.5, colour = "grey85"),
         panel.grid.minor.x = element_blank(),
         panel.grid.major.x = element_blank(),
+        title = element_text(size = 16),
         axis.text.y = element_text(size = 14),
         axis.text.x = element_text(size = 14),
         axis.title.y = element_text(size = 16,
                                     margin = margin(t = 0, r = 10, b = 0, l = 0,
                                                     unit = "pt")))+
-  theme(plot.margin = unit(c(0.5,3.5,0.5,0.5), "cm")) +
-  theme(legend.position = "none")
+  theme(plot.margin = unit(c(0.5,3.5,0.5,0.5), "cm"))
+  # theme(legend.position = "none")
 
 plot(ghg_abs_diff)
 
@@ -297,7 +304,7 @@ for (i in 1:length(sector.order)){
                nrow = ifelse(s > 3, 2, 1), 
                labeller = label_wrap_gen(width = 25, multi_line = TRUE)) +
     xlab(NULL) + ylab(bquote(Mt~CO[2]*e)) +
-    scale_x_continuous(limits = c(1990, max_ghg_yr + 1), breaks = seq(1993, max_ghg_yr, 5), 
+    scale_x_continuous(limits = c(1990, max_ghg_yr + 1), breaks = c(seq(1994, 2016, 5),2020),
                        expand = c(0,0)) +
     theme_soe_facet() +
     theme(legend.position = ("none"),
@@ -340,12 +347,17 @@ save(ghg_time, ghg_pop, gdp_time, norm, norm_print,
 
 ## Printing plots for web in SVG formats (and PNG) 
 #total ghg over time
-svg_px("./out/ghg_plot.svg", width = 500, height = 400)
+svg_px("./out/ghg_plot.svg", width = 1000, height = 700)
 plot(ghg_time)
 dev.off()
 
-png_retina(filename = "./out/ghg_plot.png", width = 500, height = 400,
-           units = "px", type = "cairo-png", antialias = "default")
+# ggsave("./out/ghg_plot.png", ghg_time, 
+#        width = 1500, height = 750, 
+#        dpi = 100,
+#        units = 'px')
+
+png_retina(filename = "./out/ghg_plot.png", width = 6, height = 3,
+           units = "in", type = "cairo-png", antialias = "default")
 plot(ghg_time)
 dev.off()
 
@@ -355,8 +367,8 @@ svg_px("./out/ghg_pop_plot.svg", width = 500, height = 400)
 plot(ghg_pop)
 dev.off()
 
-png_retina(filename = "./out/ghg_pop_plot.png", width = 500, height = 400,
-           units = "px", type = "cairo-png", antialias = "default")
+png_retina(filename = "./out/ghg_pop_plot.png", width = 6, height = 3,
+           units = "in", type = "cairo-png", antialias = "default")
 plot(ghg_pop)
 dev.off()
 
@@ -366,8 +378,8 @@ svg_px("./out/ghg_gdp_plot.svg", width = 500, height = 400)
 plot(gdp_time)
 dev.off()
 
-png_retina(filename = "./out/ghg_gdp_plot.png", width = 500, height = 400,
-           units = "px", type = "cairo-png", antialias = "default")
+png_retina(filename = "./out/ghg_gdp_plot.png", width = 6, height = 3,
+           units = "in", type = "cairo-png", antialias = "default")
 plot(gdp_time)
 dev.off()
 
@@ -377,8 +389,8 @@ svg_px("./out/norm_plot.svg", width = 500, height = 400)
 plot(norm)
 dev.off()
 
-png_retina(filename = "./out/norm_plot.png", width = 500, height = 400,
-           units = "px", type = "cairo-png", antialias = "default")
+png_retina(filename = "./out/norm_plot.png",width = 6, height = 3,
+           units = "in", type = "cairo-png", antialias = "default")
 plot(norm)
 dev.off()
 
@@ -387,8 +399,8 @@ svg_px("./out/ghg_sector.svg", width = 850, height = 500)
 plot(ghg_sector)
 dev.off()
 
-png_retina(filename = "./out/ghg_sector.png", width = 850, height = 500,
-           units = "px", type = "cairo-png", antialias = "default")
+png_retina(filename = "./out/ghg_sector.png", width = 6, height = 3,
+           units = "in", type = "cairo-png", antialias = "default")
 plot(ghg_sector)
 dev.off()
 
@@ -397,9 +409,34 @@ svg_px("./out/econ_sector_abs_diff.svg", width = 850, height = 500)
 plot(ghg_abs_diff)
 dev.off()
 
-png_retina(filename = "./out/econ_sector_abs_diff.png", width = 850, height = 500,
-           units = "px", type = "cairo-png", antialias = "default")
+png_retina(filename = "./out/econ_sector_abs_diff.png", width = 6, height = 3,
+           units = "in", type = "cairo-png", antialias = "default")
 plot(ghg_abs_diff)
 dev.off()
+
+# Copy PNG files from /out folder to figure-HTML folders.
+list.files(path = './out', pattern = '.png') %>% 
+  purrr::map( ~ {
+    #To local machine's 'print_ver' folder...
+    file.copy(from = paste0('out/',.x),to = paste0('print_ver/images_for_HTML/',.x),
+              overwrite = T)
+    
+    #Rename 5 figures that we copied to D: drive.
+    figure_alt_name = case_when(
+      .x == 'ghg_gdp_plot.png' ~ 'ghggdp.png',
+      .x == 'ghg_plot.png' ~ 'ghgtrends.png',
+      .x == 'ghg_pop_plot.png' ~ 'ghgpop.png',
+      .x == 'norm_plot.png' ~ 'norm.png',
+      T ~ .x
+    )
+    
+    #Copy just the 4 static images to D: drive ('question' development server)'s '.\sustainability\ghg_files\figure-html' folder.
+    if(.x %in% c('ghg_gdp_plot.png','ghg_plot.png','ghg_pop_plot.png','norm_plot.png')){
+      file.copy(from = paste0('out/',.x),to = paste0('D:/indicators/sustainability/ghg_files/figure-html/',figure_alt_name),
+                overwrite = T)
+    }
+    
+  })
+
 
 #END

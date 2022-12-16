@@ -42,6 +42,8 @@ bc_ghg = bc_ghg %>%
   
 ## Convert ghg data from wide to long format 
 bc_ghg_long = bc_ghg %>% 
+  # Remove 'Other Land Use' sector
+  filter(sector != "OTHER LAND USE") %>% 
   pivot_longer(cols = -c(sector,starts_with("subsector")), 
                names_to = "year", values_to = "MtCO2e") %>% 
   mutate(MtCO2e = as.numeric(MtCO2e),
@@ -129,10 +131,11 @@ ghg_econ = ghg_econ %>%
   fill(subsector_level1, .direction = 'down') %>% 
   mutate(subsector_level2 = ifelse(sector_level == 'subsector_level2' | sector_level == 'sector' | sector_level == 'subsector_level1', ghg_category, NA)) %>% 
   fill(subsector_level2, .direction = 'down') %>% 
-  # mutate(subsector_level2 = ifelse(is.na(subsector_level2), subsector_level1, subsector_level2)) %>% 
-  #mutate(subsector_level3 = ifelse(sector_level == 'subsector_level3', ghg_category, NA)) %>% 
-  #mutate(subsector_level3 = ifelse(is.na(subsector_level3), subsector_level2, subsector_level3)) %>% 
   select(sector, starts_with("subsector"), everything(), -sector_level, -ghg_category)
+
+# Remove the 'OTHER LAND USE' category from the ghg_econ object.
+ghg_econ = ghg_econ %>% 
+  filter(sector != "OTHER LAND USE")
 
 ## Convert ghg data from wide to long format 
 ghg_econ_long = ghg_econ %>% 
@@ -212,18 +215,15 @@ ghg_econ_sub <- ghg_econ_sub %>%
 ## Data summaries 
 
 ## total in MtCO2e for most recent year 
-ghg_est_Mtco2e <- bc_ghg_long %>%
-  # filter(!grepl("other emissions not included", sector, ignore.case = TRUE)) %>%
+ghg_est_Mtco2e <- ghg_sector_sum %>%
   group_by(year) %>%
-  summarise(ghg_estimate = round(sum(MtCO2e, na.rm = TRUE), digits = 0)) %>% 
+  summarise(ghg_estimate = round(sum(sum, na.rm = TRUE), digits = 1)) %>% 
   mutate(sector = "British Columbia") %>% 
   select(sector, year, ghg_estimate) %>% 
   filter(year == max_ghg_yr) %>% 
   pull()
+
 ghg_est_Mtco2e
-
-# ghg_est_Mtco2e <- round(ghg_est_ktco2e/1000, digits = 1)
-
 
 ## Calculate ghg annual totals in MtCO2e
 bc_ghg_sum_Mtco2e <- bc_ghg_long %>%
@@ -261,8 +261,8 @@ baseline_year <- calc_inc(bc_ghg_sum_Mtco2e$ghg_estimate, bc_ghg_sum_Mtco2e$year
 baseline_year
 three_year <- calc_inc(bc_ghg_sum_Mtco2e$ghg_estimate, bc_ghg_sum_Mtco2e$year, since = max_ghg_yr - 3)
 three_year
-ten_year <- calc_inc(bc_ghg_sum_Mtco2e$ghg_estimate, bc_ghg_sum_Mtco2e$year, since = max_ghg_yr - 10)
-ten_year
+# ten_year <- calc_inc(bc_ghg_sum_Mtco2e$ghg_estimate, bc_ghg_sum_Mtco2e$year, since = max_ghg_yr - 10)
+# ten_year
 
 # Calculate CleanBC target level for 2025 compared to 2007 baseline
 
