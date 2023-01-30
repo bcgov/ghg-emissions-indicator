@@ -24,8 +24,6 @@ library(ggrepel)
 library(filesstrings) #for removing spaces in filename
 library(plotly)
 
-rm(list = ls())
-
 ## Read in plotting data from 02_clean.R if not already in environment
 if (!exists("bc_ghg_sum")) load("tmp/clean_data.RData")
 
@@ -190,7 +188,6 @@ plot(ghg_sector)
 
 ## Interactive sector plot for ggplotly html output
 
-
 ghg_sector_html <- ggplot(econ_sector_sum_data) + 
   geom_line(aes(x = year, y = sum, color=fct_rev(sector), 
                 text = paste0(sector, " (", year, "): ", sum, " MtCO<sub>2</sub>e"),
@@ -218,7 +215,7 @@ plot(ghg_sector_html)
 
 ### Absolute difference in CO2e emissions by economic sector
 abs_diff_econ <- plyr::ddply(econ_sector_sum_data, .(sector), 
-                             transform, abs.diff = (sum - sum[year==1990])) 
+                             transform, abs.diff = round((sum - sum[year==1990]),1))
 
 abs_label_static <- abs_diff_econ %>%
   filter(year==max(year)) %>%
@@ -227,7 +224,7 @@ abs_label_static <- abs_diff_econ %>%
 ghg_abs_diff <- ggplot(data = abs_diff_econ, 
                        aes(x = year, y = abs.diff, color = fct_rev(sector))) + 
   geom_line(size=1) +
-  xlab(NULL) +  ylab(bquote("Annual Change in "~Mt~CO[2]*e~" from 1990 by Economic Sector")) +
+  xlab(NULL) +  ylab(bquote("Net Difference in Emissions from 1990 ("~Mt~CO[2]*e~")")) +
   x_scale +
   scale_color_manual(values = sector.pal) +
   scale_size_continuous(guide = 'none') +
@@ -266,7 +263,7 @@ ghg_abs_diff_html <- ggplot(abs_diff_econ) +
   scale_color_manual(name = "Economic Sector", values = sector.pal,
                      limits = sector.order) +
   x_scale +
-  labs(x="Year", y="Annual Change in Emissions from 1990<br>(MtCO<sub>2</sub>e)")+
+  labs(x="Year", y="Net Difference in Emissions from 1990<br>(MtCO<sub>2</sub>e)")+
   theme_soe() +
   theme(panel.grid.major = element_line(size = 0.5, colour = "grey85"),
         panel.grid.minor = element_line(size = 0.5, colour = "grey85"),
@@ -282,7 +279,6 @@ ghg_abs_diff_html <- ggplot(abs_diff_econ) +
         legend.background = element_rect(colour = "white"))
 
 plot(ghg_abs_diff_html)
-
 
 ## Create a folder in directory called out for image files
 if (!exists("out"))  dir.create('out', showWarnings = FALSE)
