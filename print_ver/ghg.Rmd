@@ -2,9 +2,9 @@
 topic: "sustainability"
 title: "Trends in Greenhouse Gas Emissions in B.C. (1990-2020)"
 output: 
+  pdf_document: envreportutils.internal::print_ver
   html_document:
     self_contained: false
-  pdf_document: envreportutils.internal::print_ver
 editor_options: 
   chunk_output_type: console
 ---
@@ -152,9 +152,10 @@ ggplot(data = bc_ghg_sum, aes(x = year, y = ghg_estimate)) +
 ```{r ghgpop, fig.alt="Greenhouse gas emissions per capita plotted over time from 1990 to 2020"}
 ghg_pop + theme_print + 
   labs(caption = 
-    "\n*  To compare to per capita emissions from other jurisdictions, the afforestation and deforestation emissions included
+    "\n* To compare to per capita emissions from other jurisdictions, the afforestation and deforestation emissions
          in the B.C. inventory were removed for this calculation, as these emission sources are not tracked everywhere. 
-         More details on these emissions are available below.")
+         More details on these emissions are available below.") + 
+  theme(plot.caption.position = "panel")
 ```
 
 \newpage
@@ -289,7 +290,7 @@ include_graphics('images_for_HTML/OtherIndustry.png')
 
 ## Methods
 
-The [British Columbia Greenhouse Gas Provincial Inventory Methodology](https://www2.gov.bc.ca/assets/gov/environment/climate-change/data/provincial-inventory/2019/provincial_inventory_methodology_book_1990-2019.pdf)^3^ provides a description of the methodologies and data sources used in preparing B.C.'s greenhouse gas emissions inventory. Currently, most of the Provincial Inventory data comes from [Canada's National Inventory Report (NIR)](http://www.publications.gc.ca/site/eng/9.506002/publication.html).^4^ In addition to using the NIR data, the B.C. Provincial Inventory generally follows the same methods and uses the same categories. Any deviations from the NIR methodology or categorization is described in detail in the B.C. Provincial Inventory Methodology^3^. Additional information is also available in the [British Columbia Greenhouse Gas Emission Inventory Report (2020)](https://www2.gov.bc.ca/gov/content/environment/climate-change/data/provincial-inventory)^2^.
+The [British Columbia Greenhouse Gas Provincial Inventory Methodology](https://www2.gov.bc.ca/assets/gov/environment/climate-change/data/provincial-inventory/2019/provincial_inventory_methodology_book_1990-2019.pdf)^3^ provides a description of the methodologies and data sources used in preparing B.C.'s greenhouse gas emissions inventory. Currently, most of the Provincial Inventory data and methods come from [Canada's National Inventory Report (NIR)](http://www.publications.gc.ca/site/eng/9.506002/publication.html).^4^ Any deviations from the NIR methodology or categorization is described in detail in the B.C. Provincial Inventory Methodology^3^. Additional information is also available in the [British Columbia Greenhouse Gas Emission Inventory Report (2020)](https://www2.gov.bc.ca/gov/content/environment/climate-change/data/provincial-inventory)^2^.
 
 Greenhouse gas emissions include carbon dioxide (CO~2~), methane (CH~4~), nitrous oxide (N~2~O), sulphur hexafluoride (SF~6~), perfluorocarbons (PFCs), hydrofluorocarbons (HFCs) and nitrogen trifluoride (NF~3~) released by human activity---these emissions are reported collectively here as millions of tonnes of carbon dioxide equivalent (Mt CO~2~e). British Columbia population estimates ([Table: 17-10-0005-01](https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=1710000501)) and gross domestic product ([Table: 36-10-0222-01](https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=3610022201)) data were sourced from [Statistics Canada](https://www.statcan.gc.ca/eng/start). Gross domestic product (GDP) is calculated using expenditure-based GDP and reported in millions of chained 2012 dollars.
 
