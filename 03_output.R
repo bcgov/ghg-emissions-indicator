@@ -27,7 +27,6 @@ library(plotly)
 ## Read in plotting data from 02_clean.R if not already in environment
 if (!exists("bc_ghg_sum")) load("tmp/clean_data.RData")
 
-
 ## Line plot theme
 theme_lineplots <- theme(
   axis.text.y = element_text(size = 14),
@@ -410,29 +409,4 @@ png_retina(filename = "./out/econ_sector_abs_diff.png", width = 6, height = 3,
 plot(ghg_abs_diff)
 dev.off()
 
-# Copy PNG files from /out folder to figure-HTML folders.
-list.files(path = './out', pattern = '.png') %>% 
-  purrr::map( ~ {
-    #To local machine's 'print_ver' folder...
-    file.copy(from = paste0('out/',.x),to = paste0('print_ver/images_for_HTML/',.x),
-              overwrite = T)
-    
-    #Rename 5 figures that we copied to D: drive.
-    figure_alt_name = case_when(
-      .x == 'ghg_gdp_plot.png' ~ 'ghggdp.png',
-      .x == 'ghg_plot.png' ~ 'ghgtrends.png',
-      .x == 'ghg_pop_plot.png' ~ 'ghgpop.png',
-      .x == 'norm_plot.png' ~ 'norm.png',
-      T ~ .x
-    )
-    
-    #Copy just the 4 static images to D: drive ('question' development server)'s '.\sustainability\ghg_files\figure-html' folder.
-    if(.x %in% c('ghg_gdp_plot.png','ghg_plot.png','ghg_pop_plot.png','norm_plot.png')){
-      file.copy(from = paste0('out/',.x),to = paste0('D:/indicators/sustainability/ghg_files/figure-html/',figure_alt_name),
-                overwrite = T)
-    }
-    
-  })
 
-
-#END

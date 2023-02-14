@@ -24,14 +24,14 @@ There are three core scripts that are required for the indicator, they need to b
 
 The `run_all.R` script can be `source`ed to run it all at once.
 
-Most packages used in the analysis can be installed from CRAN using `install.packages()`, but you will need to install [envreportutils](https://github.com/bcgov/envreportutils) and [cansim](https://github.com/mountainMath/cansim) using remotes:
+Most packages used in the analysis can be installed from CRAN using `install.packages()`, but you will need to install [envreportutils](https://github.com/bcgov/envreportutils) using remotes:
 
 
 ```r
 install.packages("remotes") # If you don't already have it installed
 
 remotes::install_github("bcgov/envreportutils")
-remotes::install_github("mountainmath/cansim")
+
 ```
 
 ## Getting Help or Reporting an Issue
@@ -46,7 +46,7 @@ Please note that this project is released with a [Contributor Code of Conduct](C
 
 ## License
 
-    Copyright 2016 Province of British Columbia
+    Copyright 2023 Province of British Columbia
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.

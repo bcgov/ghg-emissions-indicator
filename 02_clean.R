@@ -19,7 +19,7 @@ library(forcats) #work with factors
 library(scales) #comma()
 library(envreportutils) #to_titlecase()
 
-rm(list = ls())
+
 ## Read in raw data from 01_load.R if not already in environment
 if (!exists("bc_ghg")) load("tmp/raw_data.RData")
 
@@ -276,8 +276,8 @@ cleanbc_reduction <- round((1-(clean_bc_2025/ghg_est_Mtco2e))*100, digits=1)
 
 reduction_mt <- ghg_est_Mtco2e - clean_bc_2025
 
-# Create tmp folder if not already there and store clean data in local repository
-if (!exists("tmp")) dir.create("tmp", showWarnings = FALSE)
+# store clean data in local repository
+
 save(bc_ghg_long, ghg_sector_sum, bc_ghg_sum, bc_ghg_sum_no_forest, normalized_measures,
      bc_ghg_per_capita, max_ghg_yr,
      ghg_est_Mtco2e, previous_year, baseline_year, 

@@ -21,7 +21,7 @@ library(envreportutils)
 
 if(!dir.exists('tmp'))dir.create('tmp')
 
-## Get British Columbia Greehhosue Gas Emissions estimates from B.C. Data Catalogue 
+## Get British Columbia Greenhouse Gas Emissions estimates from B.C. Data Catalogue 
 ## from https://catalogue.data.gov.bc.ca/dataset/british-columbia-greenhouse-gas-emissions
 ## Data is released under the Open Government License - British Columbia 
 ## https://www2.gov.bc.ca/gov/content?id=A519A56BC2BF44E4A008B33FCF527F61
@@ -32,7 +32,7 @@ if(!dir.exists('tmp'))dir.create('tmp')
 # bc_ghg <- bcdc_get_data(record="24c899ee-ef73-44a2-8569-a0d6b094e60c", 
 #                         resource='11b1da01-fabc-406c-8b13-91e87f126dec')
 
-bc_ghg = read.csv('tmp/bc_ghg_emissions_by_activity_categories_1990-2020.csv') %>% 
+bc_ghg = read.csv('data/bc_ghg_emissions_by_activity_categories_1990-2020.csv') %>% 
   as_tibble()
 
 # get the most recent year in numeric format 
@@ -49,7 +49,7 @@ max_ghg_yr <- as.numeric(bc_ghg_yr)
 # ghg_econ <- bcdc_get_data(record='24c899ee-ef73-44a2-8569-a0d6b094e60c', 
 #                           resource='1baa8e16-f1fd-4ea9-9a1d-15f46a5ca066')
 
-ghg_econ = read.csv('tmp/bc_ghg_emissions_by_economic_sector_1990-2020.csv') %>% 
+ghg_econ = read.csv('data/bc_ghg_emissions_by_economic_sector_1990-2020.csv') %>% 
   as_tibble()
 
 ## Get British Columbia Population Estimates [Table: 17-10-0005-01 
