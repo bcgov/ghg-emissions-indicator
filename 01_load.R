@@ -20,6 +20,10 @@ library(envreportutils)
 
 if(!dir.exists('tmp'))dir.create('tmp')
 
+## Remember to first run the envreportbc-snippets project 
+## (specifically, ghg_pi_econ-sector.R and ghg_pi_ipcc-sector.R) and then transfer
+## the two .CSV files produced into the tmp folder.
+
 ## Get British Columbia Greenhouse Gas Emissions estimates from B.C. Data Catalogue 
 ## from https://catalogue.data.gov.bc.ca/dataset/british-columbia-greenhouse-gas-emissions
 ## Data is released under the Open Government License - British Columbia 

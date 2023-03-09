@@ -44,7 +44,9 @@ bc_ghg_long <- bc_ghg %>%
     x <- str_replace(to_titlecase(.x), "(\\b)and(\\b)", "\\1&\\2")
     str_remove(x, regex("\\s\\(ippu\\)", ignore_case = TRUE))
   }
-  ))
+  )) %>% 
+  mutate(sector = ifelse(sector == 'Land-Use Change', 'Afforestation & Deforestation', sector)) %>% 
+  mutate(subsector_level1 = ifelse(subsector_level1 == 'Transport', 'Transportation', subsector_level1))
 
 
 ## Summarize ghg emissions per sector per year and 
@@ -117,7 +119,11 @@ ghg_econ_long <- ghg_econ %>%
     x <- str_replace(to_titlecase(.x), "(\\b)and(\\b)", "\\1&\\2")
     str_remove(x, regex("\\s\\(ippu\\)", ignore_case = TRUE))
   }
-  ))
+  )) %>% 
+  mutate(sector = case_when(
+    sector == 'Transport' ~ 'Transportation', 
+    sector == 'Land-Use Change' ~ 'Afforestation & Deforestation',
+    T ~ sector))
 
 # To shorten names for plotting
 ghg_econ_long <- ghg_econ_long %>%
