@@ -11,3 +11,4 @@ README.html
 .DS_Store
 print_ver/*.tex
 print_ver/*.log
+*.docx
