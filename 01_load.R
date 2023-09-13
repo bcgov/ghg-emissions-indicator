@@ -1,3 +1,8 @@
+#' ---
+#' title: "Load data for ghg indicator"
+#' output: github_document
+#' ---
+
 # Copyright 2018 Province of British Columbia
 # 
 # Licensed under the Apache License, Version 2.0 (the "License");
