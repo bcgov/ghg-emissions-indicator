@@ -35,18 +35,18 @@ if(!dir.exists('tmp'))dir.create('tmp')
 # bc_ghg <- bcdc_get_data(record="24c899ee-ef73-44a2-8569-a0d6b094e60c", 
 #                         resource='11b1da01-fabc-406c-8b13-91e87f126dec')
 
-bc_ghg = read.csv('tmp/bc_ghg_emissions_by_ipcc_sector_1990-2020.csv') |> 
-  as_tibble()
+# bc_ghg = read.csv('tmp/bc_ghg_emissions_by_ipcc_sector_1990-2020.csv') |> 
+#   as_tibble()
 
 #If the year columns have had an 'X' added to them... sometimes happens.
-colnames(bc_ghg) = gsub(pattern = '^X', replacement = '', x = names(bc_ghg))
+# colnames(bc_ghg) = gsub(pattern = '^X', replacement = '', x = names(bc_ghg))
 
 # get the most recent year in numeric format 
-bc_ghg_yr <- bc_ghg |>
-  select(max(matches("^20"))) |>
-  colnames()
-
-max_ghg_yr <- as.numeric(bc_ghg_yr)
+# bc_ghg_yr <- bc_ghg |>
+#   select(max(matches("^20"))) |>
+#   colnames()
+# 
+# max_ghg_yr <- as.numeric(bc_ghg_yr)
 
 #bring in economic sector data
 # url https://catalogue.data.gov.bc.ca/dataset/british-columbia-greenhouse-gas-emissions/resource/1baa8e16-f1fd-4ea9-9a1d-15f46a5ca066
@@ -54,7 +54,7 @@ max_ghg_yr <- as.numeric(bc_ghg_yr)
 # ghg_econ <- bcdc_get_data(record='24c899ee-ef73-44a2-8569-a0d6b094e60c', 
 #                           resource='1baa8e16-f1fd-4ea9-9a1d-15f46a5ca066')
 
-ghg_econ = read.csv('tmp/bc_ghg_emissions_by_economic_sector_1990-2020.csv') |> 
+ghg_econ = read.csv('tmp/bc_ghg_emissions_by_economic_sector_1990-2021.csv') |> 
   as_tibble()
 
 #If the year columns have had an 'X' added to them... sometimes happens.
