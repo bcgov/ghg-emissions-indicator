@@ -210,7 +210,7 @@ ten_year
 
 # Calculate CleanBC target level for 2025 compared to 2007 baseline
 
-baseline_2007 <- bc_ghg_sum_ktco2e$ghg_estimate[bc_ghg_sum_ktco2e$year==2007]
+baseline_2007 = bc_ghg_sum$ghg_estimate[bc_ghg_sum$year==2007]
 
 # clean_bc_2025 <- ((baseline_2007 * 0.84)/1000) #based on Clean BC target of 16% reduction from 2007 levels
 clean_bc_2025 <- (baseline_2007 * 0.84) #based on Clean BC target of 16% reduction from 2007 levels
