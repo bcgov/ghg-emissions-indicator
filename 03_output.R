@@ -125,7 +125,7 @@ norm_print <- norm_base +
   annotate("text", label = "GDP", colour = "#D95F02",
            x = 2004.1, y = 1.56, size = 3) +
   annotate("text", label = "GHG", colour = "#1B9E77",
-           x = 2010, y = 1.14, size = 3) +
+           x = 2010, y = 1.19, size = 3) +
   annotate("text", label = "Population", colour = "#7570B3",
            x = 2009, y = 1.41, size = 3)
 plot(norm_print)
