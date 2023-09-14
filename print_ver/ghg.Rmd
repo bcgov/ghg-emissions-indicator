@@ -2,9 +2,9 @@
 topic: "sustainability"
 title: "Trends in Greenhouse Gas Emissions in B.C. (1990-2021)"
 output: 
-  pdf_document: envreportutils.internal::print_ver
   html_document:
     self_contained: false
+  pdf_document: envreportutils.internal::print_ver
 editor_options: 
   chunk_output_type: console
 ---
@@ -151,7 +151,7 @@ ggplot(data = bc_ghg_sum, aes(x = year, y = ghg_estimate)) +
 
 \vspace{.2cm}
 
-```{r ghgpop, fig.alt="Greenhouse gas emissions per capita plotted over time from 1990 to 2020"}
+```{r ghgpop, fig.alt="Greenhouse gas emissions per capita plotted over time from 1990 to 2021"}
 ghg_pop + theme_print + 
   labs(caption = 
     "\n* To compare to per capita emissions from other jurisdictions, the afforestation and deforestation emissions
@@ -166,7 +166,7 @@ ghg_pop + theme_print +
 
 \vspace{.8cm}
 
-```{r ghggdp, fig.alt="Greenhouse gas emissions per million dollars of GDP plotted over time from 1990 to 2020."}
+```{r ghggdp, fig.alt="Greenhouse gas emissions per million dollars of GDP plotted over time from 1990 to 2021."}
 gdp_time + theme_print
 ```
 
@@ -176,7 +176,7 @@ gdp_time + theme_print
 
 \vspace{0.2cm}
 
-```{r norm, fig.alt="GDP, population, and greenhouse gas emissions are plotted as three separate lines from 1990 to 2020."}
+```{r norm, fig.alt="GDP, population, and greenhouse gas emissions are plotted as three separate lines from 1990 to 2021."}
 norm_print + 
   theme_print
 ```
@@ -202,7 +202,7 @@ norm_print +
 include_graphics(path = here("out", "ghg_sector.png"))
 ```
 
-```{r include=is_html, eval=is_html, fig.height=5, fig.width=11, fig.alt= "An interactive plot shows the greenhouse gas emissions from each economic sector from 1990 to 2020."}
+```{r include=is_html, eval=is_html, fig.height=5, fig.width=11, fig.alt= "An interactive plot shows the greenhouse gas emissions from each economic sector from 1990 to 2021."}
 
 ggplotly(ghg_sector_html, tooltip="text", dynamicTicks = TRUE) %>%
   rangeslider() #%>% 
