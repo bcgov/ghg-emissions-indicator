@@ -130,7 +130,7 @@ ggplot(data = bc_ghg_sum, aes(x = year, y = ghg_estimate)) +
   geom_line(colour = "#1B9E77", size = 1.5) +
   geom_point(x=2025, y=clean_bc_2025, color="black", shape=19, size=2)+
   geom_point(x=2007, y=baseline_2007, color="black", shape=19, size=2)+
-  geom_segment(aes(x = 2005, xend = 2007, y = 62, yend = 65.5), size = 0.5) +
+  geom_segment(aes(x = 2004, xend = 2007, y = 62, yend = baseline_2007), size = 0.7) +
   annotate("text", x=2018.5, y=clean_bc_2025, label="B.C. 2025 emission target", size = 4)+
   annotate("text", x=2004, y=61, label = "2007 baseline", size = 4)+
   labs(title = "Total GHG Emissions") +
