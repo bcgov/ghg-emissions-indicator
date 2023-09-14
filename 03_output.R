@@ -103,7 +103,7 @@ norm_base <- ggplot(data = normalized_measures,
                     aes(x = year, y = estimate, group = measure, 
                         colour = measure)) + 
   geom_line(linewidth = 1.5) +
-  scale_y_continuous(limits = c(.9,2.1), breaks = seq(.9, 2, .1),
+  scale_y_continuous(limits = c(.9,2.3), breaks = seq(.9, 2.3, .1),
                      expand = c(0,0)) +
   x_scale+
   labs(title = "Relative GHG Emissions, GDP & Population Size") +
