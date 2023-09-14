@@ -155,15 +155,15 @@ label_static <- econ_sector_sum_data %>%
 ghg_sector <- ggplot(econ_sector_sum_data, aes(x=year, y=sum, color=fct_rev(sector))) + 
   geom_line(linewidth = 1) +
   scale_color_manual(values = sector.pal) +
-  geom_text_repel(aes(label=sector, size=1),
-                  data = label_static, 
-                  nudge_x=2, direction = "y", 
-                  segment.size = 0.5,
-                  xlim = c(max(label_static$year),
-                           max(label_static$year) + 5))+
+  # geom_text_repel(aes(label=sector, size=1),
+  #                 data = label_static,
+  #                 nudge_x=2, direction = "y",
+  #                 segment.size = 0.5,
+  #                 xlim = c(max(label_static$year),
+  #                          max(label_static$year) + 5))+
   xlab(NULL) +  ylab(bquote(Mt~CO[2]*e~" by Economic Sector")) +
   scale_x_continuous(limits = c(1990, max_ghg_yr+1), 
-                     breaks = c(1990, seq(1993, max_ghg_yr + 1, 5)), 
+                     breaks = c(1990, seq(1993, max_ghg_yr + 1, 5), 2021), 
                      expand = c(0,0))+
   
   coord_cartesian(clip = "off") +
