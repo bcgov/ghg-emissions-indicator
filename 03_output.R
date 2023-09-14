@@ -222,12 +222,12 @@ ghg_abs_diff <- ggplot(data = abs_diff_econ,
   xlab(NULL) +  ylab(bquote("Annual Change in "~Mt~CO[2]*e~" from 1990 by Economic Sector")) +
   x_scale +
   scale_color_manual(values = sector.pal) +
-  geom_text_repel(aes(label=sector, size=1),
-                  data = abs_label_static, 
-                  nudge_x=2, direction = "y", 
-                  segment.size = 0.5,
-                  xlim = c(max(abs_label_static$year),
-                           max(abs_label_static$year) + 5))+
+  # geom_text_repel(aes(label=sector, size=1),
+  #                 data = abs_label_static, 
+  #                 nudge_x=2, direction = "y", 
+  #                 segment.size = 0.5,
+  #                 xlim = c(max(abs_label_static$year),
+  #                          max(abs_label_static$year) + 5))+
   coord_cartesian(clip = "off") +
   theme_soe() +
   theme(panel.grid.major = element_line(size = 0.5, colour = "grey85"),
