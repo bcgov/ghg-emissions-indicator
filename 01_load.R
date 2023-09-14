@@ -96,4 +96,4 @@ bc_pop_gdp <- bc_pop |>
 write_csv(bc_pop_gdp, "tmp/bc_ghg_related_data.csv")
 
 # Create tmp folder if not already there and store objects in local repository
-save(bc_ghg, bc_pop_gdp, max_ghg_yr, ghg_econ, file = "tmp/raw_data.RData")
+save(bc_pop_gdp, max_ghg_yr, ghg_econ, file = "tmp/raw_data.RData")
