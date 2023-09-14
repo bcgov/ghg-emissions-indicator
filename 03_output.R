@@ -40,7 +40,7 @@ theme_lineplots <- theme(
 
 # Set plotting parameters common to many plots:
 x_scale <- scale_x_continuous(limits = c(1990, max_ghg_yr + 1), 
-                              breaks = c(1990, seq(1993, max_ghg_yr + 1, 5)), 
+                              breaks = c(1990, seq(1993, max_ghg_yr + 1, 5),2021), 
                               expand = c(0,0))
 
 ## Line plot of total GHG emissions over time in British Columbia
@@ -68,7 +68,7 @@ ghg_pop <- ggplot(data = bc_ghg_per_capita, aes(x = year, y = ghg_per_capita)) +
   ggtitle("GHG Emissions per Person") +
   xlab(NULL) + 
   ylab(bquote(t~CO[2]*e~" per Person")) +
-  scale_y_continuous(limits = c(12,17.5), breaks = seq(12, 17.5, .5),
+  scale_y_continuous(limits = c(11,16), breaks = seq(11, 16, .5),
                      expand = c(0,0)) +
   x_scale +
   theme_soe() +
@@ -83,7 +83,7 @@ gdp_time <- ggplot(data = bc_ghg_per_capita,
   ggtitle("GHG Emissions per Million Dollars of GDP") +
   xlab(NULL) + 
   ylab(bquote(t~CO[2]*e~" per million dollars of GDP")) +
-  scale_y_continuous(limits = c(225,500), breaks = seq(225, 500, 25),
+  scale_y_continuous(limits = c(200,500), breaks = seq(200, 500, 25),
                      expand = c(0,0)) +
   x_scale +
   theme_soe() +
@@ -183,8 +183,6 @@ ghg_sector <- ggplot(econ_sector_sum_data, aes(x=year, y=sum, color=fct_rev(sect
 plot(ghg_sector)
 
 ## Interactive sector plot for ggplotly html output
-
-
 ghg_sector_html <- ggplot(econ_sector_sum_data) + 
   geom_line(aes(x = year, y = sum, color=fct_rev(sector), 
                 text = paste0(sector, " (", year, "): ", sum, " MtCO<sub>2</sub>e"),
