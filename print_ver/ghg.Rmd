@@ -216,9 +216,9 @@ ggplotly(ghg_sector_html, tooltip="text", dynamicTicks = TRUE) %>%
 
 -   The amount of carbon dioxide equivalent emitted annually by each economic sector was compared to 1990 levels. The transportation sector had the largest increase in annual emissions of any sector over the past three decades. The fossil fuel sector also had consistent increases in annual emissions, with levels peaking from 2011 to 2014.
 
--   The transportation sector's emissions shrank by around 9% from 2019 to 2020, likely due to reduced travel during the COVID-19 pandemic.
+-   The transportation sector's emissions shrank by around 9% from 2019 to 2020, likely due to reduced travel during the COVID-19 pandemic. This gap was slightly reduced in 2021 to 5%. 
 
--   Buildings, agriculture, other industry, electricity and waste sectors emitted similar levels of carbon dioxide equivalent in 2020 as 1990.
+-   Buildings, agriculture, other industry, electricity and waste sectors emitted similar levels of carbon dioxide equivalent in 2021 as 1990.
 
 -   Heavy industry's emissions have trended downward since 2000. Deforestation emissions declined from 1990 to 2003, after which they have remained consistent.
 
@@ -240,7 +240,7 @@ ggplotly(ghg_abs_diff_html, tooltip="text", dynamicTicks = TRUE) %>%
 
 \newpage
 
-```{r include=is_html,  eval=is_html, results='asis', fig.alt= "A tabbed interactive plot that shows a breakdown of greenhouse gas emissions by subsectors within a sector from 1990 to 2020." }
+```{r include=is_html,  eval=is_html, results='asis', fig.alt= "A tabbed interactive plot that shows a breakdown of greenhouse gas emissions by subsectors within a sector from 1990 to 2021." }
 
 # setwd(here())
 # 
@@ -251,7 +251,7 @@ ggplotly(ghg_abs_diff_html, tooltip="text", dynamicTicks = TRUE) %>%
 
 cat("## Results by Economic Sector {.tabset}\n")
 
-cat("- Economic sectors were broken down into subsectors, where subsectors were available. Further information on the emissions categorized in each subsector are provided in the [British Columbia Greenhouse Gas Provincial Inventory Methodology](https://www2.gov.bc.ca/assets/gov/environment/climate-change/data/provincial-inventory/2019/provincial_inventory_methodology_book_1990-2019.pdf)^3^.\n")
+cat("- Economic sectors were broken down into subsectors, where subsectors were available. Further information on the emissions categorized in each subsector are provided in the [British Columbia Greenhouse Gas Provincial Inventory Methodology](https://www2.gov.bc.ca/assets/gov/environment/climate-change/data/provincial-inventory/2021/provincial_inventory_of_greenhouse_gas_emissions_1990-2021_-_methodology_report.pdf)^3^.\n")
 
 cat("- Each subsector contributes varying amounts of emissions to the sector total. Examining these breakdowns further can give us a greater insight into the sources of emissions in B.C.\n")
 
