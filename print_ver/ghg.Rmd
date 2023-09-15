@@ -259,31 +259,31 @@ cat("- In each economic sector figure below, the grey background shows the total
 
 cat("\n### Transportation\n")
 
-include_graphics('images_for_HTML/Transportation.png')
+include_graphics('print_ver/images_for_HTML/Transportation.png')
 
 cat("\n\n### Fossil Fuel Industry\n\n")
 
-include_graphics('images_for_HTML/FossilFuelIndustry.png')
+include_graphics('print_ver/images_for_HTML/FossilFuelIndustry.png')
 
 cat("\n\n### Buildings\n\n")
 
-include_graphics('images_for_HTML/Buildings.png')
+include_graphics('print_ver/images_for_HTML/Buildings.png')
 
 cat("\n\n### Heavy Industry\n\n")
 
-include_graphics('images_for_HTML/HeavyIndustry.png')
+include_graphics('print_ver/images_for_HTML/HeavyIndustry.png')
 
 cat("\n\n### Waste\n\n")
 
-include_graphics('images_for_HTML/Waste.png')
+include_graphics('print_ver/images_for_HTML/Waste.png')
 
 cat("\n\n### Agriculture\n\n")
 
-include_graphics('images_for_HTML/Agriculture.png')
+include_graphics('print_ver/images_for_HTML/Agriculture.png')
 
 cat("\n\n### Other Industry\n\n")
 
-include_graphics('images_for_HTML/OtherIndustry.png')
+include_graphics('print_ver/images_for_HTML/OtherIndustry.png')
 
 #cat("\n\n### Deforestation\n\n")
 
