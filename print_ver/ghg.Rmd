@@ -149,7 +149,7 @@ ggplot(data = bc_ghg_sum, aes(x = year, y = ghg_estimate)) +
 
 \vspace{.2cm}
 
--   Overall, the greenhouse gases produced per person in B.C. were less in 2020 than the 2007 baseline year. Much of the decrease in 2020 is likely due to the COVID-19 pandemic.
+-   Overall, the greenhouse gases produced per person in B.C. were less in 2021 than the 2007 baseline year. This lower level, as with the reduction seen in 2020, is likely due to effects of the COVID-19 pandemic.
 
 \vspace{.2cm}
 
