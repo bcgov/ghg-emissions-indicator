@@ -781,6 +781,7 @@ dev.off()
 # dev.off()
 # 
 # # Copy PNG files from /out folder to figure-HTML folders.
+  if (!exists("print_ver/images_for_HTML")) dir.create("print_ver/images_for_HTML", showWarnings = FALSE)
 list.files(path = './out', pattern = '.png') %>%
   purrr::map( ~ {
     #To local machine's 'print_ver' folder...
