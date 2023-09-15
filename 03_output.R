@@ -781,11 +781,11 @@ dev.off()
 # dev.off()
 # 
 # # Copy PNG files from /out folder to figure-HTML folders.
-# list.files(path = './out', pattern = '.png') %>% 
-#   purrr::map( ~ {
-#     #To local machine's 'print_ver' folder...
-#     file.copy(from = paste0('out/',.x),to = paste0('print_ver/images_for_HTML/',.x),
-#               overwrite = T)
+list.files(path = './out', pattern = '.png') %>%
+  purrr::map( ~ {
+    #To local machine's 'print_ver' folder...
+    file.copy(from = paste0('out/',.x),to = paste0('print_ver/images_for_HTML/',.x),
+              overwrite = T)})
 #     
 #     #Rename 5 figures that we copied to D: drive.
 #     figure_alt_name = case_when(
