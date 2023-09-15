@@ -1,0 +1,107 @@
+---
+topic: "sustainability"
+title: "Trends in Greenhouse Gas Emissions in B.C. (1990-2018): Appendix"
+output: "pdf_document"
+---
+
+```{=html}
+<!--
+Copyright 2018 Province of British Columbia
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and limitations under the License.
+-->
+```
+## Appendix A: Breakdown of Economic Sectors
+
+-   Economic sectors were broken down into subsectors, where subsectors were available. Further information on the emissions categorized in each subsector are provided in the [British Columbia Greenhouse Gas Provincial Inventory Methodology](https://www2.gov.bc.ca/assets/gov/environment/climate-change/data/provincial-inventory/2019/provincial_inventory_methodology_book_1990-2019.pdf)^2^.
+-   Each subsector contributes varying amounts of emissions to the sector total. Examining these breakdowns further can give us a greater insight into the sources of emissions in B.C.
+-   In each economic subsector figure below, the grey background shows the total emissions from each sector over time and the color sections show the contribution of each sub-sector compared to the sector total.
+
+### Transportation Sector
+
+\vspace{.8cm}
+
+```{r include=knitr::is_latex_output(), out.width="100%"}
+
+include_graphics(path = here("out", "Transportation.png"))
+
+```
+
+\newpage
+
+### Fossil Fuel Industry Sector
+
+\vspace{.8cm}
+
+```{r include=knitr::is_latex_output(), out.width="100%"}
+
+include_graphics(path = here("out", "FossilFuelIndustry.png"))
+```
+
+### Buildings Sector
+
+\vspace{.8cm}
+
+```{r include=knitr::is_latex_output(), out.width="100%"}
+
+include_graphics(path = here("out", "Buildings.png"))
+```
+
+\newpage
+
+### Heavy Industry Sector
+
+\vspace{.8cm}
+
+```{r include=knitr::is_latex_output(), out.width="100%"}
+
+include_graphics(path = here("out", "HeavyIndustry.png"))
+```
+
+### Waste Sector
+
+\vspace{.8cm}
+
+```{r include=knitr::is_latex_output(), out.width="100%"}
+
+include_graphics(path = here("out", "Waste.png"))
+```
+
+\newpage
+
+### Agriculture Sector
+
+\vspace{.8cm}
+
+```{r include=knitr::is_latex_output(), out.width="100%"}
+
+include_graphics(path = here("out", "Agriculture.png"))
+```
+
+### Other Industry Sector
+
+\vspace{.8cm}
+
+```{r include=knitr::is_latex_output(), out.width="100%"}
+
+include_graphics(path = here("out", "OtherIndustry.png"))
+```
+
+\newpage
+
+### Deforestation
+
+\vspace{.8cm}
+
+```{r include=knitr::is_latex_output(), out.width="100%"}
+
+include_graphics(path = here("out", "Deforestation.png"))
+```

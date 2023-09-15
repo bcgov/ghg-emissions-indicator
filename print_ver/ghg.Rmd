@@ -2,9 +2,9 @@
 topic: "sustainability"
 title: "Trends in Greenhouse Gas Emissions in B.C. (1990-2021)"
 output: 
-  html_document:
-    self_contained: false
   pdf_document: envreportutils.internal::print_ver
+  html_document:
+    self_contained: true
 editor_options: 
   chunk_output_type: console
 ---

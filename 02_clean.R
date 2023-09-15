@@ -48,7 +48,6 @@ bc_ghg_long <- bc_ghg %>%
   mutate(sector = ifelse(sector == 'Land-Use Change', 'Afforestation & Deforestation', sector)) %>% 
   mutate(subsector_level1 = ifelse(subsector_level1 == 'Transport', 'Transportation', subsector_level1))
 
-
 ## Summarize ghg emissions per sector per year and 
 ## convert to MtCO2e for (from ktCO2e) for plotting
 ghg_sector_sum <- bc_ghg_long %>%
