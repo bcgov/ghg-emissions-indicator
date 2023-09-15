@@ -92,7 +92,7 @@ two_years_ago = calc_inc(bc_ghg_sum$ghg_estimate, bc_ghg_sum$year, max(bc_ghg_su
 
 -   **Total greenhouse gas emissions in `r max_ghg_yr` in B.C. were `r ghg_est_Mtco2e` million tonnes of carbon dioxide equivalent.** This is a `r abs(previous_year)`% `r ifelse(previous_year > 0, 'increase', 'decrease')` in gross emissions since `r max_ghg_yr - 1`, a `r abs(two_years_ago)`% `r ifelse(two_years_ago > 0, 'increase', 'decrease')` in gross emissions since `r max_ghg_yr - 2`, and a `r abs(baseline_year)`% `r ifelse(baseline_year > 0, "increase", "decrease")` in gross emissions since 2007---the Government of British Columbia's baseline year for assessing reductions in greenhouse gas emissions.
 
--   **The decline in emissions observed in 2020 occurred during the COVID-19 pandemic, which reduced transportation and other activities that produce greenhouse gas emissions.** As predicted, we did see a slight rebound in 2021,primarily driven by an increase in most forms of transportation. We also saw an increase in electricity....
+-   **The decline in emissions observed in 2020 occurred during the COVID-19 pandemic, which reduced transportation and other activities that produce greenhouse gas emissions.** As predicted, we did see a slight rebound in 2021,primarily driven by an increase in most forms of transportation.
 
 <!-- B.C.'s outlook suggests that emissions are likely to rebound to a degree in 2021 as economic activity (including air travel and road transportation) returns to normal (see page 10 of [B.C.'s 2022 Climate Change Accountability Report](https://www2.gov.bc.ca/assets/gov/environment/climate-change/action/cleanbc/2022-ccar/2022_climate_change_accountability_report.pdf)^1^). -->
 
@@ -191,7 +191,7 @@ norm_print +
 
 -   The transportation sector produces the largest amount of greenhouse gas emissions in British Columbia. Passenger transport (cars, trucks, motorcycles) and freight transport (heavy duty trucks and rail) produce the most emissions within the transportation sector.
 
--   The transportation sector's emissions shrank by around 9% from 2019 to 2020, likely due to reduced travel during the COVID-19 pandemic, however showed a slight increase in 2021, although not returning to 2019 levels.
+-   The transportation sector's emissions shrank by around 9% from 2019 to 2020, likely due to reduced travel during the COVID-19 pandemic, however showed a slight increase in 2021, although not returning to 2019 levels (5% less that 2019).
 
 -   The fossil fuel sector produces the second largest amount of greenhouse gas emissions in British Columbia. This sector includes production, refining and distribution activities.
 
