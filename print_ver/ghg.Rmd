@@ -207,7 +207,7 @@ include_graphics(path = here("out", "ghg_sector.png"))
 ```{r include=is_html, eval=is_html, fig.height=5, fig.width=11, fig.alt= "An interactive plot shows the greenhouse gas emissions from each economic sector from 1990 to 2021."}
 
 ggplotly(ghg_sector_html, tooltip="text", dynamicTicks = TRUE) %>%
-  rangeslider() #%>% 
+  rangeslider(start = 1990, end = 2021) #%>% 
   # layout(legend = list(orientation = 'h'))
 
 ```
@@ -235,7 +235,7 @@ include_graphics(path = here("out", "econ_sector_abs_diff.png"))
 ```{r include=is_html, eval=is_html, fig.height=5, fig.width=11, fig.alt = "An interactive plot shows the difference between annual emissions and 1990 levels for each economic sector."}
 
 ggplotly(ghg_abs_diff_html, tooltip="text", dynamicTicks = TRUE) %>%
-  rangeslider()# %>% 
+  rangeslider(start = 1990, end = 2021)# %>% 
   # layout(legend = list(orientation = 'h'))
 
 ```
