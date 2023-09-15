@@ -285,7 +285,7 @@ include_graphics('images_for_HTML/Agriculture.png')
 
 cat("\n\n### Other Industry\n\n")
 
-include_graphics('images_for_HTML/OtherIndustry.png')
+include_graphics('images_for_HTML/LightIndustry.png')
 
 #cat("\n\n### Deforestation\n\n")
 

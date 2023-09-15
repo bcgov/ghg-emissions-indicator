@@ -290,7 +290,7 @@ for (i in 1:length(sector.order)){
                nrow = ifelse(s > 3, 2, 1), 
                labeller = label_wrap_gen(width = 25, multi_line = TRUE)) +
     xlab(NULL) + ylab(bquote(Mt~CO[2]*e)) +
-    scale_x_continuous(limits = c(1990, max_ghg_yr + 1), breaks = seq(1993, max_ghg_yr, 5), 
+    scale_x_continuous(limits = c(1990, max_ghg_yr + 1), breaks = c(seq(1993, max_ghg_yr, 10),2021), 
                        expand = c(0,0)) +
     theme_soe_facet() +
     theme(legend.position = ("none"),
