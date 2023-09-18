@@ -66,6 +66,9 @@ colnames(ghg_econ) = gsub(pattern = '^X', replacement = '', x = names(ghg_econ))
 ## Data is released under the Statistics Canada Open Licence Agreement 
 ## https://www.statcan.gc.ca/eng/reference/licence)
 
+#add individual gas data
+ghg_gases = read.csv('tmp/bc_ghg_emissions_by_economic_sector_by_gas_1990-2021.csv')
+
 
 bc_pop <- get_cansim(1710000501) |> 
   filter(GEO == "British Columbia",
