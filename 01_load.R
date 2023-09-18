@@ -69,7 +69,11 @@ colnames(ghg_econ) = gsub(pattern = '^X', replacement = '', x = names(ghg_econ))
 #add individual gas data
 ghg_gases = read.csv('tmp/bc_ghg_emissions_by_economic_sector_by_gas_1990-2021.csv')
 
+#If the year columns have had an 'X' added to them... sometimes happens.
+colnames(ghg_gases) = gsub(pattern = '^X', replacement = '', x = names(ghg_gases))
 
+
+#Load BC population data for 1990-2021
 bc_pop <- get_cansim(1710000501) |> 
   filter(GEO == "British Columbia",
          REF_DATE >= 1990 & REF_DATE <= max_ghg_yr,
@@ -93,4 +97,4 @@ bc_pop_gdp <- bc_pop |>
 write_csv(bc_pop_gdp, "tmp/bc_ghg_related_data.csv")
 
 # Create tmp folder if not already there and store objects in local repository
-save(bc_ghg, bc_pop_gdp, max_ghg_yr, ghg_econ, file = "tmp/raw_data.RData")
+save(bc_ghg, bc_pop_gdp, max_ghg_yr, ghg_econ, ghg_gases, file = "tmp/raw_data.RData")
