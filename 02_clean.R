@@ -161,6 +161,7 @@ ghg_econ_sub <- ghg_econ_sub %>%
            TRUE ~ subsector_final))
 
 #Cleaning steps for ghg type
+## Convert ghg gases data from wide to long format 
 ghg_gases_long <- ghg_gases %>% 
   gather(key =  year, value = ktCO2e, -gas,
          -sector, -subsector_level1,
@@ -175,6 +176,25 @@ ghg_gases_long <- ghg_gases %>%
   )) %>% 
   mutate(sector = ifelse(sector == 'Land-Use Change', 'Afforestation & Deforestation', sector)) %>% 
   mutate(subsector_level1 = ifelse(subsector_level1 == 'Transport', 'Transportation', subsector_level1))
+
+## Calculate ghg annual totals by gas and convert to MtCO2e (from ktCO2e) for plotting
+ghg_gases_sum = ghg_gases_long %>%
+  filter(!grepl("other emissions not included", sector, ignore.case = TRUE)) %>%
+  group_by(gas, year) %>%
+  # summarise(ghg_estimate = round(sum(ktCO2e, na.rm = TRUE)/1000, digits = 1)) %>% 
+  summarise(ghg_estimate = round(sum(ktCO2e, na.rm = TRUE), digits = 1)) %>%
+  mutate(sector = "British Columbia") %>% 
+  select(gas, sector, year, ghg_estimate)
+
+#Calculate excluding deforestation and afforestation
+ghg_gases_sum_no_forest = ghg_gases_long %>%
+  filter(!grepl("other emissions not included", sector, ignore.case = TRUE)) %>%
+  filter(sector != "Afforestation & Deforestation") %>%
+  group_by(gas, year) %>%
+  # summarise(ghg_estimate = round(sum(ktCO2e, na.rm = TRUE)/1000, digits = 1)) %>% 
+  summarise(ghg_estimate = round(sum(ktCO2e, na.rm = TRUE), digits = 1)) %>%
+  mutate(sector = "British Columbia") %>% 
+  select(gas, sector, year, ghg_estimate)
 
 ## Data summaries 
 ## total in ktCO2e for most recent year 
@@ -241,7 +261,7 @@ if (!exists("tmp")) dir.create("tmp", showWarnings = FALSE)
 save(bc_ghg_long, ghg_sector_sum, bc_ghg_sum, bc_ghg_sum_no_forest, normalized_measures,
      bc_ghg_per_capita, max_ghg_yr,
      ghg_est_Mtco2e, previous_year, baseline_year, 
-     ghg_econ_long, ghg_gases_long, econ_sector_sum, ghg_econ_sub, 
+     ghg_econ_long, ghg_gases_long, ghg_gases_sum, ghg_gases_sum_no_forest, econ_sector_sum, ghg_econ_sub, 
      baseline_2007, clean_bc_2025, current_ghg, 
      cleanbc_reduction, reduction_mt,
      file = "tmp/clean_data.RData")
