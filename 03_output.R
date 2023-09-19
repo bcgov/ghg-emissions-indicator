@@ -198,7 +198,7 @@ ghg_gases_net_1990 <- ghg_gases_sum %>%
 ghg_net_1990 <- ggplot(data = ghg_gases_net_1990, 
                        aes(x = year, y = net_ghg, fill = gas)) + 
   geom_area(size=1) +
-  xlab(NULL) +  ylab(bquote("Annual Change in "~Mt~CO[2]*e~" from 1990 by Greenhouse Gas")) +
+  labs(x=NULL, y="Annual change in (MtCO<sub>2</sub>e) \nfrom 1990 by Greenhouse Gas")+
   x_scale +
   scale_fill_manual(name = "Greenhouse Gas", values = gas.pal,
                     limits = gas.order) +
