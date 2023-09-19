@@ -159,8 +159,24 @@ ghg_econ_sub <- ghg_econ_sub %>%
            subsector_final == "Cars, Trucks, & Motorcycles" ~ "Passenger: Cars, Trucks, & Motorcycles",
            subsector_final == "Heavy-Duty Trucks & Rail" ~ "Freight: Heavy-Duty Trucks & Rail",
            TRUE ~ subsector_final))
-## Data summaries 
 
+#Cleaning steps for ghg type
+ghg_gases_long <- ghg_gases %>% 
+  gather(key =  year, value = ktCO2e, -gas,
+         -sector, -subsector_level1,
+         -subsector_level2, -subsector_level3) %>%
+  mutate(ktCO2e = as.numeric(ktCO2e),
+         year = as.integer(as.character(year))) %>% 
+  elevate_sectors(c( "LAND-USE CHANGE")) %>% 
+  mutate(across(contains("sector"), ~ {
+    x <- str_replace(to_titlecase(.x), "(\\b)and(\\b)", "\\1&\\2")
+    str_remove(x, regex("\\s\\(ippu\\)", ignore_case = TRUE))
+  }
+  )) %>% 
+  mutate(sector = ifelse(sector == 'Land-Use Change', 'Afforestation & Deforestation', sector)) %>% 
+  mutate(subsector_level1 = ifelse(subsector_level1 == 'Transport', 'Transportation', subsector_level1))
+
+## Data summaries 
 ## total in ktCO2e for most recent year 
 ghg_est_ktco2e <- bc_ghg_long %>%
   filter(!grepl("other emissions not included", sector, ignore.case = TRUE)) %>%
