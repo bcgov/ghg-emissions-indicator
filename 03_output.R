@@ -131,14 +131,14 @@ norm_print <- norm_base +
 plot(norm_print)
 
 #Breakdown of change in individual ghgs over time
-gas.order <- rev(levels(droplevels(as.factor(ghg_gases_sum$gas)))) #gets rid of unused factors
+gas.order <- levels(droplevels(as.factor(ghg_gases_sum$gas))) #gets rid of unused factors
 gas.no <- length(gas.order) + 1
 nb.cols<-7
 gas.pal <- colorRampPalette(brewer.pal(gas.no, "Dark2"))(nb.cols)
 col_db <- melt(data.frame(gas.order,gas.pal)) #for use in plotting individual gases
 names(gas.pal) <- gas.order
 
-ghg_gases_year <- ggplot(ghg_gases_sum, aes(x=year, y=ghg_estimate, color=fct_rev(gas))) + 
+ghg_gases_year <- ggplot(ghg_gases_sum, aes(x=year, y=ghg_estimate, color=gas)) + 
   geom_line(linewidth = 1) +
   xlab(NULL) +  ylab(bquote(Mt~CO[2]*e~" by Greenhouse Gas")) +
   scale_x_continuous(limits = c(1990, max_ghg_yr+1), 
@@ -164,6 +164,34 @@ ghg_gases_year <- ggplot(ghg_gases_sum, aes(x=year, y=ghg_estimate, color=fct_re
 
 
 plot(ghg_gases_year)
+
+#Net displacement from 1990 levels
+ghg_gases_net_1990 <- ghg_gases_sum %>% 
+  group_by(gas) %>%
+  mutate(net_ghg = (ghg_estimate)-(ghg_estimate[year == 1990])) %>%
+  select(gas, year, starts_with("net"))
+
+ghg_net_1990 <- ggplot(data = ghg_gases_net_1990, 
+                       aes(x = year, y = net_ghg, fill = gas)) + 
+  geom_area(size=1) +
+  xlab(NULL) +  ylab(bquote("Annual Change in "~Mt~CO[2]*e~" from 1990 by Greenhouse Gas")) +
+  x_scale +
+  scale_fill_manual(name = "Greenhouse Gas", values = gas.pal,
+                    limits = gas.order) +
+  coord_cartesian(clip = "off") +
+  theme_soe() +
+  theme(panel.grid.major = element_line(size = 0.5, colour = "grey85"),
+        panel.grid.minor = element_line(size = 0.5, colour = "grey85"),
+        panel.grid.minor.x = element_blank(),
+        panel.grid.major.x = element_blank(),
+        axis.text.y = element_text(size = 14),
+        axis.text.x = element_text(size = 14),
+        axis.title.y = element_text(size = 16,
+                                    margin = margin(t = 0, r = 10, b = 0, l = 0,
+                                                    unit = "pt")))+
+  theme(plot.margin = unit(c(0.5,3.5,0.5,0.5), "cm")) 
+
+plot(ghg_net_1990)
 
 ## Setting up data to provide information on economic sectors
 # Remove sectors with no data in any year
@@ -407,6 +435,26 @@ dev.off()
 png_retina(filename = "./out/norm_plot.png", width = 500, height = 400,
            units = "px", type = "cairo-png", antialias = "default")
 plot(norm)
+dev.off()
+
+#total ghg by gas over time
+svg_px("./out/ghg_gases_plot.svg", width = 850, height = 400)
+plot(ghg_gases_year)
+dev.off()
+
+png_retina(filename = "./out/ghg_gases_plot.png", width = 850, height = 400,
+           units = "px", type = "cairo-png", antialias = "default")
+plot(ghg_gases_year)
+dev.off()
+
+#Net ghg by gas since 1990
+svg_px("./out/ghg_net_plot.svg", width = 850, height = 400)
+plot(ghg_net_1990)
+dev.off()
+
+png_retina(filename = "./out/ghg_net_plot.png", width = 850, height = 400,
+           units = "px", type = "cairo-png", antialias = "default")
+plot(ghg_net_1990)
 dev.off()
 
 #total ghg by sector over time stacked area chart
