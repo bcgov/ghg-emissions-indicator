@@ -138,29 +138,53 @@ gas.pal <- colorRampPalette(brewer.pal(gas.no, "Dark2"))(nb.cols)
 col_db <- melt(data.frame(gas.order,gas.pal)) #for use in plotting individual gases
 names(gas.pal) <- gas.order
 
-ghg_gases_year <- ggplot(ghg_gases_sum, aes(x=year, y=ghg_estimate, color=gas)) + 
-  geom_line(linewidth = 1) +
-  xlab(NULL) +  ylab(bquote(Mt~CO[2]*e~" by Greenhouse Gas")) +
+ghg_gases_year <- ggplot(ghg_gases_sum) + 
+  geom_line(aes(x=year, y=ghg_estimate, col = gas, 
+                text = paste0(gas, " (", year, "): ", ghg_estimate, " MtCO<sub>2</sub>e"), 
+                group=gas), linewidth = 1) +  
   scale_x_continuous(limits = c(1990, max_ghg_yr+1), 
                      breaks = c(1990, seq(1993, max_ghg_yr + 1, 5), 2021), 
                      expand = c(0,0))+
   scale_color_manual(name = "Greenhouse Gas", values = gas.pal,
                      limits = gas.order) +
-  coord_cartesian(clip = "off") +
+  x_scale +
+  labs(x="Year", y="Emissions (MtCO<sub>2</sub>e)<br>by Greenhouse Gas")+
   theme_soe()+ 
-  theme(panel.grid.major = element_line(linewidth = 0.5, colour = "grey85"),
-        panel.grid.minor = element_line(linewidth = 0.5, colour = "grey85"),
+  theme(panel.grid.major = element_line(size = 0.5, colour = "grey85"),
+        panel.grid.minor = element_line(size = 0.5, colour = "grey85"),
         panel.grid.minor.x = element_blank(),
         panel.grid.major.x = element_blank(),
-        axis.text.y = element_text(size = 14),
-        axis.text.x = element_text(size = 14),
-        axis.title.y = element_text(size = 16,
+        axis.text.y = element_text(size = 8),
+        axis.text.x = element_text(size = 10),
+        axis.title.y = element_text(size = 10,
                                     margin = margin(t = 0, r = 10, b = 0, l = 0,
-                                                    unit = "pt")))+
-  theme(plot.margin = unit(c(0.5,3.5,0.5,0.5), "cm"),
+                                                    unit = "pt")),
         legend.text = element_text(size = 8),
         legend.title = element_text(size = 10), 
         legend.background = element_rect(colour = "white"))
+
+# ghg_sector_html <- ggplot(econ_sector_sum_data) + 
+#   geom_line(aes(x = year, y = sum, color=fct_rev(sector), 
+#                 text = paste0(sector, " (", year, "): ", sum, " MtCO<sub>2</sub>e"),
+#                 group = sector),
+#             linewidth = 1) +
+#   scale_color_manual(name = "Economic Sector", values = sector.pal,
+#                      limits = sector.order) +
+#   x_scale +
+#   labs(x="Year", y="Emissions (MtCO<sub>2</sub>e)<br>by Economic Sector")+
+#   theme_soe() +
+#   theme(panel.grid.major = element_line(size = 0.5, colour = "grey85"),
+#         panel.grid.minor = element_line(size = 0.5, colour = "grey85"),
+#         panel.grid.minor.x = element_blank(),
+#         panel.grid.major.x = element_blank(),
+#         axis.text.y = element_text(size = 8),
+#         axis.text.x = element_text(size = 10),
+#         axis.title.y = element_text(size = 10,
+#                                     margin = margin(t = 0, r = 10, b = 0, l = 0,
+#                                                     unit = "pt")),
+#         legend.text = element_text(size = 8),
+#         legend.title = element_text(size = 10), 
+#         legend.background = element_rect(colour = "white"))
 
 
 plot(ghg_gases_year)
@@ -389,7 +413,7 @@ remove_filename_spaces(dir = "tmp", pattern = " ", replacement = "")
 
 ## Create tmp folder if not already there and store plot objects in local repository
 if (!exists("tmp")) dir.create("tmp", showWarnings = FALSE)
-save(ghg_time, ghg_pop, gdp_time, norm, norm_print,
+save(ghg_time, ghg_pop, gdp_time, ghg_gases_year, ghg_net_1990, norm, norm_print,
      ghg_sector, ghg_sector_html, ghg_abs_diff,ghg_abs_diff_html,
      file = "tmp/plots.RData")
 
