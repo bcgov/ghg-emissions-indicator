@@ -241,7 +241,7 @@ if (!exists("tmp")) dir.create("tmp", showWarnings = FALSE)
 save(bc_ghg_long, ghg_sector_sum, bc_ghg_sum, bc_ghg_sum_no_forest, normalized_measures,
      bc_ghg_per_capita, max_ghg_yr,
      ghg_est_Mtco2e, previous_year, baseline_year, 
-     ghg_econ_long, econ_sector_sum, ghg_econ_sub, 
+     ghg_econ_long, ghg_gases_long, econ_sector_sum, ghg_econ_sub, 
      baseline_2007, clean_bc_2025, current_ghg, 
      cleanbc_reduction, reduction_mt,
      file = "tmp/clean_data.RData")
