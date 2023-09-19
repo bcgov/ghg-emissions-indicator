@@ -194,6 +194,13 @@ ggplotly(ghg_gases_year, tooltip="text", dynamicTicks = TRUE) %>%
   rangeslider(start = 1990, end = 2021)
 ```
 
+\vspace{0.8cm}
+
+```{r ghgnetstack, fig.alt = "Net changes in emissions for each Greenhouse Gas relative to 1990 for years 1991 to 2021"}
+ghg_net_1990 +
+  theme_print
+```
+
 ## Greenhouse Gas Emissions by Economic Sector
 
 -   Greenhouse gas emissions are sorted into the following economic sectors: transportation, fossil fuels, buildings, heavy industry, waste, deforestation, agriculture, electricity generation, and other industry (includes light manufacturing, construction, and forest resources).
