@@ -130,6 +130,37 @@ norm_print <- norm_base +
            x = 2009, y = 1.41, size = 3)
 plot(norm_print)
 
+#Breakdown of change in individual ghgs over time
+ghg_sector <- ggplot(ghg_gases_long, aes(x=year, y=ktC02e, color=fct_rev(sector))) + 
+  geom_line(linewidth = 1) +
+  scale_color_manual(values = sector.pal) +
+  # geom_text_repel(aes(label=sector, size=1),
+  #                 data = label_static,
+  #                 nudge_x=2, direction = "y",
+  #                 segment.size = 0.5,
+  #                 xlim = c(max(label_static$year),
+  #                          max(label_static$year) + 5))+
+  xlab(NULL) +  ylab(bquote(Mt~CO[2]*e~" by Economic Sector")) +
+  scale_x_continuous(limits = c(1990, max_ghg_yr+1), 
+                     breaks = c(1990, seq(1993, max_ghg_yr + 1, 5), 2021), 
+                     expand = c(0,0))+
+  
+  coord_cartesian(clip = "off") +
+  theme_soe()+ 
+  theme(panel.grid.major = element_line(linewidth = 0.5, colour = "grey85"),
+        panel.grid.minor = element_line(linewidth = 0.5, colour = "grey85"),
+        panel.grid.minor.x = element_blank(),
+        panel.grid.major.x = element_blank(),
+        axis.text.y = element_text(size = 14),
+        axis.text.x = element_text(size = 14),
+        axis.title.y = element_text(size = 16,
+                                    margin = margin(t = 0, r = 10, b = 0, l = 0,
+                                                    unit = "pt")))+
+  theme(plot.margin = unit(c(0.5,3.5,0.5,0.5), "cm")) +
+  theme(legend.position = "none")
+
+plot(ghg_sector)
+
 ## Setting up data to provide information on economic sectors
 
 # Remove sectors with no data in any year
