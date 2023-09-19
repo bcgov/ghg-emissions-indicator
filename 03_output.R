@@ -131,20 +131,21 @@ norm_print <- norm_base +
 plot(norm_print)
 
 #Breakdown of change in individual ghgs over time
-ghg_sector <- ggplot(ghg_gases_long, aes(x=year, y=ktC02e, color=fct_rev(sector))) + 
+gas.order <- rev(levels(droplevels(as.factor(ghg_gases_sum$gas)))) #gets rid of unused factors
+gas.no <- length(gas.order) + 1
+nb.cols<-7
+gas.pal <- colorRampPalette(brewer.pal(gas.no, "Dark2"))(nb.cols)
+col_db <- melt(data.frame(gas.order,gas.pal)) #for use in plotting individual gases
+names(gas.pal) <- gas.order
+
+ghg_gases_year <- ggplot(ghg_gases_sum, aes(x=year, y=ghg_estimate, color=fct_rev(gas))) + 
   geom_line(linewidth = 1) +
-  scale_color_manual(values = sector.pal) +
-  # geom_text_repel(aes(label=sector, size=1),
-  #                 data = label_static,
-  #                 nudge_x=2, direction = "y",
-  #                 segment.size = 0.5,
-  #                 xlim = c(max(label_static$year),
-  #                          max(label_static$year) + 5))+
-  xlab(NULL) +  ylab(bquote(Mt~CO[2]*e~" by Economic Sector")) +
+  xlab(NULL) +  ylab(bquote(Mt~CO[2]*e~" by Greenhouse Gas")) +
   scale_x_continuous(limits = c(1990, max_ghg_yr+1), 
                      breaks = c(1990, seq(1993, max_ghg_yr + 1, 5), 2021), 
                      expand = c(0,0))+
-  
+  scale_color_manual(name = "Greenhouse Gas", values = gas.pal,
+                     limits = gas.order) +
   coord_cartesian(clip = "off") +
   theme_soe()+ 
   theme(panel.grid.major = element_line(linewidth = 0.5, colour = "grey85"),
@@ -156,13 +157,15 @@ ghg_sector <- ggplot(ghg_gases_long, aes(x=year, y=ktC02e, color=fct_rev(sector)
         axis.title.y = element_text(size = 16,
                                     margin = margin(t = 0, r = 10, b = 0, l = 0,
                                                     unit = "pt")))+
-  theme(plot.margin = unit(c(0.5,3.5,0.5,0.5), "cm")) +
-  theme(legend.position = "none")
+  theme(plot.margin = unit(c(0.5,3.5,0.5,0.5), "cm"),
+        legend.text = element_text(size = 8),
+        legend.title = element_text(size = 10), 
+        legend.background = element_rect(colour = "white"))
 
-plot(ghg_sector)
+
+plot(ghg_gases_year)
 
 ## Setting up data to provide information on economic sectors
-
 # Remove sectors with no data in any year
 econ_sector_sum_data <- econ_sector_sum %>%
   group_by(sector) %>%
