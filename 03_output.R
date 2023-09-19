@@ -448,11 +448,11 @@ plot(ghg_gases_year)
 dev.off()
 
 #Net ghg by gas since 1990
-svg_px("./out/ghg_net_plot.svg", width = 850, height = 400)
+svg_px("./out/ghg_net_plot.svg", width = 850, height = 500)
 plot(ghg_net_1990)
 dev.off()
 
-png_retina(filename = "./out/ghg_net_plot.png", width = 850, height = 400,
+png_retina(filename = "./out/ghg_net_plot.png", width = 850, height = 500,
            units = "px", type = "cairo-png", antialias = "default")
 plot(ghg_net_1990)
 dev.off()
