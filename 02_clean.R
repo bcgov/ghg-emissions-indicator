@@ -187,16 +187,17 @@ ghg_gases_long = ghg_gases_long %>%
            gas == "PERFLUOROCARBONS (PFCs)c" ~ "Perflourocarbons (PFCs)",
            gas == "SULPHUR HEXAFLUORIDE (SF6)d" ~ "Sulphur Hexaflouride (SF6)",
            gas == "NITROGEN TRIFLUORIDE (NF3)e" ~ "Nitrogen Triflouride (NF3)",
-           gas == "METHANE (CH4)a" ~ "Methane (CH4)")) %>%
-  mutate(gas = factor(gas,
-                         labels = c(expression(`Carbon Dioxide (CO`[2]*`)`),
-                                    "Hydroflourocarbons (HFCs)",
-                                    expression(`Methane (CH`[4]*`)`),
-                                    expression(`Nitrogen Triflouride (NF`[3]*`)`),
-                                    expression(`Nitrous Oxide (N`[2]*`0)`),
-                                    "Perflourocarbons (PFCs)",
-                                    expression(`Sulphur Hexaflouride (SF`[6]*`)`)
-                                    )))
+           gas == "METHANE (CH4)a" ~ "Methane (CH4)")) 
+# %>%
+#   mutate(gas = factor(gas,
+#                          labels = c(expression(`Carbon Dioxide (CO`[2]*`)`),
+#                                     "Hydroflourocarbons (HFCs)",
+#                                     expression(`Methane (CH`[4]*`)`),
+#                                     expression(`Nitrogen Triflouride (NF`[3]*`)`),
+#                                     expression(`Nitrous Oxide (N`[2]*`0)`),
+#                                     "Perflourocarbons (PFCs)",
+#                                     expression(`Sulphur Hexaflouride (SF`[6]*`)`)
+#                                     )))
 
 ## Calculate ghg annual totals by gas and convert to MtCO2e (from ktCO2e) for plotting
 ghg_gases_sum = ghg_gases_long %>%
