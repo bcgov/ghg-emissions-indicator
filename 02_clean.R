@@ -177,35 +177,6 @@ ghg_gases_long <- ghg_gases %>%
   mutate(sector = ifelse(sector == 'Land-Use Change', 'Afforestation & Deforestation', sector)) %>% 
   mutate(subsector_level1 = ifelse(subsector_level1 == 'Transport', 'Transportation', subsector_level1))
 
-#Change gas names
-ghg_gases_long = ghg_gases_long %>%
-  mutate(gas = case_when
-         (gas == "CARBON DIOXIDE (CO2)" ~ "Carbon Dioxide waaaah (CO<sub>2)",
-           gas == "METHANE (CH4)" ~ "Methane (CH<sub>4)",
-           gas == "NITROUS OXIDE (N2O)b" ~ "Nitrous Oxide (N<sub>20)",
-           gas == "HYDROFLUOROCARBONS (HFCs)c" ~ "Hydroflourocarbons (HFCs)",
-           gas == "PERFLUOROCARBONS (PFCs)c" ~ "Perflourocarbons (PFCs)",
-           gas == "SULPHUR HEXAFLUORIDE (SF6)d" ~ "Sulphur Hexaflouride (SF<sub>6)",
-           gas == "NITROGEN TRIFLUORIDE (NF3)e" ~ "Nitrogen Triflouride (NF<sub>3)"))
-#            gas == "METHANE (CH4)a" ~ "Methane (CH4)")) %>%
-#   mutate(gas = factor(gas,
-#                          labels = c(,
-#                                     "Hydroflourocarbons (HFCs)",
-#                                     ,
-#                                     expression(`Nitrogen Triflouride (NF`[3]*`)`),
-#                                     expression(`Nitrous Oxide (N`[2]*`0)`),
-#                                     "Perflourocarbons (PFCs)",
-#                                     expression(`Sulphur Hexaflouride (SF`[6]*`)`)
-#                                     )))
-# 
-# labels = c(,
-#            ,
-#            ,
-#            "Hydroflourocarbons (HFCs)",
-#            "Perflourocarbons (PFCs)",
-#            ,
-#            )
-
 ## Calculate ghg annual totals by gas and convert to MtCO2e (from ktCO2e) for plotting
 ghg_gases_sum = ghg_gases_long %>%
   filter(!grepl("other emissions not included", sector, ignore.case = TRUE)) %>%
