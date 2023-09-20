@@ -35,7 +35,8 @@ theme_lineplots <- theme(
                               margin = margin(t = 0, r = 10, b = 0, l = 0,
                                               unit = "pt")),
   plot.title = element_text(size = 17, hjust = 0.5),
-  plot.margin = unit(c(6,6,6,6),"mm")
+  plot.margin = unit(c(6,6,6,6),"mm"),
+    legend.title.align = 0
 )
 
 # Set plotting parameters common to many plots:
@@ -163,30 +164,6 @@ ghg_gases_year <- ggplot(ghg_gases_sum) +
         legend.title = element_text(size = 10), 
         legend.background = element_rect(colour = "white"))
 
-# ghg_sector_html <- ggplot(econ_sector_sum_data) + 
-#   geom_line(aes(x = year, y = sum, color=fct_rev(sector), 
-#                 text = paste0(sector, " (", year, "): ", sum, " MtCO<sub>2</sub>e"),
-#                 group = sector),
-#             linewidth = 1) +
-#   scale_color_manual(name = "Economic Sector", values = sector.pal,
-#                      limits = sector.order) +
-#   x_scale +
-#   labs(x="Year", y="Emissions (MtCO<sub>2</sub>e)<br>by Economic Sector")+
-#   theme_soe() +
-#   theme(panel.grid.major = element_line(size = 0.5, colour = "grey85"),
-#         panel.grid.minor = element_line(size = 0.5, colour = "grey85"),
-#         panel.grid.minor.x = element_blank(),
-#         panel.grid.major.x = element_blank(),
-#         axis.text.y = element_text(size = 8),
-#         axis.text.x = element_text(size = 10),
-#         axis.title.y = element_text(size = 10,
-#                                     margin = margin(t = 0, r = 10, b = 0, l = 0,
-#                                                     unit = "pt")),
-#         legend.text = element_text(size = 8),
-#         legend.title = element_text(size = 10), 
-#         legend.background = element_rect(colour = "white"))
-
-
 plot(ghg_gases_year)
 
 #Net displacement from 1990 levels
@@ -198,22 +175,14 @@ ghg_gases_net_1990 <- ghg_gases_sum %>%
 ghg_net_1990 <- ggplot(data = ghg_gases_net_1990, 
                        aes(x = year, y = net_ghg, fill = gas)) + 
   geom_area(size=1) +
-  labs(x=NULL, y="Annual change in (MtCO<sub>2</sub>e) \nfrom 1990 by Greenhouse Gas")+
+  xlab(NULL)+
+  ylab(bquote(atop(paste("  Annual change in " ~Mt~CO[2]*e ~" "),paste("from 1990 by Greenhouse Gas")))) +
   x_scale +
   scale_fill_manual(name = "Greenhouse Gas", values = gas.pal,
                     limits = gas.order) +
   coord_cartesian(clip = "off") +
   theme_soe() +
-  theme(panel.grid.major = element_line(size = 0.5, colour = "grey85"),
-        panel.grid.minor = element_line(size = 0.5, colour = "grey85"),
-        panel.grid.minor.x = element_blank(),
-        panel.grid.major.x = element_blank(),
-        axis.text.y = element_text(size = 14),
-        axis.text.x = element_text(size = 14),
-        axis.title.y = element_text(size = 16,
-                                    margin = margin(t = 0, r = 10, b = 0, l = 0,
-                                                    unit = "pt")))+
-  theme(plot.margin = unit(c(0.5,3.5,0.5,0.5), "cm")) 
+  theme_lineplots
 
 plot(ghg_net_1990)
 
