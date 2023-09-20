@@ -177,6 +177,39 @@ ghg_gases_year <- ggplot(ghg_gases_sum) +
 
 plot(ghg_gases_year)
 
+#Annual change of percentage of emission for each gas
+ghg_gas_prop = ghg_gases_sum %>%
+  group_by (year) %>%
+  mutate(percentage = (ghg_estimate/sum(ghg_estimate))*100)
+
+ghg_gas_prop_plot = ggplot(ghg_gas_prop) +
+  geom_area(aes(x = year,
+             y = percentage,
+             fill = gas,
+             group = gas,
+             text = paste0(gas, " (", year, "): ", percentage, "%")),
+            size = 1,
+            alpha = 0.7)+  
+  scale_fill_manual(name = "Greenhouse Gas", values = gas.pal,
+                     limits = gas.order) +
+  x_scale +
+  labs(x="Year", y="Percentage of total emissions for each GHG from 1990 to 2021")+
+  theme_soe()+ 
+  theme(panel.grid.major = element_line(size = 0.5, colour = "grey85"),
+        panel.grid.minor = element_line(size = 0.5, colour = "grey85"),
+        panel.grid.minor.x = element_blank(),
+        panel.grid.major.x = element_blank(),
+        axis.text.y = element_text(size = 8),
+        axis.text.x = element_text(size = 10),
+        axis.title.y = element_text(size = 10,
+                                    margin = margin(t = 0, r = 10, b = 0, l = 0,
+                                                    unit = "pt")),
+        legend.text = element_text(size = 8),
+        legend.title = element_text(size = 10), 
+        legend.background = element_rect(colour = "white")) 
+
+ghg_gas_prop_plot
+
 #Net displacement from 1990 levels
 ghg_gases_net_1990 <- ghg_gases_sum %>% 
   group_by(gas) %>%
