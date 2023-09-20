@@ -180,24 +180,31 @@ ghg_gases_long <- ghg_gases %>%
 #Change gas names
 ghg_gases_long = ghg_gases_long %>%
   mutate(gas = case_when
-         (gas == "CARBON DIOXIDE (CO2)" ~ "Carbon Dioxide (CO2)",
-           gas == "METHANE (CH4)" ~ "Methane (CH4)",
-           gas == "NITROUS OXIDE (N2O)b" ~ "Nitrous Oxide (N20)",
+         (gas == "CARBON DIOXIDE (CO2)" ~ "Carbon Dioxide waaaah (CO<sub>2)",
+           gas == "METHANE (CH4)" ~ "Methane (CH<sub>4)",
+           gas == "NITROUS OXIDE (N2O)b" ~ "Nitrous Oxide (N<sub>20)",
            gas == "HYDROFLUOROCARBONS (HFCs)c" ~ "Hydroflourocarbons (HFCs)",
            gas == "PERFLUOROCARBONS (PFCs)c" ~ "Perflourocarbons (PFCs)",
-           gas == "SULPHUR HEXAFLUORIDE (SF6)d" ~ "Sulphur Hexaflouride (SF6)",
-           gas == "NITROGEN TRIFLUORIDE (NF3)e" ~ "Nitrogen Triflouride (NF3)",
-           gas == "METHANE (CH4)a" ~ "Methane (CH4)")) 
-# %>%
+           gas == "SULPHUR HEXAFLUORIDE (SF6)d" ~ "Sulphur Hexaflouride (SF<sub>6)",
+           gas == "NITROGEN TRIFLUORIDE (NF3)e" ~ "Nitrogen Triflouride (NF<sub>3)"))
+#            gas == "METHANE (CH4)a" ~ "Methane (CH4)")) %>%
 #   mutate(gas = factor(gas,
-#                          labels = c(expression(`Carbon Dioxide (CO`[2]*`)`),
+#                          labels = c(,
 #                                     "Hydroflourocarbons (HFCs)",
-#                                     expression(`Methane (CH`[4]*`)`),
+#                                     ,
 #                                     expression(`Nitrogen Triflouride (NF`[3]*`)`),
 #                                     expression(`Nitrous Oxide (N`[2]*`0)`),
 #                                     "Perflourocarbons (PFCs)",
 #                                     expression(`Sulphur Hexaflouride (SF`[6]*`)`)
 #                                     )))
+# 
+# labels = c(,
+#            ,
+#            ,
+#            "Hydroflourocarbons (HFCs)",
+#            "Perflourocarbons (PFCs)",
+#            ,
+#            )
 
 ## Calculate ghg annual totals by gas and convert to MtCO2e (from ktCO2e) for plotting
 ghg_gases_sum = ghg_gases_long %>%

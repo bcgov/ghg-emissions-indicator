@@ -144,7 +144,14 @@ ghg_gases_year <- ggplot(ghg_gases_sum) +
                 text = paste0(gas, " (", year, "): ", ghg_estimate, " MtCO<sub>2</sub>e"), 
                 group=gas), linewidth = 1) +  
   scale_color_manual(name = "Greenhouse Gas", values = gas.pal,
-                     limits = gas.order) +
+                     limits = gas.order,
+                     labels = c("Carbon Dioxide (CO<sub>2)",
+                                "Methane (CH<sub>4)",
+                                "Nitrous Oxide (N<sub>20)",
+                                "Hydroflourocarbons (HFCs)",
+                                "Perflourocarbons (PFCs)",
+                                "Sulphur Hexaflouride (SF<sub>6)",
+                                "Nitrogen Triflouride (NF<sub>3)")) +
   x_scale +
   labs(x="Year", y="Emissions (MtCO<sub>2</sub>e)<br>by Greenhouse Gas")+
   theme_soe()+ 
@@ -172,11 +179,12 @@ ghg_gases_net_1990 <- ghg_gases_sum %>%
 ghg_net_1990 <- ggplot(ghg_gases_net_1990) + 
   geom_line(aes(x = year, y = net_ghg, col = gas, group = gas,
                 text = paste0(gas, " (", year, "): ", net_ghg, " MtCO<sub>2</sub>e"),)) +
-  labs(x="Year", y="Annual change in (MtCO<sub>2</sub>e)<br>from 1990 by Greenhouse Gas")+
+  labs(x="Year", y="Annual change in MtCO<sub>2</sub>e<br>from 1990 by Greenhouse Gas")+
   # xlab(NULL)+
   # ylab(bquote(atop(paste("  Annual change in " ~Mt~CO[2]*e ~" "),paste("from 1990 by Greenhouse Gas")))) +
   scale_color_manual(name = "Greenhouse Gas", values = gas.pal,
-                     limits = gas.order) +
+                     
+                    ) +
   x_scale +
   theme_soe()+ 
   theme(panel.grid.major = element_line(size = 0.5, colour = "grey85"),
