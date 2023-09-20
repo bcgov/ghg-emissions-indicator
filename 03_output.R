@@ -143,9 +143,6 @@ ghg_gases_year <- ggplot(ghg_gases_sum) +
   geom_line(aes(x=year, y=ghg_estimate, col = gas, 
                 text = paste0(gas, " (", year, "): ", ghg_estimate, " MtCO<sub>2</sub>e"), 
                 group=gas), linewidth = 1) +  
-  scale_x_continuous(limits = c(1990, max_ghg_yr+1), 
-                     breaks = c(1990, seq(1993, max_ghg_yr + 1, 5), 2021), 
-                     expand = c(0,0))+
   scale_color_manual(name = "Greenhouse Gas", values = gas.pal,
                      limits = gas.order) +
   x_scale +
@@ -172,17 +169,28 @@ ghg_gases_net_1990 <- ghg_gases_sum %>%
   mutate(net_ghg = (ghg_estimate)-(ghg_estimate[year == 1990])) %>%
   select(gas, year, starts_with("net"))
 
-ghg_net_1990 <- ggplot(data = ghg_gases_net_1990, 
-                       aes(x = year, y = net_ghg, fill = gas)) + 
-  geom_area(size=1) +
-  xlab(NULL)+
-  ylab(bquote(atop(paste("  Annual change in " ~Mt~CO[2]*e ~" "),paste("from 1990 by Greenhouse Gas")))) +
+ghg_net_1990 <- ggplot(ghg_gases_net_1990) + 
+  geom_line(aes(x = year, y = net_ghg, col = gas, group = gas,
+                text = paste0(gas, " (", year, "): ", net_ghg, " MtCO<sub>2</sub>e"),)) +
+  labs(x="Year", y="Annual change in (MtCO<sub>2</sub>e)<br>from 1990 by Greenhouse Gas")+
+  # xlab(NULL)+
+  # ylab(bquote(atop(paste("  Annual change in " ~Mt~CO[2]*e ~" "),paste("from 1990 by Greenhouse Gas")))) +
+  scale_color_manual(name = "Greenhouse Gas", values = gas.pal,
+                     limits = gas.order) +
   x_scale +
-  scale_fill_manual(name = "Greenhouse Gas", values = gas.pal,
-                    limits = gas.order) +
-  coord_cartesian(clip = "off") +
-  theme_soe() +
-  theme_lineplots
+  theme_soe()+ 
+  theme(panel.grid.major = element_line(size = 0.5, colour = "grey85"),
+        panel.grid.minor = element_line(size = 0.5, colour = "grey85"),
+        panel.grid.minor.x = element_blank(),
+        panel.grid.major.x = element_blank(),
+        axis.text.y = element_text(size = 8),
+        axis.text.x = element_text(size = 10),
+        axis.title.y = element_text(size = 10,
+                                    margin = margin(t = 0, r = 10, b = 0, l = 0,
+                                                    unit = "pt")),
+        legend.text = element_text(size = 8),
+        legend.title = element_text(size = 10), 
+        legend.background = element_rect(colour = "white"))
 
 plot(ghg_net_1990)
 
