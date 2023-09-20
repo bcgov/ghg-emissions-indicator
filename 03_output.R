@@ -132,6 +132,20 @@ norm_print <- norm_base +
 plot(norm_print)
 
 #Breakdown of change in individual ghgs over time
+
+#Convert factor labels for gases to html code for plotly
+ghg_gases_sum = ghg_gases_sum %>%
+  mutate(gas = case_when
+         (gas == "CARBON DIOXIDE (CO2)" ~ "Carbon Dioxide (CO<sub>2</sub>)",
+           gas == "METHANE (CH4)" ~ "Methane (CH<sub>4</sub>)",
+           gas == "NITROUS OXIDE (N2O)b" ~ "Nitrous Oxide (N<sub>2</sub>0)",
+           gas == "HYDROFLUOROCARBONS (HFCs)c" ~ "Hydroflourocarbons (HFCs)",
+           gas == "PERFLUOROCARBONS (PFCs)c" ~ "Perflourocarbons (PFCs)",
+           gas == "SULPHUR HEXAFLUORIDE (SF6)d" ~ "Sulphur Hexaflouride (SF<sub>6</sub>)",
+           gas == "NITROGEN TRIFLUORIDE (NF3)e" ~ "Nitrogen Triflouride (NF<sub>3</sub>)",
+           gas == "METHANE (CH4)a" ~ "Methane (CH<sub>4</sub>)")) %>%
+  mutate(gas = as.factor(gas))
+
 gas.order <- levels(droplevels(as.factor(ghg_gases_sum$gas))) #gets rid of unused factors
 gas.no <- length(gas.order) + 1
 nb.cols<-7
@@ -144,14 +158,7 @@ ghg_gases_year <- ggplot(ghg_gases_sum) +
                 text = paste0(gas, " (", year, "): ", ghg_estimate, " MtCO<sub>2</sub>e"), 
                 group=gas), linewidth = 1) +  
   scale_color_manual(name = "Greenhouse Gas", values = gas.pal,
-                     limits = gas.order,
-                     labels = c("Carbon Dioxide (CO<sub>2)",
-                                "Methane (CH<sub>4)",
-                                "Nitrous Oxide (N<sub>20)",
-                                "Hydroflourocarbons (HFCs)",
-                                "Perflourocarbons (PFCs)",
-                                "Sulphur Hexaflouride (SF<sub>6)",
-                                "Nitrogen Triflouride (NF<sub>3)")) +
+                     limits = gas.order) +
   x_scale +
   labs(x="Year", y="Emissions (MtCO<sub>2</sub>e)<br>by Greenhouse Gas")+
   theme_soe()+ 
@@ -183,8 +190,7 @@ ghg_net_1990 <- ggplot(ghg_gases_net_1990) +
   # xlab(NULL)+
   # ylab(bquote(atop(paste("  Annual change in " ~Mt~CO[2]*e ~" "),paste("from 1990 by Greenhouse Gas")))) +
   scale_color_manual(name = "Greenhouse Gas", values = gas.pal,
-                     
-                    ) +
+                     limits = gas.order) +
   x_scale +
   theme_soe()+ 
   theme(panel.grid.major = element_line(size = 0.5, colour = "grey85"),
