@@ -182,7 +182,7 @@ ghg_gas_prop = ghg_gases_sum %>%
   group_by (year) %>%
   mutate(percentage = (ghg_estimate/sum(ghg_estimate))*100)
 
-ghg_gas_prop_plot = ggplot(ghg_gas_prop) +
+ghg_gases_prop = ggplot(ghg_gas_prop) +
   geom_area(aes(x = year,
              y = percentage,
              fill = gas,
@@ -208,7 +208,7 @@ ghg_gas_prop_plot = ggplot(ghg_gas_prop) +
         legend.title = element_text(size = 10), 
         legend.background = element_rect(colour = "white")) 
 
-ghg_gas_prop_plot
+ghg_gases_prop
 
 #Net displacement from 1990 levels
 ghg_gases_net_1990 <- ghg_gases_sum %>% 
@@ -437,7 +437,7 @@ remove_filename_spaces(dir = "tmp", pattern = " ", replacement = "")
 
 ## Create tmp folder if not already there and store plot objects in local repository
 if (!exists("tmp")) dir.create("tmp", showWarnings = FALSE)
-save(ghg_time, ghg_pop, gdp_time, ghg_gases_year, ghg_net_1990, norm, norm_print,
+save(ghg_time, ghg_pop, gdp_time, ghg_gases_year, ghg_gases_prop, ghg_net_1990, norm, norm_print,
      ghg_sector, ghg_sector_html, ghg_abs_diff,ghg_abs_diff_html,
      file = "tmp/plots.RData")
 
