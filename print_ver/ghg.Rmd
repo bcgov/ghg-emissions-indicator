@@ -196,7 +196,7 @@ ggplotly(ghg_gases_year, tooltip="text", dynamicTicks = TRUE) %>%
 
 \vspace{0.8cm}
 
-```{r ghgnetstack, fig.alt = "Net changes in emissions for each Greenhouse Gas relative to 1990 for years 1991 to 2021"}
+```{r ghgnetstack, fig.width = 10, fig.alt = "Net changes in emissions for each Greenhouse Gas relative to 1990 for years 1991 to 2021"}
 ghg_net_1990 +
   theme_print
 ```
@@ -216,7 +216,6 @@ ghg_net_1990 +
 \vspace{0.2cm}
 
 ```{r include=is_pdf, eval=is_pdf, out.width="110%"}
-
 include_graphics(path = here("out", "ghg_sector.png"))
 ```
 
