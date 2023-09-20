@@ -189,6 +189,8 @@ norm_print +
 
 -   A total of 7 greenhouse gases: Carbon Dioxide, Hydroflourocarbons, Methane, Nitrogen Trifluoride, Nitrous Oxide, Perfluorocarbons and Sulphur Hexafluoride, are monitored across B.C. Each of these gases has a different Global Warming Potential (GWP, provided in the [British Columbia Greenhouse Gas Provincial Inventory Methodology](https://www2.gov.bc.ca/assets/gov/environment/climate-change/data/provincial-inventory/2021/provincial_inventory_of_greenhouse_gas_emissions_1990-2021_-_methodology_report.pdf)). For the purpose of the below figures, values for each greenhouse gas have been converted to their CO2 equilvalent, allowing for comparison of effect size.
 
+-   Carbon Dioxide makes up at least x % of all greenhouse gas emissions.
+
 ```{r include=is_html, eval=is_html, fig.height=5, fig.width=11,  fig.alt="Interactive plot of emissions for each seperate Greenhouse Gas from 1990 to 2021."}
 ggplotly(ghg_gases_year, tooltip="text", dynamicTicks = TRUE) %>%
   rangeslider(start = 1990, end = 2021)
