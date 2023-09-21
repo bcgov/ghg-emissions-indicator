@@ -133,6 +133,11 @@ plot(norm_print)
 
 #Breakdown of change in individual ghgs over time
 
+#Remove NF3 as no data
+ghg_gases_sum = ghg_gases_sum %>%
+  filter(!gas == "Nitrogen Triflouride (NF<sub>3</sub>)") %>%
+  mutate(gas = factor(gas))
+
 #Convert factor labels for gases to html code for plotly
 ghg_gases_sum = ghg_gases_sum %>%
   mutate(gas = case_when
@@ -142,7 +147,6 @@ ghg_gases_sum = ghg_gases_sum %>%
            gas == "HYDROFLUOROCARBONS (HFCs)c" ~ "Hydroflourocarbons (HFCs)",
            gas == "PERFLUOROCARBONS (PFCs)c" ~ "Perflourocarbons (PFCs)",
            gas == "SULPHUR HEXAFLUORIDE (SF6)d" ~ "Sulphur Hexaflouride (SF<sub>6</sub>)",
-           gas == "NITROGEN TRIFLUORIDE (NF3)e" ~ "Nitrogen Triflouride (NF<sub>3</sub>)",
            gas == "METHANE (CH4)a" ~ "Methane (CH<sub>4</sub>)")) %>%
   mutate(gas = as.factor(gas))
 
@@ -181,10 +185,6 @@ plot(ghg_gases_year)
 ghg_gas_prop = ghg_gases_sum %>%
   group_by (year) %>%
   mutate(percentage = (ghg_estimate/sum(ghg_estimate))*100)
-
-# ghg_gas_prop = ghg_gas_prop %>%
-#   filter(!gas == "Nitrogen Triflouride (NF<sub>3</sub>)") %>%
-#   mutate(gas = factor(gas))
 
 ghg_gases_prop = ggplot(ghg_gas_prop) +
   geom_bar(aes(x = year, y = percentage, fill = gas),
