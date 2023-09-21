@@ -186,17 +186,16 @@ ghg_gas_prop = ghg_gases_sum %>%
   mutate(percentage = (ghg_estimate/sum(ghg_estimate))*100)
 
 ghg_gases_prop = ggplot(ghg_gas_prop) +
-  geom_bar(aes(x = year, y = percentage, fill = gas),
-           position="stack", stat="identity")
-  geom_area(aes(x = year,
-             y = percentage,
-             fill = gas,
-             group = gas,
-             text = paste0(gas, " (", year, "): ", percentage, "%")),
-            size = 1,
-            alpha = 0.7,
-            col = "black",
-            linewidth=0.2)+
+  geom_bar(aes(x = year,
+                            y = percentage,
+                            fill = gas,
+                            group = gas,
+                            text = paste0(gas, " (", year, "): ", round(percentage,1), "%")),
+                          width = 1,
+                           col = "black",
+                           linewidth=0.1,
+           position="stack", stat="identity") +
+  
   scale_fill_manual(name = "Greenhouse Gas", values = gas.pal,
                      limits = gas.order)+
   # x_scale +
