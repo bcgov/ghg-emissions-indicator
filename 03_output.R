@@ -150,9 +150,9 @@ ghg_gases_sum = ghg_gases_sum %>%
            gas == "METHANE (CH4)a" ~ "Methane (CH<sub>4</sub>)")) %>%
   mutate(gas = as.factor(gas))
 
-gas.order <- levels(droplevels(as.factor(ghg_gases_sum$gas))) #gets rid of unused factors
+gas.order <- levels(droplevels(ghg_gases_sum$gas)) #gets rid of unused factors
 gas.no <- length(gas.order) + 1
-nb.cols<-7
+nb.cols<-6
 gas.pal <- colorRampPalette(brewer.pal(gas.no, "Dark2"))(nb.cols)
 col_db <- melt(data.frame(gas.order,gas.pal)) #for use in plotting individual gases
 names(gas.pal) <- gas.order
