@@ -132,10 +132,9 @@ norm_print <- norm_base +
 plot(norm_print)
 
 #Breakdown of change in individual ghgs over time
-
 #Remove NF3 as no data
 ghg_gases_sum = ghg_gases_sum %>%
-  filter(!gas == "Nitrogen Triflouride (NF<sub>3</sub>)") %>%
+  filter(!gas == "NITROGEN TRIFLUORIDE (NF3)e") %>%
   mutate(gas = factor(gas))
 
 #Convert factor labels for gases to html code for plotly
