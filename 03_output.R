@@ -188,6 +188,32 @@ ghg_gas_prop = ghg_gases_sum %>%
 ghg_gases_prop = ggplot(ghg_gas_prop) +
   geom_bar(aes(x = year, y = percentage, fill = gas),
            position="stack", stat="identity")
+  geom_area(aes(x = year,
+             y = percentage,
+             fill = gas,
+             group = gas,
+             text = paste0(gas, " (", year, "): ", percentage, "%")),
+            size = 1,
+            alpha = 0.7,
+            col = "black",
+            linewidth=0.2)+
+  scale_fill_manual(name = "Greenhouse Gas", values = gas.pal,
+                     limits = gas.order)+
+  # x_scale +
+  labs(x="Year", y="Percentage of total emissions for each GHG <br>from 1990 to 2021")+
+  theme_soe()+
+  theme(panel.grid.major = element_line(size = 0.5, colour = "grey85"),
+        panel.grid.minor = element_line(size = 0.5, colour = "grey85"),
+        panel.grid.minor.x = element_blank(),
+        panel.grid.major.x = element_blank(),
+        axis.text.y = element_text(size = 8),
+        axis.text.x = element_text(size = 10),
+        axis.title.y = element_text(size = 10,
+                                    margin = margin(t = 0, r = 10, b = 0, l = 0,
+                                                    unit = "pt")),
+        legend.text = element_text(size = 8),
+        legend.title = element_text(size = 10),
+        legend.background = element_rect(colour = "white"))
 
 ghg_gases_prop
 
