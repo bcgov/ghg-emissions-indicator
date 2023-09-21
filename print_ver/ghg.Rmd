@@ -191,10 +191,10 @@ norm_print +
 
 -   Carbon Dioxide makes up at least x % of all greenhouse gas emissions.
 
-```{r include=is_html, eval=is_html, fig.height=5, fig.width=11,  fig.alt="Interactive plot of emissions for each seperate Greenhouse Gas from 1990 to 2021."}
-ggplotly(ghg_gases_year, tooltip="text", dynamicTicks = TRUE) %>%
-  rangeslider(start = 1990, end = 2021)
-```
+# ```{r include=is_html, eval=is_html, fig.height=5, fig.width=11,  fig.alt="Interactive plot of emissions for each seperate Greenhouse Gas from 1990 to 2021."}
+# ggplotly(ghg_gases_year, tooltip="text", dynamicTicks = TRUE) %>%
+#   rangeslider(start = 1990, end = 2021)
+# ```
 
 \vspace{0.8cm}
 
