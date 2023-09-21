@@ -205,6 +205,7 @@ p = ggplotly(ghg_gases_prop, tooltip="text", dynamicTicks = TRUE) %>%
 #Delete base, so that when select single gas it goes from zero
 for (i in 1:length(p$x$data)) {
   p$x$data[[i]]$base <- c()
+  
 }
 
 p
