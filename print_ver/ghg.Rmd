@@ -189,9 +189,15 @@ norm_print +
 
 ## Emissions by Greenhouse Gas
 
--   A total of 6 greenhouse gases: Carbon Dioxide, Hydroflourocarbons, Methane, Nitrous Oxide, Perfluorocarbons and Sulphur Hexafluoride, are monitored across B.C. Each of these gases has a different Global Warming Potential (GWP, provided in the [British Columbia Greenhouse Gas Provincial Inventory Methodology](https://www2.gov.bc.ca/assets/gov/environment/climate-change/data/provincial-inventory/2021/provincial_inventory_of_greenhouse_gas_emissions_1990-2021_-_methodology_report.pdf)). For the purpose of the below figures, values for each greenhouse gas have been converted to their CO~2~ equilvalent, allowing for comparison of effect size.
+-   A total of 6 greenhouse gases: Carbon dioxide, Hydroflourocarbons, Methane, Nitrous oxide, Perfluorocarbons and Sulphur hexafluoride, are monitored across B.C. Each of these gases has a different Global Warming Potential (GWP, provided in the [British Columbia Greenhouse Gas Provincial Inventory Methodology](https://www2.gov.bc.ca/assets/gov/environment/climate-change/data/provincial-inventory/2021/provincial_inventory_of_greenhouse_gas_emissions_1990-2021_-_methodology_report.pdf)). For the purpose of the below figures, values for each greenhouse gas have been converted to their CO~2~ equilvalent, allowing for comparison of effect size.
 
--   Carbon Dioxide makes up at least x % of all greenhouse gas emissions.
+-   Greenhouse gas emissions between 1990 and 2021 have on average consisted of 81.3% CO~2~ (range = 80.3 - 84.1 %), and this percentage has stayed relatively consistent across this time period. 
+
+-   Hydroflourocarbons (HFCs) have proportionally increased between 1995-2021, peaking in 2021 at 2.64% of greenhouse gas emissions.
+
+-   Perflourocarbons (PFCs) have gradually declined from a high of 2.8% in 1998 to approximately 0.2% of greenhouse gas emmissions in 2021. 
+
+-   Sulphur hexaflouride (SF~6~), which has the highest radiative forcing potential of all recorded gases, has varied between 0.1 and 0.2% of emmissions, and has not been included as a significant component of emmission since 2010. 
 
 \vspace{0.8cm}
 
