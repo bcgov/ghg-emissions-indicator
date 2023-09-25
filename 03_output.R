@@ -216,6 +216,15 @@ ghg_gases_prop = ggplot(ghg_gas_prop) +
 
 ghg_gases_prop
 
+#Add summary table (for stats used in report)
+ghg_gases_summary = ghg_gas_prop %>%
+  group_by(gas) %>%
+  summarise(mean = mean(percentage),
+            min = min(percentage),
+            max = max(percentage))
+
+ghg_gases_summary
+
 #Net displacement from 1990 levels
 ghg_gases_net_1990 <- ghg_gases_sum %>% 
   group_by(gas) %>%
