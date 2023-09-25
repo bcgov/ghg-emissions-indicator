@@ -92,6 +92,8 @@ net_2007 <- 65.405
 
 -   **Greenhouse gas emissions warm the global atmosphere and cause our climate to change.** Reducing greenhouse gas emissions is a key component to limiting the increase in global average temperature and the resulting changes in climate.
 
+-   **A number of gases are released into the atmosphere through different activities.** Different gases have different Global Warming Potential (GWP: [British Columbia Greenhouse Gas Provincial Inventory Methodology](https://www2.gov.bc.ca/assets/gov/environment/climate-change/data/provincial-inventory/2021/provincial_inventory_of_greenhouse_gas_emissions_1990-2021_-_methodology_report.pdf), for example, Methane (CH~4~) has a radiative forcing 25x that of Carbon dioxide(CO~2~), while Sulphur hexaflouride (SF~6~) has that of 22,880x more than CO~2~. For the puropose of this report, all emissions have been converted to units of CO~2~ equivalent (MtCO~2~e).
+
 -   **Total greenhouse gas emissions in `r max_ghg_yr` in B.C. were `r ghg_est_Mtco2e` million tonnes of carbon dioxide equivalent.** This is a `r abs(previous_year)`% `r ifelse(previous_year > 0, 'increase', 'decrease')` in gross emissions since `r max_ghg_yr - 1`, a `r abs(two_years_ago)`% `r ifelse(two_years_ago > 0, 'increase', 'decrease')` in gross emissions since `r max_ghg_yr - 2`, and a `r abs(baseline_year)`% `r ifelse(baseline_year > 0, "increase", "decrease")` in gross emissions since 2007---the Government of British Columbia's baseline year for assessing reductions in greenhouse gas emissions.
 
 -   **The decline in emissions observed in 2020 occurred during the COVID-19 pandemic, which reduced transportation and other activities that produce greenhouse gas emissions.** As predicted, we did see a slight rebound in 2021, primarily driven by an increase in most forms of transportation.
@@ -187,7 +189,7 @@ norm_print +
 
 ## Emissions by Greenhouse Gas
 
--   A total of 6 greenhouse gases: Carbon Dioxide, Hydroflourocarbons, Methane, Nitrous Oxide, Perfluorocarbons and Sulphur Hexafluoride, are monitored across B.C. Each of these gases has a different Global Warming Potential (GWP, provided in the [British Columbia Greenhouse Gas Provincial Inventory Methodology](https://www2.gov.bc.ca/assets/gov/environment/climate-change/data/provincial-inventory/2021/provincial_inventory_of_greenhouse_gas_emissions_1990-2021_-_methodology_report.pdf)). For the purpose of the below figures, values for each greenhouse gas have been converted to their CO2 equilvalent, allowing for comparison of effect size.
+-   A total of 6 greenhouse gases: Carbon Dioxide, Hydroflourocarbons, Methane, Nitrous Oxide, Perfluorocarbons and Sulphur Hexafluoride, are monitored across B.C. Each of these gases has a different Global Warming Potential (GWP, provided in the [British Columbia Greenhouse Gas Provincial Inventory Methodology](https://www2.gov.bc.ca/assets/gov/environment/climate-change/data/provincial-inventory/2021/provincial_inventory_of_greenhouse_gas_emissions_1990-2021_-_methodology_report.pdf)). For the purpose of the below figures, values for each greenhouse gas have been converted to their CO~2~ equilvalent, allowing for comparison of effect size.
 
 -   Carbon Dioxide makes up at least x % of all greenhouse gas emissions.
 
