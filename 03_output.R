@@ -212,8 +212,7 @@ ghg_gases_prop = ggplot(ghg_gas_prop) +
                                                     unit = "pt")),
         legend.text = element_text(size = 8),
         legend.title = element_text(size = 10),
-        legend.background = element_rect(colour = "white"),
-        legend.position = "none")
+        legend.background = element_rect(colour = "white"))
 
 ghg_gases_prop_html = ggplot(ghg_gas_prop) +
   geom_bar(aes(x = year,
@@ -307,8 +306,7 @@ ghg_net_1990_html <- ggplot(ghg_gases_net_1990) +
                                                     unit = "pt")),
         legend.text = element_text(size = 8),
         legend.title = element_text(size = 10), 
-        legend.background = element_rect(colour = "white"),
-        legend.position = "none")
+        legend.background = element_rect(colour = "white"))
 
 ghg_net_1990_html
 
