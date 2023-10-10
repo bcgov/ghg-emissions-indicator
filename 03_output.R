@@ -178,7 +178,7 @@ ghg_gases_year <- ggplot(ghg_gases_sum) +
         legend.title = element_text(size = 10), 
         legend.background = element_rect(colour = "white"))
 
-plot(ghg_gases_year)
+ghg_gases_year
 
 #Annual change of percentage of emission for each gas
 ghg_gas_prop = ghg_gases_sum %>%
@@ -186,6 +186,36 @@ ghg_gas_prop = ghg_gases_sum %>%
   mutate(percentage = (ghg_estimate/sum(ghg_estimate))*100)
 
 ghg_gases_prop = ggplot(ghg_gas_prop) +
+  geom_bar(aes(x = year,
+               y = percentage,
+               fill = gas,
+               group = gas,
+               text = paste0(gas, " (", year, "): ", round(percentage,1), "%")),
+           width = 1,
+           col = "black",
+           linewidth=0.1,
+           position="stack", stat="identity") +
+  
+  scale_fill_manual(name = "Greenhouse Gas", values = gas.pal,
+                    limits = gas.order)+
+  # x_scale +
+  labs(x="Year", y="Percentage of total emissions for each GHG <br>from 1990 to 2021")+
+  theme_soe()+
+  theme(panel.grid.major = element_line(size = 0.5, colour = "grey85"),
+        panel.grid.minor = element_line(size = 0.5, colour = "grey85"),
+        panel.grid.minor.x = element_blank(),
+        panel.grid.major.x = element_blank(),
+        axis.text.y = element_text(size = 8),
+        axis.text.x = element_text(size = 10),
+        axis.title.y = element_text(size = 10,
+                                    margin = margin(t = 0, r = 10, b = 0, l = 0,
+                                                    unit = "pt")),
+        legend.text = element_text(size = 8),
+        legend.title = element_text(size = 10),
+        legend.background = element_rect(colour = "white"),
+        legend.position = "none")
+
+ghg_gases_prop_html = ggplot(ghg_gas_prop) +
   geom_bar(aes(x = year,
                             y = percentage,
                             fill = gas,
@@ -214,7 +244,7 @@ ghg_gases_prop = ggplot(ghg_gas_prop) +
         legend.title = element_text(size = 10),
         legend.background = element_rect(colour = "white"))
 
-ghg_gases_prop
+ghg_gases_prop_html
 
 #Add summary table (for stats used in report)
 ghg_gases_summary = ghg_gas_prop %>%
@@ -254,7 +284,33 @@ ghg_net_1990 <- ggplot(ghg_gases_net_1990) +
         legend.title = element_text(size = 10), 
         legend.background = element_rect(colour = "white"))
 
-plot(ghg_net_1990)
+ghg_net_1990
+
+ghg_net_1990_html <- ggplot(ghg_gases_net_1990) + 
+  geom_line(aes(x = year, y = net_ghg, col = gas, group = gas,
+                text = paste0(gas, " (", year, "): ", net_ghg, " MtCO<sub>2</sub>e"),)) +
+  labs(x="Year", y="Annual change in MtCO<sub>2</sub>e<br>from 1990 by Greenhouse Gas")+
+  # xlab(NULL)+
+  # ylab(bquote(atop(paste("  Annual change in " ~Mt~CO[2]*e ~" "),paste("from 1990 by Greenhouse Gas")))) +
+  scale_color_manual(name = "Greenhouse Gas", values = gas.pal,
+                     limits = gas.order) +
+  x_scale +
+  theme_soe()+ 
+  theme(panel.grid.major = element_line(size = 0.5, colour = "grey85"),
+        panel.grid.minor = element_line(size = 0.5, colour = "grey85"),
+        panel.grid.minor.x = element_blank(),
+        panel.grid.major.x = element_blank(),
+        axis.text.y = element_text(size = 8),
+        axis.text.x = element_text(size = 10),
+        axis.title.y = element_text(size = 10,
+                                    margin = margin(t = 0, r = 10, b = 0, l = 0,
+                                                    unit = "pt")),
+        legend.text = element_text(size = 8),
+        legend.title = element_text(size = 10), 
+        legend.background = element_rect(colour = "white"),
+        legend.position = "none")
+
+ghg_net_1990_html
 
 ## Setting up data to provide information on economic sectors
 # Remove sectors with no data in any year
@@ -286,7 +342,9 @@ ghg_sector <- ggplot(econ_sector_sum_data, aes(x=year, y=sum, color=fct_rev(sect
   #                 segment.size = 0.5,
   #                 xlim = c(max(label_static$year),
   #                          max(label_static$year) + 5))+
-  xlab(NULL) +  ylab(bquote(Mt~CO[2]*e~" by Economic Sector")) +
+  xlab(NULL) +  
+  ylab(bquote(Mt~CO[2]*e~" by Economic Sector")) + labs(color = "Economic Sector") +
+  
   scale_x_continuous(limits = c(1990, max_ghg_yr+1), 
                      breaks = c(1990, seq(1993, max_ghg_yr + 1, 5), 2021), 
                      expand = c(0,0))+
@@ -302,8 +360,7 @@ ghg_sector <- ggplot(econ_sector_sum_data, aes(x=year, y=sum, color=fct_rev(sect
         axis.title.y = element_text(size = 16,
                                     margin = margin(t = 0, r = 10, b = 0, l = 0,
                                                     unit = "pt")))+
-  theme(plot.margin = unit(c(0.5,3.5,0.5,0.5), "cm")) +
-  theme(legend.position = "none")
+  theme(plot.margin = unit(c(0.5,3.5,0.5,0.5), "cm")) 
 
 plot(ghg_sector)
 
@@ -345,6 +402,7 @@ ghg_abs_diff <- ggplot(data = abs_diff_econ,
                        aes(x = year, y = abs.diff, color = fct_rev(sector))) + 
   geom_line(size=1) +
   xlab(NULL) +  ylab(bquote("Annual Change in "~Mt~CO[2]*e~" from 1990 by Economic Sector")) +
+  labs(color = "Economic Sector") +
   x_scale +
   scale_color_manual(values = sector.pal) +
   # geom_text_repel(aes(label=sector, size=1),
@@ -364,8 +422,7 @@ ghg_abs_diff <- ggplot(data = abs_diff_econ,
         axis.title.y = element_text(size = 16,
                                     margin = margin(t = 0, r = 10, b = 0, l = 0,
                                                     unit = "pt")))+
-  theme(plot.margin = unit(c(0.5,3.5,0.5,0.5), "cm")) +
-  theme(legend.position = "none")
+  theme(plot.margin = unit(c(0.5,3.5,0.5,0.5), "cm"))
 
 plot(ghg_abs_diff)
 
@@ -452,7 +509,8 @@ remove_filename_spaces(dir = "tmp", pattern = " ", replacement = "")
 
 ## Create tmp folder if not already there and store plot objects in local repository
 if (!exists("tmp")) dir.create("tmp", showWarnings = FALSE)
-save(ghg_time, ghg_pop, gdp_time, ghg_gases_year, ghg_gases_prop, ghg_net_1990, norm, norm_print,
+save(ghg_time, ghg_pop, gdp_time, ghg_gases_year, ghg_gases_prop, 
+     ghg_gases_prop_html, ghg_net_1990, ghg_net_1990_html, norm, norm_print,
      ghg_sector, ghg_sector_html, ghg_abs_diff,ghg_abs_diff_html,
      file = "tmp/plots.RData")
 
