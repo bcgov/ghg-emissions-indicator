@@ -45,22 +45,24 @@ x_scale <- scale_x_continuous(limits = c(1990, max_ghg_yr + 1),
                               expand = c(0,0))
 
 ## Line plot of total GHG emissions over time in British Columbia
-ghg_time <- ggplot(data = bc_ghg_sum, aes(x = year, y = ghg_estimate)) + 
-  geom_line(colour = "#1B9E77", linewidth = 1.5) +
+ghg_time = ggplot(data = bc_ghg_sum, aes(x = year, y = ghg_estimate)) + 
+  geom_line(colour = "#1B9E77", size = 1.5) +
   geom_point(x=2025, y=clean_bc_2025, color="black", shape=19, size=2)+
-  geom_point(x=2007, y=baseline_2007/1000, color="black", shape=19, size=2)+
-  annotate("text", x=2020, y=clean_bc_2025, label="B.C. 2025 emission target")+
-  annotate("text", x=2008, y=65, label = "2007 baseline")+
+  geom_point(x=2007, y=baseline_2007, color="black", shape=19, size=2)+
+  geom_segment(aes(x = 2004, xend = 2007, y = 62, yend = baseline_2007), size = 0.7) +
+  annotate("text", x=2019.5, y=clean_bc_2025, label="B.C. 2025 emission target", size = 4)+
+  annotate("text", x=2004, y=61.5, label = "2007 baseline", size = 4)+
   labs(title = "Total GHG Emissions") +
   xlab(NULL) + 
   ylab(bquote(Mt~CO[2]*e)) +
-  scale_y_continuous(limits = c(50, 72), breaks = seq(50, 72, 2),
+  scale_y_continuous(limits = c(50, 72), breaks = seq(52, 72, 2),
                      expand = c(0,0), labels = comma) +
   scale_x_continuous(limits = c(1990, 2026), 
-                     breaks = c(1990, seq(1995, 2025, 5)), 
-                     expand = c(0,0))+
+                     breaks = seq(1990, 2025, 5), 
+                     expand = c(0,0)) +
   theme_soe() +
   theme_lineplots
+
 plot(ghg_time)
 
 ## Line plot of total GHG emissions per person over time in British Columbia
