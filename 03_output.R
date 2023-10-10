@@ -138,7 +138,8 @@ ghg_gases_sum = ghg_gases_sum %>%
   mutate(gas = factor(gas))
 
 #Convert factor labels for gases to html code for plotly
-ghg_gases_sum = ghg_gases_sum %>%
+
+ghg_gases_sum_html = ghg_gases_sum %>%
   mutate(gas = case_when
          (gas == "CARBON DIOXIDE (CO2)" ~ "Carbon Dioxide (CO<sub>2</sub>)",
            gas == "METHANE (CH4)" ~ "Methane (CH<sub>4</sub>)",
@@ -149,41 +150,48 @@ ghg_gases_sum = ghg_gases_sum %>%
            gas == "METHANE (CH4)a" ~ "Methane (CH<sub>4</sub>)")) %>%
   mutate(gas = as.factor(gas))
 
-gas.order <- levels(droplevels(ghg_gases_sum$gas)) #gets rid of unused factors
+gas.order <- levels(droplevels(ghg_gases_sum_html$gas)) #gets rid of unused factors
 gas.no <- length(gas.order) + 1
 nb.cols<-6
 gas.pal <- colorRampPalette(brewer.pal(gas.no, "Dark2"))(nb.cols)
 col_db <- melt(data.frame(gas.order,gas.pal)) #for use in plotting individual gases
 names(gas.pal) <- gas.order
 
-ghg_gases_year <- ggplot(ghg_gases_sum) + 
-  geom_line(aes(x=year, y=ghg_estimate, col = gas, 
-                text = paste0(gas, " (", year, "): ", ghg_estimate, " MtCO<sub>2</sub>e"), 
-                group=gas), linewidth = 1) +  
-  scale_color_manual(name = "Greenhouse Gas", values = gas.pal,
-                     limits = gas.order) +
-  x_scale +
-  labs(x="Year", y="Emissions (MtCO<sub>2</sub>e)<br>by Greenhouse Gas")+
-  theme_soe()+ 
-  theme(panel.grid.major = element_line(size = 0.5, colour = "grey85"),
-        panel.grid.minor = element_line(size = 0.5, colour = "grey85"),
-        panel.grid.minor.x = element_blank(),
-        panel.grid.major.x = element_blank(),
-        axis.text.y = element_text(size = 8),
-        axis.text.x = element_text(size = 10),
-        axis.title.y = element_text(size = 10,
-                                    margin = margin(t = 0, r = 10, b = 0, l = 0,
-                                                    unit = "pt")),
-        legend.text = element_text(size = 8),
-        legend.title = element_text(size = 10), 
-        legend.background = element_rect(colour = "white"))
-
-ghg_gases_year
+# ghg_gases_year <- ggplot(ghg_gases_sum) + 
+#   geom_line(aes(x=year, y=ghg_estimate, col = gas, 
+#                 text = paste0(gas, " (", year, "): ", ghg_estimate, " MtCO<sub>2</sub>e"), 
+#                 group=gas), linewidth = 1) +  
+#   scale_color_manual(name = "Greenhouse Gas", values = gas.pal,
+#                      limits = gas.order) +
+#   x_scale +
+#   labs(x="Year", y="Emissions (MtCO<sub>2</sub>e)<br>by Greenhouse Gas")+
+#   theme_soe()+ 
+#   theme(panel.grid.major = element_line(size = 0.5, colour = "grey85"),
+#         panel.grid.minor = element_line(size = 0.5, colour = "grey85"),
+#         panel.grid.minor.x = element_blank(),
+#         panel.grid.major.x = element_blank(),
+#         axis.text.y = element_text(size = 8),
+#         axis.text.x = element_text(size = 10),
+#         axis.title.y = element_text(size = 10,
+#                                     margin = margin(t = 0, r = 10, b = 0, l = 0,
+#                                                     unit = "pt")),
+#         legend.text = element_text(size = 8),
+#         legend.title = element_text(size = 10), 
+#         legend.background = element_rect(colour = "white"))
+# 
+# ghg_gases_year
 
 #Annual change of percentage of emission for each gas
-ghg_gas_prop = ghg_gases_sum %>%
+ghg_gas_prop = ghg_gases_sum_html %>%
   group_by (year) %>%
   mutate(percentage = (ghg_estimate/sum(ghg_estimate))*100)
+
+labels_pdf = c(expression(Carbon~Dioxide~"("~CO[2]~")"),
+               expression(Methane~"("~CH[4]~")"),
+               expression(Nitrous~Oxide~"("~N[2]*O~")"),
+              paste("Hydroflourocarbons (HFCs)"),
+              paste("Perflourocarbons (PFCs)"),
+              expression(Sulphur~Hexaflouride~"("~SF[6]~")"))
 
 ghg_gases_prop = ggplot(ghg_gas_prop) +
   geom_bar(aes(x = year,
@@ -195,11 +203,9 @@ ghg_gases_prop = ggplot(ghg_gas_prop) +
            col = "black",
            linewidth=0.1,
            position="stack", stat="identity") +
-  
   scale_fill_manual(name = "Greenhouse Gas", values = gas.pal,
-                    limits = gas.order)+
-  # x_scale +
-  labs(x="Year", y="Percentage of total emissions for each GHG <br>from 1990 to 2021")+
+                  labels = labels_pdf)+
+  labs(x="", y="Percentage of total emissions for each \nGHG from 1990 to 2021")+
   theme_soe()+
   theme(panel.grid.major = element_line(size = 0.5, colour = "grey85"),
         panel.grid.minor = element_line(size = 0.5, colour = "grey85"),
@@ -214,6 +220,13 @@ ghg_gases_prop = ggplot(ghg_gas_prop) +
         legend.title = element_text(size = 10),
         legend.background = element_rect(colour = "white"))
 
+ghg_gases_prop
+
+ghg_gas_prop = ghg_gases_sum_html %>%
+  group_by (year) %>%
+  mutate(percentage = (ghg_estimate/sum(ghg_estimate))*100)
+
+
 ghg_gases_prop_html = ggplot(ghg_gas_prop) +
   geom_bar(aes(x = year,
                             y = percentage,
@@ -224,11 +237,9 @@ ghg_gases_prop_html = ggplot(ghg_gas_prop) +
                            col = "black",
                            linewidth=0.1,
            position="stack", stat="identity") +
-  
   scale_fill_manual(name = "Greenhouse Gas", values = gas.pal,
                      limits = gas.order)+
-  # x_scale +
-  labs(x="Year", y="Percentage of total emissions for each GHG <br>from 1990 to 2021")+
+  labs(x="", y="Percentage of total emissions for each GHG \nfrom 1990 to 2021")+
   theme_soe()+
   theme(panel.grid.major = element_line(size = 0.5, colour = "grey85"),
         panel.grid.minor = element_line(size = 0.5, colour = "grey85"),
@@ -255,19 +266,17 @@ ghg_gases_summary = ghg_gas_prop %>%
 ghg_gases_summary
 
 #Net displacement from 1990 levels
-ghg_gases_net_1990 <- ghg_gases_sum %>% 
+ghg_gases_net_1990 <- ghg_gases_sum_html %>% 
   group_by(gas) %>%
   mutate(net_ghg = (ghg_estimate)-(ghg_estimate[year == 1990])) %>%
   select(gas, year, starts_with("net"))
 
 ghg_net_1990 <- ggplot(ghg_gases_net_1990) + 
-  geom_line(aes(x = year, y = net_ghg, col = gas, group = gas,
-                text = paste0(gas, " (", year, "): ", net_ghg, " MtCO<sub>2</sub>e"),)) +
-  labs(x="Year", y="Annual change in MtCO<sub>2</sub>e<br>from 1990 by Greenhouse Gas")+
+  geom_line(aes(x = year, y = net_ghg, col = gas, group = gas)) +
+  xlab("") + ylab(bquote("Annual change in "~Mt~CO[2]*e~"from 1990 by Greenhouse Gas"))+
   # xlab(NULL)+
   # ylab(bquote(atop(paste("  Annual change in " ~Mt~CO[2]*e ~" "),paste("from 1990 by Greenhouse Gas")))) +
-  scale_color_manual(name = "Greenhouse Gas", values = gas.pal,
-                     limits = gas.order) +
+  scale_color_manual(name = "Greenhouse Gas", values = gas.pal, labels = labels_pdf) +
   x_scale +
   theme_soe()+ 
   theme(panel.grid.major = element_line(size = 0.5, colour = "grey85"),
@@ -288,7 +297,7 @@ ghg_net_1990
 ghg_net_1990_html <- ggplot(ghg_gases_net_1990) + 
   geom_line(aes(x = year, y = net_ghg, col = gas, group = gas,
                 text = paste0(gas, " (", year, "): ", net_ghg, " MtCO<sub>2</sub>e"),)) +
-  labs(x="Year", y="Annual change in MtCO<sub>2</sub>e<br>from 1990 by Greenhouse Gas")+
+  labs(x="", y="Annual change in MtCO<sub>2</sub>e<br>from 1990 by Greenhouse Gas")+
   # xlab(NULL)+
   # ylab(bquote(atop(paste("  Annual change in " ~Mt~CO[2]*e ~" "),paste("from 1990 by Greenhouse Gas")))) +
   scale_color_manual(name = "Greenhouse Gas", values = gas.pal,
@@ -507,7 +516,7 @@ remove_filename_spaces(dir = "tmp", pattern = " ", replacement = "")
 
 ## Create tmp folder if not already there and store plot objects in local repository
 if (!exists("tmp")) dir.create("tmp", showWarnings = FALSE)
-save(ghg_time, ghg_pop, gdp_time, ghg_gases_year, ghg_gases_prop, 
+save(ghg_time, ghg_pop, gdp_time, ghg_gases_prop, 
      ghg_gases_prop_html, ghg_net_1990, ghg_net_1990_html, norm, norm_print,
      ghg_sector, ghg_sector_html, ghg_abs_diff,ghg_abs_diff_html,
      file = "tmp/plots.RData")
@@ -557,9 +566,9 @@ plot(norm)
 dev.off()
 
 #total ghg by gas over time
-svg_px("./out/ghg_gases_plot.svg", width = 850, height = 400)
-plot(ghg_gases_year)
-dev.off()
+# svg_px("./out/ghg_gases_plot.svg", width = 850, height = 400)
+# plot(ghg_gases_year)
+# dev.off()
 
 #proportion of gases by year
 svg_px("./out/ghg_gases_plot.svg", width = 850, height = 500)
