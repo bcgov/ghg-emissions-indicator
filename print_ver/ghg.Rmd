@@ -1,11 +1,12 @@
 ---
-topic: "sustainability"
 title: "Trends in Greenhouse Gas Emissions in B.C. (1990-2021)"
-output: 
+topic: sustainability
+output:
   html_document:
-    self_contained: true
+    self_contained: yes
   pdf_document: envreportutils.internal::print_ver
-editor_options: 
+  word_document: default
+editor_options:
   chunk_output_type: console
 ---
 
@@ -201,8 +202,8 @@ norm_print +
 
 \vspace{0.8cm}
 
-```{r include = is_pdf}
-
+```{r include = is_pdf, eval=is_pdf, out.width="110%"}
+ include_graphics(path = here("out", "ghg_gases_plot.png"))
 ```
 
 
@@ -221,8 +222,8 @@ p
 
 \vspace{0.8cm}
 
-```{r include = is_pdf}
-
+```{r include = is_pdf, eval=is_pdf, out.width="110%"}
+include_graphics(path = here("out", "ghg_net_plot.png"))
 ```
 
 ```{r include=is_html, eval=is_html, fig.height=5, fig.width=11,  fig.alt = "Interactive plot of net changes in emissions for each Greenhouse Gas relative to 1990 for years 1991 to 2021"}
