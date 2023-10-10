@@ -563,9 +563,14 @@ svg_px("./out/ghg_gases_plot.svg", width = 850, height = 400)
 plot(ghg_gases_year)
 dev.off()
 
+#proportion of gases by year
+svg_px("./out/ghg_gases_plot.svg", width = 850, height = 500)
+plot(ghg_gases_prop)
+dev.off()
+
 png_retina(filename = "./out/ghg_gases_plot.png", width = 850, height = 400,
            units = "px", type = "cairo-png", antialias = "default")
-plot(ghg_gases_year)
+plot(ghg_gases_prop)
 dev.off()
 
 #Net ghg by gas since 1990
