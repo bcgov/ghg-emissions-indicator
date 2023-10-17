@@ -4,7 +4,7 @@ topic: sustainability
 output:
   pdf_document: envreportutils.internal::print_ver
   html_document:
-    self_contained: yes
+    self_contained: false
   word_document: default
 editor_options:
   chunk_output_type: console
@@ -130,24 +130,24 @@ theme_lineplots <- theme(
 ```
 
 ```{r ghgtrends, fig.alt="Greenhouse gas emissions plotted over time from 1990 to 2021. The 2007 baseline and the 2025 emission target are highlighted on the graph."}
-# ghg_time + theme_print
-ggplot(data = bc_ghg_sum, aes(x = year, y = ghg_estimate)) + 
-  geom_line(colour = "#1B9E77", size = 1.5) +
-  geom_point(x=2025, y=clean_bc_2025, color="black", shape=19, size=2)+
-  geom_point(x=2007, y=baseline_2007, color="black", shape=19, size=2)+
-  geom_segment(aes(x = 2004, xend = 2007, y = 62, yend = baseline_2007), size = 0.7) +
-  annotate("text", x=2018.5, y=clean_bc_2025, label="B.C. 2025 emission target", size = 4)+
-  annotate("text", x=2004, y=61.5, label = "2007 baseline", size = 4)+
-  labs(title = "Total GHG Emissions") +
-  xlab(NULL) + 
-  ylab(bquote(Mt~CO[2]*e)) +
-  scale_y_continuous(limits = c(50, 72), breaks = seq(52, 72, 2),
-                     expand = c(0,0), labels = comma) +
-  scale_x_continuous(limits = c(1990, 2026), 
-                     breaks = seq(1990, 2025, 5), 
-                     expand = c(0,0)) +
-  theme_soe() +
-  theme_lineplots
+ghg_time + theme_print
+# ggplot(data = bc_ghg_sum, aes(x = year, y = ghg_estimate)) + 
+#   geom_line(colour = "#1B9E77", size = 1.5) +
+#   geom_point(x=2025, y=clean_bc_2025, color="black", shape=19, size=2)+
+#   geom_point(x=2007, y=baseline_2007, color="black", shape=19, size=2)+
+#   geom_segment(aes(x = 2004, xend = 2007, y = 62, yend = baseline_2007), size = 0.7) +
+#   annotate("text", x=2018, y=clean_bc_2025, label="B.C. 2025 emission target", size = 4)+
+#   annotate("text", x=2004, y=61.5, label = "2007 baseline", size = 4)+
+#   labs(title = "Total GHG Emissions") +
+#   xlab(NULL) + 
+#   ylab(bquote(Mt~CO[2]*e)) +
+#   scale_y_continuous(limits = c(50, 72), breaks = seq(52, 72, 2),
+#                      expand = c(0,0), labels = comma) +
+#   scale_x_continuous(limits = c(1990, 2026), 
+#                      breaks = seq(1990, 2025, 5), 
+#                      expand = c(0,0)) +
+#   theme_soe() +
+#   theme_lineplots
 ```
 
 \vspace{.2cm}
@@ -156,13 +156,17 @@ ggplot(data = bc_ghg_sum, aes(x = year, y = ghg_estimate)) +
 
 \vspace{.2cm}
 
-```{r ghgpop, fig.alt="Greenhouse gas emissions per capita plotted over time from 1990 to 2021"}
+```{r include = is_pdf, eval=is_pdf}
 ghg_pop + theme_print + 
   labs(caption = 
     "\n* To compare to per capita emissions from other jurisdictions, the afforestation and deforestation emissions
          in the B.C. inventory were removed for this calculation, as these emission sources are not tracked everywhere. 
          More details on these emissions are available below.") + 
   theme(plot.caption.position = "panel")
+```
+
+```{r include = is_html, eval=is_html, ghgpop, fig.alt="Greenhouse gas emissions per capita plotted over time from 1990 to 2021"}
+ghg_pop + theme_print
 ```
 
 \newpage
@@ -190,14 +194,16 @@ norm_print +
 
 ## Emissions by Greenhouse Gas
 
--   A total of 6 greenhouse gases: Carbon dioxide, Hydroflourocarbons, Methane, Nitrous oxide, Perfluorocarbons and Sulphur hexafluoride, are monitored across B.C. Each of these gases has a different Global Warming Potential (GWP, provided in the [British Columbia Greenhouse Gas Provincial Inventory Methodology](https://www2.gov.bc.ca/assets/gov/environment/climate-change/data/provincial-inventory/2021/provincial_inventory_of_greenhouse_gas_emissions_1990-2021_-_methodology_report.pdf)). For the purpose of the below figures, values for each greenhouse gas have been converted to their CO~2~ equilvalent, allowing for comparison of effect size.
+-   A total of 6 greenhouse gases: Carbon dioxide, Hydroflourocarbons, Methane, Nitrous oxide, Perfluorocarbons and Sulphur hexafluoride, are monitored across B.C. For the purpose of the below figures, values for each greenhouse gas have been converted to their CO~2~ equilvalent, allowing for comparison of effect size.
 
 -   Greenhouse gas emissions between 1990 and 2021 have on average consisted of 81.3% CO~2~ (range = 80.3 - 84.1 %), and this percentage has stayed relatively consistent across this time period. 
 
 \vspace{0.4cm}
 
 ```{r include = is_pdf, eval=is_pdf, out.width="110%"}
- include_graphics(path = here("out", "ghg_gases_plot.png"))
+ # include_graphics(path = here("out", "ghg_gases_plot.png"))
+ghg_gases_prop +
+  theme_print
 ```
 
 ```{r include=is_html, eval=is_html, fig.height=5, fig.width=11,  fig.alt="Interactive plot of percentage of total emissions for each seperate Greenhouse Gas from 1990 to 2021."}
@@ -222,7 +228,8 @@ p
 -   Sulphur hexaflouride (SF~6~), which has the highest radiative forcing potential of all recorded gases, has varied between 0.1 and 0.2% of emmissions, and has not been included as a significant component of emmission since 2010. 
 
 ```{r include = is_pdf, eval=is_pdf, out.width="110%"}
-include_graphics(path = here("out", "ghg_net_plot.png"))
+# include_graphics(path = here("out", "ghg_net_plot.png"))
+ghg_net_1990 + theme_print
 ```
 
 ```{r include=is_html, eval=is_html, fig.height=5, fig.width=11,  fig.alt = "Interactive plot of net changes in emissions for each Greenhouse Gas relative to 1990 for years 1991 to 2021"}

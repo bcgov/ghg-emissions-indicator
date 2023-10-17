@@ -50,7 +50,7 @@ ghg_time = ggplot(data = bc_ghg_sum, aes(x = year, y = ghg_estimate)) +
   geom_point(x=2025, y=clean_bc_2025, color="black", shape=19, size=2)+
   geom_point(x=2007, y=baseline_2007, color="black", shape=19, size=2)+
   geom_segment(aes(x = 2004, xend = 2007, y = 62, yend = baseline_2007), size = 0.7) +
-  annotate("text", x=2019.5, y=clean_bc_2025, label="B.C. 2025 emission target", size = 4)+
+  annotate("text", x=2019, y=clean_bc_2025, label="B.C. 2025 emission target", size = 4)+
   annotate("text", x=2004, y=61.5, label = "2007 baseline", size = 4)+
   labs(title = "Total GHG Emissions") +
   xlab(NULL) + 
@@ -207,6 +207,7 @@ ghg_gases_prop = ggplot(ghg_gas_prop) +
            position="stack", stat="identity") +
   scale_fill_manual(name = "Greenhouse Gas", values = gas.pal,
                   labels = labels_pdf)+
+  x_scale + 
   labs(x="", y="Percentage of total emissions for each \nGHG from 1990 to 2021")+
   theme_soe()+
   theme(panel.grid.major = element_line(size = 0.5, colour = "grey85"),
@@ -243,6 +244,7 @@ ghg_gases_prop_html = ggplot(ghg_gas_prop) +
                      limits = gas.order)+
   labs(x="", y="Percentage of total emissions for each GHG \nfrom 1990 to 2021")+
   theme_soe()+
+  x_scale + 
   theme(panel.grid.major = element_line(size = 0.5, colour = "grey85"),
         panel.grid.minor = element_line(size = 0.5, colour = "grey85"),
         panel.grid.minor.x = element_blank(),
@@ -275,11 +277,11 @@ ghg_gases_net_1990 <- ghg_gases_sum_html %>%
 
 ghg_net_1990 <- ggplot(ghg_gases_net_1990) + 
   geom_line(aes(x = year, y = net_ghg, col = gas, group = gas)) +
-  xlab("") + ylab(bquote("Annual change in "~Mt~CO[2]*e~"from 1990 by Greenhouse Gas"))+
+  xlab("") + ylab(bquote("Annual change in "~Mt~CO[2]*e~"<br>from 1990 by Greenhouse Gas"))+
   # xlab(NULL)+
   # ylab(bquote(atop(paste("  Annual change in " ~Mt~CO[2]*e ~" "),paste("from 1990 by Greenhouse Gas")))) +
   scale_color_manual(name = "Greenhouse Gas", values = gas.pal, labels = labels_pdf) +
-  x_scale +
+  x_scale + 
   theme_soe()+ 
   theme(panel.grid.major = element_line(size = 0.5, colour = "grey85"),
         panel.grid.minor = element_line(size = 0.5, colour = "grey85"),
@@ -533,7 +535,6 @@ png_retina(filename = "./out/ghg_plot.png", width = 500, height = 400,
            units = "px", type = "cairo-png", antialias = "default")
 plot(ghg_time)
 dev.off()
-
 
 #total ghg per pop over time
 svg_px("./out/ghg_pop_plot.svg", width = 500, height = 400)
