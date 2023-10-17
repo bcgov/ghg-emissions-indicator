@@ -152,7 +152,7 @@ ghg_time + theme_print
 
 \vspace{.2cm}
 
--   Overall, the greenhouse gases produced per person in B.C. were less in 2021 than the 2007 baseline year. This lower level, as with the reduction seen in 2020, is likely due to effects of the COVID-19 pandemic.
+-   Overall, the greenhouse gases produced per person in B.C. were less in 2021 than the 2007 baseline year. This lower level, as with the reduction seen in 2020, is likely due to effects of the COVID-19 pandemic, ans this reduction held steady into 2021.
 
 \vspace{.2cm}
 
