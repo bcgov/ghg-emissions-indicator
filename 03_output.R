@@ -276,7 +276,8 @@ ghg_gases_net_1990 <- ghg_gases_sum_html %>%
   select(gas, year, starts_with("net"))
 
 ghg_net_1990 <- ggplot(ghg_gases_net_1990) + 
-  geom_line(aes(x = year, y = net_ghg, col = gas, group = gas)) +
+  geom_line(aes(x = year, y = net_ghg, col = gas, group = gas),
+            linewidth = 1) +
   xlab("") + ylab(bquote("Annual change in "~Mt~CO[2]*e~"<br>from 1990 by Greenhouse Gas"))+
   # xlab(NULL)+
   # ylab(bquote(atop(paste("  Annual change in " ~Mt~CO[2]*e ~" "),paste("from 1990 by Greenhouse Gas")))) +
@@ -300,7 +301,8 @@ ghg_net_1990
 
 ghg_net_1990_html <- ggplot(ghg_gases_net_1990) + 
   geom_line(aes(x = year, y = net_ghg, col = gas, group = gas,
-                text = paste0(gas, " (", year, "): ", net_ghg, " MtCO<sub>2</sub>e"),)) +
+                text = paste0(gas, " (", year, "): ", net_ghg, " MtCO<sub>2</sub>e")),
+            linewidth = 1) +
   labs(x="", y="Annual change in MtCO<sub>2</sub>e<br>from 1990 by Greenhouse Gas")+
   # xlab(NULL)+
   # ylab(bquote(atop(paste("  Annual change in " ~Mt~CO[2]*e ~" "),paste("from 1990 by Greenhouse Gas")))) +
@@ -384,7 +386,7 @@ ghg_sector_html <- ggplot(econ_sector_sum_data) +
   scale_color_manual(name = "Economic Sector", values = sector.pal,
                      limits = sector.order) +
   x_scale +
-  labs(x="Year", y="Emissions (MtCO<sub>2</sub>e)<br>by Economic Sector")+
+  labs(x="", y="Emissions (MtCO<sub>2</sub>e)<br>by Economic Sector")+
   theme_soe() +
   theme(panel.grid.major = element_line(size = 0.5, colour = "grey85"),
         panel.grid.minor = element_line(size = 0.5, colour = "grey85"),
@@ -447,7 +449,7 @@ ghg_abs_diff_html <- ggplot(abs_diff_econ) +
   scale_color_manual(name = "Economic Sector", values = sector.pal,
                      limits = sector.order) +
   x_scale +
-  labs(x="Year", y="Annual Change in Emissions from 1990<br>(MtCO<sub>2</sub>e)")+
+  labs(x="", y="Annual Change in Emissions from 1990<br>(MtCO<sub>2</sub>e)")+
   theme_soe() +
   theme(panel.grid.major = element_line(size = 0.5, colour = "grey85"),
         panel.grid.minor = element_line(size = 0.5, colour = "grey85"),
