@@ -278,7 +278,8 @@ ghg_gases_net_1990 <- ghg_gases_sum_html %>%
 ghg_net_1990 <- ggplot(ghg_gases_net_1990) + 
   geom_line(aes(x = year, y = net_ghg, col = gas, group = gas),
             linewidth = 1) +
-  xlab("") + ylab(bquote("Annual change in "~Mt~CO[2]*e~"<br>from 1990 by Greenhouse Gas"))+
+  xlab("") + 
+  ylab(bquote(atop("Annual change in "~Mt~CO[2]*e~ "from 1990", "by Greenhouse Gas")))+
   # xlab(NULL)+
   # ylab(bquote(atop(paste("  Annual change in " ~Mt~CO[2]*e ~" "),paste("from 1990 by Greenhouse Gas")))) +
   scale_color_manual(name = "Greenhouse Gas", values = gas.pal, labels = labels_pdf) +
@@ -290,7 +291,7 @@ ghg_net_1990 <- ggplot(ghg_gases_net_1990) +
         panel.grid.major.x = element_blank(),
         axis.text.y = element_text(size = 8),
         axis.text.x = element_text(size = 10),
-        axis.title.y = element_text(size = 10,
+        axis.title.y = element_text(size = 6,
                                     margin = margin(t = 0, r = 10, b = 0, l = 0,
                                                     unit = "pt")),
         legend.text = element_text(size = 8),
@@ -303,7 +304,7 @@ ghg_net_1990_html <- ggplot(ghg_gases_net_1990) +
   geom_line(aes(x = year, y = net_ghg, col = gas, group = gas,
                 text = paste0(gas, " (", year, "): ", net_ghg, " MtCO<sub>2</sub>e")),
             linewidth = 1) +
-  labs(x="", y="Annual change in MtCO<sub>2</sub>e<br>from 1990 by Greenhouse Gas")+
+  labs(x="", y="Annual change in MtCO<sub>2</sub>e from 1990  \nby Greenhouse Gas")+
   # xlab(NULL)+
   # ylab(bquote(atop(paste("  Annual change in " ~Mt~CO[2]*e ~" "),paste("from 1990 by Greenhouse Gas")))) +
   scale_color_manual(name = "Greenhouse Gas", values = gas.pal,
@@ -372,7 +373,10 @@ ghg_sector <- ggplot(econ_sector_sum_data, aes(x=year, y=sum, color=fct_rev(sect
         axis.text.x = element_text(size = 14),
         axis.title.y = element_text(size = 16,
                                     margin = margin(t = 0, r = 10, b = 0, l = 0,
-                                                    unit = "pt")))+
+                                                    unit = "pt")),
+        legend.text = element_text(size = 8),
+        legend.title = element_text(size = 10), 
+        legend.background = element_rect(colour = "white"))+
   theme(plot.margin = unit(c(0.5,3.5,0.5,0.5), "cm")) 
 
 plot(ghg_sector)
@@ -414,7 +418,7 @@ abs_label_static <- abs_diff_econ %>%
 ghg_abs_diff <- ggplot(data = abs_diff_econ, 
                        aes(x = year, y = abs.diff, color = fct_rev(sector))) + 
   geom_line(size=1) +
-  xlab(NULL) +  ylab(bquote("Annual Change in "~Mt~CO[2]*e~" from 1990 by Economic Sector")) +
+  xlab(NULL) +  ylab(bquote(atop("Annual Change in "~Mt~CO[2]*e~" from 1990", "by Economic Sector"))) +
   labs(color = "Economic Sector") +
   x_scale +
   scale_color_manual(values = sector.pal) +
@@ -434,7 +438,10 @@ ghg_abs_diff <- ggplot(data = abs_diff_econ,
         axis.text.x = element_text(size = 14),
         axis.title.y = element_text(size = 16,
                                     margin = margin(t = 0, r = 10, b = 0, l = 0,
-                                                    unit = "pt")))+
+                                                    unit = "pt")),
+        legend.text = element_text(size = 8),
+        legend.title = element_text(size = 10), 
+        legend.background = element_rect(colour = "white"))+
   theme(plot.margin = unit(c(0.5,3.5,0.5,0.5), "cm"))
 
 plot(ghg_abs_diff)
