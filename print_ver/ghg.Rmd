@@ -174,7 +174,7 @@ ghg_pop + theme_print
 
 -   Greenhouse gas emissions per million dollars of GDP varied year to year between 1990-2001 and have consistently declined since 2001.
 
-\vspace{.8cm}
+\vspace{.2cm}
 
 ```{r ghggdp, fig.alt="Greenhouse gas emissions per million dollars of GDP plotted over time from 1990 to 2021."}
 gdp_time + theme_print
@@ -195,7 +195,7 @@ norm_print +
 
 ## Emissions by Greenhouse Gas
 
--   Different gases have different Global Warming Potential (GWP: [British Columbia Greenhouse Gas Provincial Inventory Methodology](https://www2.gov.bc.ca/assets/gov/environment/climate-change/data/provincial-inventory/2021/provincial_inventory_of_greenhouse_gas_emissions_1990-2021_-_methodology_report.pdf)^3^), for example, methane (CH~4~) has a radiative forcing 25x that of carbon dioxide(CO~2~), while sulphur hexaflouride (SF~6~) has that of 22,880x more than CO~2~. For the puropose of this report, all emissions have been converted to units of CO~2~ equivalent (MtCO~2~e).
+-   Different gases have different Global Warming Potential (GWP: [British Columbia Greenhouse Gas Provincial Inventory Methodology](https://www2.gov.bc.ca/assets/gov/environment/climate-change/data/provincial-inventory/2021/provincial_inventory_of_greenhouse_gas_emissions_1990-2021_-_methodology_report.pdf)^3^), for example, methane (CH~4~) has a radiative forcing 25x that of carbon dioxide(CO~2~), while sulphur hexaflouride (SF~6~) has that of 22,880x more than CO~2~.
 
 -   A total of 6 greenhouse gases: carbon dioxide, hydroflourocarbons, methane, nitrous oxide, perfluorocarbons and sulphur hexafluoride, are monitored across B.C. For the purpose of the below figures, values for each greenhouse gas have been converted to their CO~2~ equilvalent, allowing for comparison of effect size.
 
