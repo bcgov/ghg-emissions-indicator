@@ -302,7 +302,7 @@ ghg_net_1990
 
 ghg_net_1990_html <- ggplot(ghg_gases_net_1990) + 
   geom_line(aes(x = year, y = net_ghg, col = gas, group = gas,
-                text = paste0(gas, " (", year, "): ", net_ghg, " MtCO<sub>2</sub>e")),
+                text = paste0(gas, " (", year, "): ", round(net_ghg,1), " MtCO<sub>2</sub>e")),
             linewidth = 1) +
   labs(x="", y="Annual change in MtCO<sub>2</sub>e from 1990  \nby Greenhouse Gas")+
   # xlab(NULL)+
@@ -621,6 +621,15 @@ png_retina(filename = "./out/econ_sector_abs_diff.png", width = 850, height = 50
            units = "px", type = "cairo-png", antialias = "default")
 plot(ghg_abs_diff)
 dev.off()
+
+
+# # Copy PNG files from /out folder to figure-HTML folders.
+if (!exists("print_ver/images_for_HTML")) dir.create("print_ver/images_for_HTML", showWarnings = FALSE)
+list.files(path = './out', pattern = '.png') %>%
+  purrr::map( ~ {
+    #To local machine's 'print_ver' folder...
+    file.copy(from = paste0('out/',.x),to = paste0('print_ver/images_for_HTML/',.x),
+              overwrite = T)})
 
 #END
 
@@ -1007,13 +1016,7 @@ dev.off()
 # plot(ghg_abs_diff)
 # dev.off()
 # 
-# # Copy PNG files from /out folder to figure-HTML folders.
-  if (!exists("print_ver/images_for_HTML")) dir.create("print_ver/images_for_HTML", showWarnings = FALSE)
-list.files(path = './out', pattern = '.png') %>%
-  purrr::map( ~ {
-    #To local machine's 'print_ver' folder...
-    file.copy(from = paste0('out/',.x),to = paste0('print_ver/images_for_HTML/',.x),
-              overwrite = T)})
+
 #     
 #     #Rename 5 figures that we copied to D: drive.
 #     figure_alt_name = case_when(
