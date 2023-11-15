@@ -55,7 +55,7 @@ ghg_sector_sum <- bc_ghg_long %>%
   group_by(sector, year) %>%
   # summarise(sum = round(sum(ktCO2e, na.rm = TRUE)/1000, digits = 1)) %>% 
   #Experimental: plots aren't showing any data... should we not divide by 1000?
-  summarise(sum = round(sum(ktCO2e, na.rm = TRUE), digits = 1)) %>%
+  summarise(sum = sum(ktCO2e, na.rm = TRUE)) %>%
   ungroup() %>% 
   mutate(sector = fct_reorder(sector, sum))
 
@@ -65,7 +65,7 @@ bc_ghg_sum <- bc_ghg_long %>%
   filter(!grepl("other emissions not included", sector, ignore.case = TRUE)) %>%
   group_by(year) %>%
   # summarise(ghg_estimate = round(sum(ktCO2e, na.rm = TRUE)/1000, digits = 1)) %>% 
-  summarise(ghg_estimate = round(sum(ktCO2e, na.rm = TRUE), digits = 1)) %>%
+  summarise(ghg_estimate = sum(ktCO2e, na.rm = TRUE)) %>%
   mutate(sector = "British Columbia") %>% 
   select(sector, year, ghg_estimate)
 
@@ -74,7 +74,7 @@ bc_ghg_sum_no_forest <- bc_ghg_long %>%
   filter(sector != "Afforestation & Deforestation") %>%
   group_by(year) %>%
   # summarise(ghg_no_forest = round(sum(ktCO2e, na.rm = TRUE)/1000, digits = 1)) %>% 
-  summarise(ghg_no_forest = round(sum(ktCO2e, na.rm = TRUE), digits = 1)) %>%
+  summarise(ghg_no_forest = sum(ktCO2e, na.rm = TRUE)) %>%
   mutate(sector = "British Columbia") %>% 
   select(sector, year, ghg_no_forest)
 
@@ -135,7 +135,7 @@ econ_sector_sum <- ghg_econ_long %>%
   filter(!grepl("other emissions not included", sector, ignore.case = TRUE)) %>%
   group_by(sector, year) %>%
   # summarise(sum = round(sum(ktCO2e, na.rm = TRUE)/1000, digits = 1)) %>% 
-  summarise(sum = round(sum(ktCO2e, na.rm = TRUE), digits = 1)) %>% 
+  summarise(sum = sum(ktCO2e, na.rm = TRUE)) %>% 
   ungroup() %>% 
   mutate(sector = fct_reorder(sector, sum))
 
@@ -182,7 +182,7 @@ ghg_gases_sum = ghg_gases_long %>%
   filter(!grepl("other emissions not included", sector, ignore.case = TRUE)) %>%
   group_by(gas, year) %>%
   # summarise(ghg_estimate = round(sum(ktCO2e, na.rm = TRUE)/1000, digits = 1)) %>% 
-  summarise(ghg_estimate = round(sum(ktCO2e, na.rm = TRUE), digits = 1)) %>%
+  summarise(ghg_estimate = sum(ktCO2e, na.rm = TRUE)) %>%
   mutate(sector = "British Columbia") %>% 
   select(gas, sector, year, ghg_estimate)
 
@@ -192,7 +192,7 @@ ghg_gases_sum_no_forest = ghg_gases_long %>%
   filter(sector != "Afforestation & Deforestation") %>%
   group_by(gas, year) %>%
   # summarise(ghg_estimate = round(sum(ktCO2e, na.rm = TRUE)/1000, digits = 1)) %>% 
-  summarise(ghg_estimate = round(sum(ktCO2e, na.rm = TRUE), digits = 1)) %>%
+  summarise(ghg_estimate = sum(ktCO2e, na.rm = TRUE)) %>%
   mutate(sector = "British Columbia") %>% 
   select(gas, sector, year, ghg_estimate)
 
@@ -201,7 +201,7 @@ ghg_gases_sum_no_forest = ghg_gases_long %>%
 ghg_est_ktco2e <- bc_ghg_long %>%
   filter(!grepl("other emissions not included", sector, ignore.case = TRUE)) %>%
   group_by(year) %>%
-  summarise(ghg_estimate = round(sum(ktCO2e, na.rm = TRUE), digits = 0)) %>% 
+  summarise(ghg_estimate = sum(ktCO2e, na.rm = TRUE)) %>% 
   mutate(sector = "British Columbia") %>% 
   select(sector, year, ghg_estimate) %>% 
   filter(year == max_ghg_yr) %>% 
@@ -215,7 +215,7 @@ ghg_est_Mtco2e <- round(ghg_est_ktco2e, digits = 1)
 bc_ghg_sum_ktco2e <- bc_ghg_long %>%
   filter(!grepl("other emissions not included", sector, ignore.case = TRUE)) %>%
   group_by(year) %>%
-  summarise(ghg_estimate = round(sum(ktCO2e, na.rm = TRUE), digits = 0)) %>% 
+  summarise(ghg_estimate = sum(ktCO2e, na.rm = TRUE)) %>% 
   mutate(sector = "British Columbia") %>% 
   select(sector, year, ghg_estimate)
 
@@ -230,7 +230,7 @@ calc_inc <- function(ghg_vector, year_vector, since) {
   ghg_then <- ghg_vector[year_vector == since]
   
   perc <- ((ghg_now/ghg_then) - 1)*100
-  round(perc, digits = 1)
+  perc
 }
 
 ## Comparisons
@@ -252,7 +252,7 @@ clean_bc_2025 <- (baseline_2007 * 0.84) #based on Clean BC target of 16% reducti
 
 current_ghg <- bc_ghg_sum_ktco2e$ghg_estimate[bc_ghg_sum_ktco2e$year==max_ghg_yr]
 
-cleanbc_reduction <- round((1-(clean_bc_2025/ghg_est_Mtco2e))*100, digits=1)
+cleanbc_reduction <- (1-(clean_bc_2025/ghg_est_Mtco2e))*100
 
 reduction_mt <- ghg_est_Mtco2e - clean_bc_2025
 
