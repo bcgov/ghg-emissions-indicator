@@ -86,13 +86,13 @@ include_graphics(path = here("out", "Waste.png"))
 include_graphics(path = here("out", "Agriculture.png"))
 ```
 
-### Other Industry Sector
+### Light Industry Sector
 
 \vspace{.8cm}
 
 ```{r include=knitr::is_latex_output(), out.width="100%"}
 
-include_graphics(path = here("out", "OtherIndustry.png"))
+include_graphics(path = here("out", "LightIndustry.png"))
 ```
 
 \newpage
