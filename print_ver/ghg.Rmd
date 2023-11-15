@@ -83,7 +83,7 @@ calc_inc <- function(ghg_vector, year_vector, since) {
   ghg_then <- ghg_vector[year_vector == since]
   
   perc <- ((ghg_now/ghg_then) - 1)*100
-  round(perc, digits = 1)
+  perc
 }
 
 two_years_ago = calc_inc(bc_ghg_sum$ghg_estimate, bc_ghg_sum$year, max(bc_ghg_sum$year)-2)
@@ -95,7 +95,7 @@ net_2007 <- 65.405
 
 -   **A rebound in greenhouse gas emissions was observed in 2021, from the low 2020 levels brought about by the COVID-19 pandemic.** This was primarily driven by an increase in emissions from passenger and freight transportation. 
 
--   **Total greenhouse gas emissions in `r max_ghg_yr` in B.C. were `r ghg_est_Mtco2e` million tonnes of carbon dioxide equivalent (MtCO~2~e).** This is a `r abs(previous_year)`% `r ifelse(previous_year > 0, 'increase', 'decrease')` in gross emissions since `r max_ghg_yr - 1`, a `r abs(two_years_ago)`% `r ifelse(two_years_ago > 0, 'increase', 'decrease')` in gross emissions since `r max_ghg_yr - 2`, and a `r abs(baseline_year)`% `r ifelse(baseline_year > 0, "increase", "decrease")` in gross emissions since 2007---the Government of British Columbia's baseline year for assessing reductions in greenhouse gas emissions.
+-   **Total greenhouse gas emissions in `r max_ghg_yr` in B.C. were `r ghg_est_Mtco2e` million tonnes of carbon dioxide equivalent (MtCO~2~e).** This is a `r abs(round(previous_year,1))`% `r ifelse(previous_year > 0, 'increase', 'decrease')` in gross emissions since `r max_ghg_yr - 1`, a `r abs(round(two_years_ago,1))`% `r ifelse(two_years_ago > 0, 'increase', 'decrease')` in gross emissions since `r max_ghg_yr - 2`, and a `r abs(round(baseline_year,1))`% `r ifelse(baseline_year > 0, "increase", "decrease")` in gross emissions since 2007---the Government of British Columbia's baseline year for assessing reductions in greenhouse gas emissions.
 
 <!-- B.C.'s outlook suggests that emissions are likely to rebound to a degree in 2021 as economic activity (including air travel and road transportation) returns to normal (see page 10 of [B.C.'s 2022 Climate Change Accountability Report](https://www2.gov.bc.ca/assets/gov/environment/climate-change/action/cleanbc/2022-ccar/2022_climate_change_accountability_report.pdf)^1^). -->
 
