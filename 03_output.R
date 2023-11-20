@@ -384,7 +384,7 @@ plot(ghg_sector)
 ## Interactive sector plot for ggplotly html output
 ghg_sector_html <- ggplot(econ_sector_sum_data) + 
   geom_line(aes(x = year, y = sum, color=fct_rev(sector), 
-                text = paste0(sector, " (", year, "): ", sum, " MtCO<sub>2</sub>e"),
+                text = paste0(sector, " (", year, "): ", round(sum,1), " MtCO<sub>2</sub>e"),
                 group = sector),
             linewidth = 1) +
   scale_color_manual(name = "Economic Sector", values = sector.pal,
@@ -450,7 +450,7 @@ plot(ghg_abs_diff)
 
 ghg_abs_diff_html <- ggplot(abs_diff_econ) + 
   geom_line(aes(x = year, y = abs.diff, color=fct_rev(sector), 
-                text = paste0(sector, " (", year, "): ", abs.diff, " MtCO<sub>2</sub>e"),
+                text = paste0(sector, " (", year, "): ", round(abs.diff,1), " MtCO<sub>2</sub>e"),
                 group = sector),
             size = 1) +
   scale_color_manual(name = "Economic Sector", values = sector.pal,
