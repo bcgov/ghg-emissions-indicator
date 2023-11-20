@@ -26,9 +26,7 @@ elevate_sectors <- function(df, sectors) {
   mutate(df, 
          elevate = sector %in% sectors,
          sector = ifelse(elevate, subsector_level1, sector),
-         subsector_level1 = ifelse(elevate, subsector_level2, subsector_level1),
-         subsector_level2 = ifelse(elevate, subsector_level3, subsector_level2), 
-         subsector_level3 = ifelse(elevate, NA_character_, subsector_level3)) %>% 
+         subsector_level1 = ifelse(elevate, subsector_level2, subsector_level1)) %>% 
     select(-elevate)
 }
 
@@ -36,7 +34,7 @@ elevate_sectors <- function(df, sectors) {
 bc_ghg_long <- bc_ghg %>% 
   gather(key =  year, value = ktCO2e,
          -sector, -subsector_level1,
-         -subsector_level2, -subsector_level3) %>%
+         -subsector_level2) %>%
   mutate(ktCO2e = as.numeric(ktCO2e),
          year = as.integer(as.character(year))) %>% 
   elevate_sectors(c("IPPU, AGRICULTURE, AND WASTE", "AFFORESTATION AND DEFORESTATION")) %>% 
@@ -165,7 +163,7 @@ ghg_econ_sub <- ghg_econ_sub %>%
 ghg_gases_long <- ghg_gases %>% 
   gather(key =  year, value = ktCO2e, -gas,
          -sector, -subsector_level1,
-         -subsector_level2, -subsector_level3) %>%
+         -subsector_level2) %>%
   mutate(ktCO2e = as.numeric(ktCO2e),
          year = as.integer(as.character(year))) %>% 
   elevate_sectors(c( "LAND-USE CHANGE")) %>% 
