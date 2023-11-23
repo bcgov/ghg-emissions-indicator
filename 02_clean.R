@@ -207,7 +207,7 @@ ghg_est_ktco2e <- bc_ghg_long %>%
 ghg_est_ktco2e
 
 # ghg_est_Mtco2e <- round(ghg_est_ktco2e/1000, digits = 1)
-ghg_est_Mtco2e <- round(ghg_est_ktco2e, digits = 1)
+ghg_est_Mtco2e <- ghg_est_ktco2e
 
 ## Calculate ghg annual totals in ktCO2e
 bc_ghg_sum_ktco2e <- bc_ghg_long %>%
