@@ -69,6 +69,7 @@ colnames(ghg_econ) = gsub(pattern = '^X', replacement = '', x = names(ghg_econ))
 #add individual gas data
 ghg_gases = read.csv('tmp/bc_ghg_emissions_by_economic_sector_by_gas_1990-2021.csv')
 
+
 #If the year columns have had an 'X' added to them... sometimes happens.
 colnames(ghg_gases) = gsub(pattern = '^X', replacement = '', x = names(ghg_gases))
 
