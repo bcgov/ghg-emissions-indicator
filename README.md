@@ -14,7 +14,6 @@ A set of R scripts to populate an indicator on trends in greenhouse gas emission
 
 British Columbia population estimates ([Table: 17-10-0005-01](https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=1710000501)) and gross domestic product ([Table: 36-10-0222-01](https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=3610022201)) data are sourced from [Statistics Canada](https://www.statcan.gc.ca/eng/start), released under the [Statistics Canada Open Licence Agreement](https://www.statcan.gc.ca/eng/reference/licence). 
 
-
 ### Code
 There are three core scripts that are required for the indicator, they need to be run in order:
 
@@ -26,13 +25,15 @@ The `run_all.R` script can be `source`ed to run it all at once.
 
 Most packages used in the analysis can be installed from CRAN using `install.packages()`, but you will need to install [envreportutils](https://github.com/bcgov/envreportutils) using remotes:
 
-
 ```r
 install.packages("remotes") # If you don't already have it installed
 
 remotes::install_github("bcgov/envreportutils")
 
 ```
+#### Data pre-processing
+
+If you are updating the indicator, there is an additional pre-processing script found in the [`envreportbc-snippets`](https://github.com/bcgov/envreportbc-snippets/tree/master/process-ghg-pi-table) package. The scripts are required to process the [Provincial Inventory](https://www2.gov.bc.ca/gov/content/environment/climate-change/data/provincial-inventory) data. 
 
 ## Getting Help or Reporting an Issue
 
