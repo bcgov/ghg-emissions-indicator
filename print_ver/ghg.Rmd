@@ -131,24 +131,9 @@ theme_lineplots <- theme(
 ```
 
 ```{r ghgtrends, fig.alt="Greenhouse gas emissions plotted over time from 1990 to 2021. The 2007 baseline and the 2025 emission target are highlighted on the graph."}
+
 ghg_time + theme_print
-# ggplot(data = bc_ghg_sum, aes(x = year, y = ghg_estimate)) + 
-#   geom_line(colour = "#1B9E77", size = 1.5) +
-#   geom_point(x=2025, y=clean_bc_2025, color="black", shape=19, size=2)+
-#   geom_point(x=2007, y=baseline_2007, color="black", shape=19, size=2)+
-#   geom_segment(aes(x = 2004, xend = 2007, y = 62, yend = baseline_2007), size = 0.7) +
-#   annotate("text", x=2018, y=clean_bc_2025, label="B.C. 2025 emission target", size = 4)+
-#   annotate("text", x=2004, y=61.5, label = "2007 baseline", size = 4)+
-#   labs(title = "Total GHG Emissions") +
-#   xlab(NULL) + 
-#   ylab(bquote(Mt~CO[2]*e)) +
-#   scale_y_continuous(limits = c(50, 72), breaks = seq(52, 72, 2),
-#                      expand = c(0,0), labels = comma) +
-#   scale_x_continuous(limits = c(1990, 2026), 
-#                      breaks = seq(1990, 2025, 5), 
-#                      expand = c(0,0)) +
-#   theme_soe() +
-#   theme_lineplots
+
 ```
 
 \vspace{.2cm}
@@ -236,11 +221,12 @@ p
 
 
 ```{r include = is_pdf, eval=is_pdf, out.width="110%"}
-# include_graphics(path = here("out", "ghg_net_plot.png"))
+
 ghg_net_1990 + theme_print
 ```
 
 ```{r include=is_html, eval=is_html, fig.height=5, fig.width=11,  fig.alt = "Interactive plot of net changes in emissions for each Greenhouse Gas relative to 1990 for years 1991 to 2021"}
+
 ggplotly(ghg_net_1990_html, tooltip="text", dynamicTicks = TRUE) %>%
   rangeslider(start = 1990, end = 2021)
 ```
@@ -305,12 +291,6 @@ ggplotly(ghg_abs_diff_html, tooltip="text", dynamicTicks = TRUE) %>%
 
 ```{r include=is_html,  eval=is_html, results='asis', fig.alt= "A tabbed interactive plot that shows a breakdown of greenhouse gas emissions by subsectors within a sector from 1990 to 2021." }
 
-# setwd(here())
-# 
-# list.files(path = here('out/'), pattern = "\\.png") %>%
-#   purrr::map( ~ {
-#     file.copy(from = here('out/',.x),to = here('print_ver/images_for_HTML/',.x))
-#   })
 
 cat("## Results by Economic Sector {.tabset}\n")
 
@@ -322,31 +302,31 @@ cat("- In each economic sector figure below, the grey background shows the total
 
 cat("\n### Transportation\n")
 
-include_graphics('images_for_HTML/Transportation.png')
+include_graphics(path = here("out", "Transportation.png"))
 
 cat("\n\n### Fossil Fuel Industry\n\n")
 
-include_graphics('images_for_HTML/FossilFuelIndustry.png')
+include_graphics(path = here("out", "FossilFuelIndustry.png"))
 
 cat("\n\n### Buildings\n\n")
 
-include_graphics('images_for_HTML/Buildings.png')
+include_graphics(path = here("out", "Buildings.png"))
 
 cat("\n\n### Heavy Industry\n\n")
 
-include_graphics('images_for_HTML/HeavyIndustry.png')
+include_graphics(path = here("out", "HeavyIndustry.png"))
 
 cat("\n\n### Waste\n\n")
 
-include_graphics('images_for_HTML/Waste.png')
+include_graphics(path = here("out", "HeavyWaste.png"))
 
 cat("\n\n### Agriculture\n\n")
 
-include_graphics('images_for_HTML/Agriculture.png')
+include_graphics(path = here("out", "Agriculture.png"))
 
 cat("\n\n### Light Industry\n\n")
 
-include_graphics('images_for_HTML/LightIndustry.png')
+include_graphics(path = here("out", "LightIndustry.png"))
 
 cat("\n\n### Deforestation\n\n")
 
