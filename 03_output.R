@@ -146,9 +146,9 @@ ghg_gases_sum_html = ghg_gases_sum %>%
          (gas == "CARBON DIOXIDE (CO2)" ~ "Carbon Dioxide (CO<sub>2</sub>)",
            gas == "METHANE (CH4)" ~ "Methane (CH<sub>4</sub>)",
            gas == "NITROUS OXIDE (N2O)b" ~ "Nitrous Oxide (N<sub>2</sub>0)",
-           gas == "HYDROFLUOROCARBONS (HFCs)c" ~ "Hydroflourocarbons (HFCs)",
-           gas == "PERFLUOROCARBONS (PFCs)c" ~ "Perflourocarbons (PFCs)",
-           gas == "SULPHUR HEXAFLUORIDE (SF6)d" ~ "Sulphur Hexaflouride (SF<sub>6</sub>)",
+           gas == "HYDROFLUOROCARBONS (HFCs)c" ~ "Hydrofluorocarbons (HFCs)",
+           gas == "PERFLUOROCARBONS (PFCs)c" ~ "Perfluorocarbons (PFCs)",
+           gas == "SULPHUR HEXAFLUORIDE (SF6)d" ~ "Sulphur Hexafluoride (SF<sub>6</sub>)",
            gas == "METHANE (CH4)a" ~ "Methane (CH<sub>4</sub>)")) %>%
   mutate(gas = as.factor(gas))
 
@@ -191,9 +191,9 @@ ghg_gas_prop = ghg_gases_sum_html %>%
 labels_pdf = c(expression(Carbon~Dioxide~"("~CO[2]~")"),
                expression(Methane~"("~CH[4]~")"),
                expression(Nitrous~Oxide~"("~N[2]*O~")"),
-              paste("Hydroflourocarbons (HFCs)"),
-              paste("Perflourocarbons (PFCs)"),
-              expression(Sulphur~Hexaflouride~"("~SF[6]~")"))
+              paste("Hydrofluorocarbons (HFCs)"),
+              paste("Perfluorocarbons (PFCs)"),
+              expression(Sulphur~Hexafluoride~"("~SF[6]~")"))
 
 ghg_gases_prop = ggplot(ghg_gas_prop) +
   geom_bar(aes(x = year,
