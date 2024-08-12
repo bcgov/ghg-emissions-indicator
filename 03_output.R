@@ -1,4 +1,4 @@
-# Copyright 2016 Province of British Columbia
+# Copyright 2024 Province of British Columbia
 # 
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,16 +12,16 @@
 
 
 ## Loading R libraries for script
-library(ggplot2) #plotting
-library(envreportutils) #for theme_soe and theme_soe_facet
-library(scales) #for label = comma
+library(ggplot2) # Plotting
+library(envreportutils) # For theme_soe and theme_soe_facet
+library(scales) # For label = comma
 library(forcats) # fct_rev() for stacking order
-library(RColorBrewer)#for colour palette
+library(RColorBrewer)# For color palette
 library(plyr)
-library(dplyr) #data munging
-library(reshape2) #data melting
+library(dplyr) # Data munging
+library(reshape2) # Data melting
 library(ggrepel)
-library(filesstrings) #for removing spaces in filename
+library(filesstrings) # For removing spaces in filename
 library(plotly)
 
 ## Read in plotting data from 02_clean.R if not already in environment
@@ -45,20 +45,22 @@ x_scale <- scale_x_continuous(limits = c(1990, max_ghg_yr + 1),
                               expand = c(0,0))
 
 ## Line plot of total GHG emissions over time in British Columbia
-ghg_time = ggplot(data = bc_ghg_sum, aes(x = year, y = ghg_estimate)) + 
+ghg_time <- ggplot(data = bc_ghg_sum, aes(x = year, y = ghg_estimate)) + 
   geom_line(colour = "#1B9E77", size = 1.5) +
+  geom_point(x=2030, y=clean_bc_2030, color="black", shape=19, size=2)+
   geom_point(x=2025, y=clean_bc_2025, color="black", shape=19, size=2)+
   geom_point(x=2007, y=baseline_2007, color="black", shape=19, size=2)+
   geom_segment(aes(x = 2004, xend = 2007, y = 62, yend = baseline_2007), size = 0.7) +
-  annotate("text", x=2019, y=clean_bc_2025, label="B.C. 2025 emission target", size = 4)+
+  annotate("text", x=2018, y=clean_bc_2025, label="B.C. 2025 emission target", size = 4)+
+  annotate("text", x=2023, y=clean_bc_2030, label="B.C. 2030 emission target", size = 4)+
   annotate("text", x=2004, y=61.5, label = "2007 baseline", size = 4)+
   labs(title = "Total GHG Emissions") +
   xlab(NULL) + 
   ylab(bquote(Mt~CO[2]*e)) +
-  scale_y_continuous(limits = c(50, 72), breaks = seq(52, 72, 2),
+  scale_y_continuous(limits = c(35, 72), breaks = seq(35, 72, 4),
                      expand = c(0,0), labels = comma) +
-  scale_x_continuous(limits = c(1990, 2026), 
-                     breaks = seq(1990, 2025, 5), 
+  scale_x_continuous(limits = c(1990, 2031), 
+                     breaks = seq(1990, 2030, 5), 
                      expand = c(0,0)) +
   theme_soe() +
   theme_lineplots
@@ -78,7 +80,6 @@ ghg_pop <- ggplot(data = bc_ghg_per_capita, aes(x = year, y = ghg_per_capita)) +
   theme_lineplots
 plot(ghg_pop)
 
-
 ## Line plot of total GHG emisions per unit GDP over time 
 gdp_time <- ggplot(data = bc_ghg_per_capita, 
                    aes(x = year, y = ghg_per_unit_gdp)) + 
@@ -93,11 +94,10 @@ gdp_time <- ggplot(data = bc_ghg_per_capita,
   theme_lineplots
 plot(gdp_time)
 
+## Line plot of normalized GHG emissions, GDP and population change over time 
+# Colour palette for 3 measures
 
-## Line plot of normalised GHG emissions, GDP and population change over time 
-#colour palette for 3 measures
-
-norm.order <- unique(normalized_measures$measure) #gets rid of unused factors
+norm.order <- unique(normalized_measures$measure) # Gets rid of unused factors
 norm.cols<-3
 norm.pal <- brewer.pal(norm.cols, "Dark2")
 names(norm.pal) <- norm.order
@@ -109,7 +109,7 @@ norm_base <- ggplot(data = normalized_measures,
   scale_y_continuous(limits = c(.9,2.3), breaks = seq(.9, 2.3, .1),
                      expand = c(0,0)) +
   x_scale+
-  labs(title = "Relative GHG Emissions, GDP & Population Size") +
+  labs(title = "Relative GHG Emissions, GDP, and Population Size") +
   xlab(NULL) + ylab("Values Indexed Relative to 1990") +
   scale_colour_manual(name="", values = norm.pal, guide = FALSE) +
   theme_soe() +
@@ -141,7 +141,7 @@ ghg_gases_sum = ghg_gases_sum %>%
 
 #Convert factor labels for gases to html code for plotly
 
-ghg_gases_sum_html = ghg_gases_sum %>%
+ghg_gases_sum_html <- ghg_gases_sum %>%
   mutate(gas = case_when
          (gas == "CARBON DIOXIDE (CO2)" ~ "Carbon Dioxide (CO<sub>2</sub>)",
            gas == "METHANE (CH4)" ~ "Methane (CH<sub>4</sub>)",
@@ -184,7 +184,7 @@ names(gas.pal) <- gas.order
 # ghg_gases_year
 
 #Annual change of percentage of emission for each gas
-ghg_gas_prop = ghg_gases_sum_html %>%
+ghg_gas_prop <- ghg_gases_sum_html %>%
   group_by (year) %>%
   mutate(percentage = (ghg_estimate/sum(ghg_estimate))*100)
 
@@ -195,7 +195,7 @@ labels_pdf = c(expression(Carbon~Dioxide~"("~CO[2]~")"),
               paste("Perflourocarbons (PFCs)"),
               expression(Sulphur~Hexaflouride~"("~SF[6]~")"))
 
-ghg_gases_prop = ggplot(ghg_gas_prop) +
+ghg_gases_prop <- ggplot(ghg_gas_prop) +
   geom_bar(aes(x = year,
                y = percentage,
                fill = gas,
@@ -225,12 +225,12 @@ ghg_gases_prop = ggplot(ghg_gas_prop) +
 
 ghg_gases_prop
 
-ghg_gas_prop = ghg_gases_sum_html %>%
+ghg_gas_prop <- ghg_gases_sum_html %>%
   group_by (year) %>%
   mutate(percentage = (ghg_estimate/sum(ghg_estimate))*100)
 
 
-ghg_gases_prop_html = ggplot(ghg_gas_prop) +
+ghg_gases_prop_html <- ggplot(ghg_gas_prop) +
   geom_bar(aes(x = year,
                             y = percentage,
                             fill = gas,
@@ -261,7 +261,7 @@ ghg_gases_prop_html = ggplot(ghg_gas_prop) +
 ghg_gases_prop_html
 
 #Add summary table (for stats used in report)
-ghg_gases_summary = ghg_gas_prop %>%
+ghg_gases_summary <- ghg_gas_prop %>%
   group_by(gas) %>%
   summarise(mean = mean(percentage),
             min = min(percentage),
@@ -269,6 +269,7 @@ ghg_gases_summary = ghg_gas_prop %>%
 
 ghg_gases_summary
 
+#Net displacement from 2007 levels
 #Net displacement from 1990 levels
 ghg_gases_net_1990 <- ghg_gases_sum_html %>% 
   group_by(gas) %>%
@@ -326,43 +327,53 @@ ghg_net_1990_html <- ggplot(ghg_gases_net_1990) +
 
 ghg_net_1990_html
 
-## Setting up data to provide information on economic sectors
+## Setting up data to provide information on new sectors
 # Remove sectors with no data in any year
-econ_sector_sum_data <- econ_sector_sum %>%
-  group_by(sector) %>%
+ghg_sector_sum_data <- ghg_sector_sum %>%
+  group_by(new_sector) %>%
   filter(sum(sum)!=0)%>%
   ungroup()
 
 # Set colour palette for sector plot
-sector.order <- rev(levels(droplevels(econ_sector_sum_data$sector))) #gets rid of unused factors
+sector.order <- rev(levels(droplevels(ghg_sector_sum_data$new_sector))) # Gets rid of unused factors
 sector.no <- length(sector.order) + 1
-nb.cols<-9
+nb.cols<-4
 sector.pal <- colorRampPalette(brewer.pal(sector.no, "Dark2"))(nb.cols)
 col_db <- melt(data.frame(sector.order,sector.pal)) #for use in plotting individual sectors
 names(sector.pal) <- sector.order
 
+# Set color for emission target
+sector.target.pal<-c(sector.pal, sector.pal)
 
-label_static <- econ_sector_sum_data %>%
+sector.pal_targets <- data.frame(sector_name = paste(names(sector.pal), "emission target"),
+  'BC_2030_emission_target' = c(clean_bc_2030_transport,
+                                clean_bc_2030_Other_industry,
+                                clean_bc_2030_Buildings_Communities,
+                                clean_bc_2030_Oils_Gas), 
+  sector.pal = as.character(sector.pal))
+
+names(sector.target.pal) <- c(names(sector.pal), sector.pal_targets$sector_name)
+
+label_static <- ghg_sector_sum_data %>%
   filter(year==max(year))
 
-
 # Line plot of each sector sum over time 
-ghg_sector <- ggplot(econ_sector_sum_data, aes(x=year, y=sum, color=fct_rev(sector))) + 
-  geom_line(linewidth = 1) +
-  scale_color_manual(values = sector.pal) +
+ghg_sector <- ggplot() + 
+  geom_line(aes(x=year, y=sum, color=fct_rev(new_sector), group = fct_rev(new_sector)), 
+            data = ghg_sector_sum_data, linewidth = 1) +
   # geom_text_repel(aes(label=sector, size=1),
   #                 data = label_static,
   #                 nudge_x=2, direction = "y",
   #                 segment.size = 0.5,
   #                 xlim = c(max(label_static$year),
   #                          max(label_static$year) + 5))+
+  geom_point(aes(x=2030, y= BC_2030_emission_target,  color = fct_rev(sector_name)), data = sector.pal_targets, shape=19, size=2)+
+  scale_color_manual(name = "Sector and emission target", values = sector.target.pal, limits = names(sector.target.pal), labels = names(sector.target.pal)) +
   xlab(NULL) +  
-  ylab(bquote(Mt~CO[2]*e~" by Economic Sector")) + labs(color = "Economic Sector") +
-  
-  scale_x_continuous(limits = c(1990, max_ghg_yr+1), 
-                     breaks = c(1990, seq(1993, max_ghg_yr + 1, 5), 2021), 
-                     expand = c(0,0))+
-  
+  ylab(bquote(Mt~CO[2]*e~" by Sector")) + labs(color = "Sector") +
+  scale_x_continuous(limits = c(1990, 2030), 
+                     breaks = c(1990, seq(1995, max_ghg_yr + 1, 5), 2030), 
+                     expand = c(0,0)) +
   coord_cartesian(clip = "off") +
   theme_soe()+ 
   theme(panel.grid.major = element_line(linewidth = 0.5, colour = "grey85"),
@@ -382,15 +393,17 @@ ghg_sector <- ggplot(econ_sector_sum_data, aes(x=year, y=sum, color=fct_rev(sect
 plot(ghg_sector)
 
 ## Interactive sector plot for ggplotly html output
-ghg_sector_html <- ggplot(econ_sector_sum_data) + 
-  geom_line(aes(x = year, y = sum, color=fct_rev(sector), 
-                text = paste0(sector, " (", year, "): ", round(sum,1), " MtCO<sub>2</sub>e"),
-                group = sector),
+ghg_sector_html <- ggplot() + 
+  geom_line(aes(x = year, y = sum, color = fct_rev(new_sector), 
+                text = paste0(new_sector, " (", year, "): ", round(sum,1), " MtCO<sub>2</sub>e"),
+                group = fct_rev(new_sector)), data = ghg_sector_sum_data,
             linewidth = 1) +
-  scale_color_manual(name = "Economic Sector", values = sector.pal,
-                     limits = sector.order) +
-  x_scale +
-  labs(x="", y="Emissions (MtCO<sub>2</sub>e)<br>by Economic Sector")+
+  geom_point(aes(x=2030, y= BC_2030_emission_target,  color = fct_rev(sector_name)), data = sector.pal_targets, shape=19, size=2)+
+  scale_color_manual(name = "Sector and emission target", values = sector.target.pal, limits = names(sector.target.pal), labels = names(sector.target.pal)) +
+  scale_x_continuous(limits = c(1990, 2030), 
+                     breaks = c(1990, seq(1993, max_ghg_yr + 1, 5), 2030), 
+                     expand = c(0,0)) +
+  labs(x="", y="Emissions (MtCO<sub>2</sub>e)<br>by Sector")+
   theme_soe() +
   theme(panel.grid.major = element_line(size = 0.5, colour = "grey85"),
         panel.grid.minor = element_line(size = 0.5, colour = "grey85"),
@@ -407,19 +420,19 @@ ghg_sector_html <- ggplot(econ_sector_sum_data) +
 
 plot(ghg_sector_html)
 
-### Absolute difference in CO2e emissions by economic sector
-abs_diff_econ <- plyr::ddply(econ_sector_sum_data, .(sector), 
+### Absolute difference in CO2e emissions by sector
+abs_diff_new_sector <- plyr::ddply(ghg_sector_sum_data, .(new_sector), 
                              transform, abs.diff = (sum - sum[year==1990])) 
 
-abs_label_static <- abs_diff_econ %>%
+abs_label_static <- abs_diff_new_sector %>%
   filter(year==max(year)) %>%
   select(-sum)
 
-ghg_abs_diff <- ggplot(data = abs_diff_econ, 
-                       aes(x = year, y = abs.diff, color = fct_rev(sector))) + 
+ghg_abs_diff <- ggplot(data = abs_diff_new_sector, 
+                       aes(x = year, y = abs.diff, color = fct_rev(new_sector))) + 
   geom_line(size=1) +
-  xlab(NULL) +  ylab(bquote(atop("Annual Change in "~Mt~CO[2]*e~" from 1990", "by Economic Sector"))) +
-  labs(color = "Economic Sector") +
+  xlab(NULL) +  ylab(bquote(atop("Annual Change in "~Mt~CO[2]*e~" from 1990", "by Sector"))) +
+  labs(color = "Sector") +
   x_scale +
   scale_color_manual(values = sector.pal) +
   # geom_text_repel(aes(label=sector, size=1),
@@ -448,12 +461,12 @@ plot(ghg_abs_diff)
 
 ## Interactive abs diff plot for ggplotly html output
 
-ghg_abs_diff_html <- ggplot(abs_diff_econ) + 
-  geom_line(aes(x = year, y = abs.diff, color=fct_rev(sector), 
-                text = paste0(sector, " (", year, "): ", round(abs.diff,1), " MtCO<sub>2</sub>e"),
-                group = sector),
+ghg_abs_diff_html <- ggplot(abs_diff_new_sector) + 
+  geom_line(aes(x = year, y = abs.diff, color=fct_rev(new_sector), 
+                text = paste0(new_sector, " (", year, "): ", round(abs.diff,1), " MtCO<sub>2</sub>e"),
+                group = new_sector),
             size = 1) +
-  scale_color_manual(name = "Economic Sector", values = sector.pal,
+  scale_color_manual(name = "Sector", values = sector.pal,
                      limits = sector.order) +
   x_scale +
   labs(x="", y="Annual Change in Emissions from 1990<br>(MtCO<sub>2</sub>e)")+
@@ -473,22 +486,20 @@ ghg_abs_diff_html <- ggplot(abs_diff_econ) +
 
 plot(ghg_abs_diff_html)
 
-
 ## Create a folder in directory called out for image files
 if (!exists("out"))  dir.create('out', showWarnings = FALSE)
-
 
 for (i in 1:length(sector.order)){
   
   x <- sector.order[i]
   plotcolor <- sector.pal[i]
-  p <- ghg_econ_sub %>% filter(sector == x)
-  s <- nlevels(as.factor(p$subsector_final))
+  p <- ghg_sub %>% filter(new_sector == x)
+  s <- nlevels(as.factor(p$new_sector_level1))
   
   
   g <- ggplot(p, aes(x = year, y = sum)) +
     geom_area(fill = "gray85", alpha = 0.6) +
-    facet_wrap(~fct_reorder(subsector_final, MtCO2e, .desc=TRUE),
+    facet_wrap(~fct_reorder(new_sector_level1, MtCO2e, .desc=TRUE),
                nrow = ifelse(s > 3, 2, 1), 
                labeller = label_wrap_gen(width = 25, multi_line = TRUE)) +
     xlab(NULL) + ylab(bquote(Mt~CO[2]*e)) +
@@ -505,7 +516,7 @@ for (i in 1:length(sector.order)){
           panel.grid.major.x = element_blank(),
           legend.background = element_blank())
   
-  g <- g + geom_area(data = p, aes(x = year, y = MtCO2e, fill = sector), size = 0.2, alpha = 0.8)+
+  g <- g + geom_area(data = p, aes(x = year, y = MtCO2e, fill = new_sector), size = 0.2, alpha = 0.8)+
     scale_fill_manual(values = plotcolor)
   
   plot(g)
@@ -555,7 +566,6 @@ png_retina(filename = "./out/ghg_pop_plot.png", width = 500, height = 400,
 plot(ghg_pop)
 dev.off()
 
-
 #total ghg/gdp over time
 svg_px("./out/ghg_gdp_plot.svg", width = 500, height = 400)
 plot(gdp_time)
@@ -565,7 +575,6 @@ png_retina(filename = "./out/ghg_gdp_plot.png", width = 500, height = 400,
            units = "px", type = "cairo-png", antialias = "default")
 plot(gdp_time)
 dev.off()
-
 
 #normalized ghg, gdp and pop compared over time
 svg_px("./out/norm_plot.svg", width = 500, height = 400)
@@ -617,7 +626,7 @@ svg_px("./out/econ_sector_abs_diff.svg", width = 850, height = 500)
 plot(ghg_abs_diff)
 dev.off()
 
-png_retina(filename = "./out/econ_sector_abs_diff.png", width = 850, height = 500,
+png_retina(filename = "./out/sector_abs_diff.png", width = 850, height = 500,
            units = "px", type = "cairo-png", antialias = "default")
 plot(ghg_abs_diff)
 dev.off()

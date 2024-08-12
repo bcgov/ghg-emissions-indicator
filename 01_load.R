@@ -1,4 +1,4 @@
-# Copyright 2018 Province of British Columbia
+# Copyright 2024 Province of British Columbia
 # 
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,8 +21,8 @@ library(envreportutils)
 if(!dir.exists('tmp'))dir.create('tmp')
 
 ## Remember to first run the envreportbc-snippets project 
-## (specifically, ghg_pi_econ-sector.R and ghg_pi_ipcc-sector.R) and then transfer
-## the two .CSV files produced into the tmp folder.
+## (specifically, ghg_pi_ipcc-sector.R) and then transfer
+## the .CSV file produced into the tmp folder.
 
 ## Get British Columbia Greenhouse Gas Emissions estimates from B.C. Data Catalogue 
 ## from https://catalogue.data.gov.bc.ca/dataset/british-columbia-greenhouse-gas-emissions
@@ -48,25 +48,8 @@ bc_ghg_yr <- bc_ghg |>
 
 max_ghg_yr <- as.numeric(bc_ghg_yr)
 
-#bring in economic sector data
-# url https://catalogue.data.gov.bc.ca/dataset/british-columbia-greenhouse-gas-emissions/resource/1baa8e16-f1fd-4ea9-9a1d-15f46a5ca066
+#If pulling in from data catalogue, use bcdc_get_data() function below. If pulling from local repo, use line 53 to add individual gas data
 
-ghg_econ <- bcdc_get_data(record='24c899ee-ef73-44a2-8569-a0d6b094e60c', 
-                           resource='1baa8e16-f1fd-4ea9-9a1d-15f46a5ca066')
-
-# ghg_econ_d = read.csv('tmp/bc_ghg_emissions_by_economic_sector_1990-2021.csv') |> 
-#   as_tibble()
-
-#If the year columns have had an 'X' added to them... sometimes happens.
-colnames(ghg_econ) = gsub(pattern = '^X', replacement = '', x = names(ghg_econ))
-
-## Get British Columbia Population Estimates [Table: 17-10-0005-01 
-## (formerly CANSIM  051-0001)] and Gross Domestic Product 
-## [Table: 36-10-0222-01 (formerly CANSIM  384-0038)] from Statistics Canada
-## Data is released under the Statistics Canada Open Licence Agreement 
-## https://www.statcan.gc.ca/eng/reference/licence)
-
-#add individual gas data
 # ghg_gases = read.csv('tmp/bc_ghg_emissions_by_economic_sector_by_gas_1990-2021.csv')
 
 ghg_gases <- bcdc_get_data(record='24c899ee-ef73-44a2-8569-a0d6b094e60c', 
@@ -76,17 +59,22 @@ ghg_gases <- bcdc_get_data(record='24c899ee-ef73-44a2-8569-a0d6b094e60c',
 #If the year columns have had an 'X' added to them... sometimes happens.
 colnames(ghg_gases) = gsub(pattern = '^X', replacement = '', x = names(ghg_gases))
 
+## Get British Columbia Population Estimates [Table: 17-10-0005-01 
+## (formerly CANSIM  051-0001)] and Gross Domestic Product 
+## [Table: 36-10-0222-01 (formerly CANSIM  384-0038)] from Statistics Canada
+## Data is released under the Statistics Canada Open Licence Agreement 
+## https://www.statcan.gc.ca/eng/reference/licence)
 
 #Load BC population data for 1990-2021
-bc_pop <- get_cansim(1710000501) |> 
+bc_pop <- get_cansim("17-10-0005-01") |> 
   filter(GEO == "British Columbia",
          REF_DATE >= 1990 & REF_DATE <= max_ghg_yr,
-         Sex == "Both sexes",
+         Gender == "Total - gender",
          `Age group` == "All ages") |> 
   select(year = REF_DATE, population_estimate = VALUE)
   
 
-bc_gdp <- get_cansim(3610022201) |>
+bc_gdp <- get_cansim("36-10-0222-01") |>
   filter(GEO == "British Columbia",
          REF_DATE >= 1990 & REF_DATE <= max_ghg_yr,
          Prices == "Chained (2012) dollars",
@@ -101,4 +89,4 @@ bc_pop_gdp <- bc_pop |>
 write_csv(bc_pop_gdp, "tmp/bc_ghg_related_data.csv")
 
 # Create tmp folder if not already there and store objects in local repository
-save(bc_ghg, bc_pop_gdp, max_ghg_yr, ghg_econ, ghg_gases, file = "tmp/raw_data.RData")
+save(bc_ghg, bc_pop_gdp, max_ghg_yr, ghg_gases, file = "tmp/raw_data.RData")
