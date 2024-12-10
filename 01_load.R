@@ -32,11 +32,13 @@ if(!dir.exists('tmp'))dir.create('tmp')
 
 # If pulling in from Data Catalogue, use bcdata() functions below, if pulling from local repo - use lines #38-39
 
-bc_ghg <- bcdc_get_data(record="24c899ee-ef73-44a2-8569-a0d6b094e60c",
-                        resource='11b1da01-fabc-406c-8b13-91e87f126dec')
+#bc_ghg <- bcdc_get_data(record="24c899ee-ef73-44a2-8569-a0d6b094e60c",
+#                        resource='11b1da01-fabc-406c-8b13-91e87f126dec')
 
-# bc_ghg = read.csv('tmp/bc_ghg_emissions_by_ipcc_sector_1990-2021.csv') |>
-#   as_tibble()
+bc_ghg <- read.csv('tmp/bc_ghg_emissions_by_ipcc_sector_1990-2022.csv') |>
+   as_tibble() 
+   
+bc_ghg <- bc_ghg |> filter(subsector_level2 != "CO2 Transport and Storage") # Remove "Co2 Transport and Storage" due to lack of data
 
 #If the year columns have had an 'X' added to them... sometimes happens.
 colnames(bc_ghg) = gsub(pattern = '^X', replacement = '', x = names(bc_ghg))
@@ -50,11 +52,12 @@ max_ghg_yr <- as.numeric(bc_ghg_yr)
 
 #If pulling in from data catalogue, use bcdc_get_data() function below. If pulling from local repo, use line 53 to add individual gas data
 
-# ghg_gases = read.csv('tmp/bc_ghg_emissions_by_economic_sector_by_gas_1990-2021.csv')
+ghg_gases <- read.csv('tmp/bc_ghg_emissions_by_economic_sector_by_gas_1990-2022.csv')
 
-ghg_gases <- bcdc_get_data(record='24c899ee-ef73-44a2-8569-a0d6b094e60c', 
-                          resource='99540512-0962-4f51-9bd8-886b6d792b1a')
+#ghg_gases <- bcdc_get_data(record='24c899ee-ef73-44a2-8569-a0d6b094e60c', 
+#                          resource='99540512-0962-4f51-9bd8-886b6d792b1a')
 
+ghg_gases <- ghg_gases |> filter(subsector_level2 != "CO2 Transport and Storage") # Remove "Co2 Transport and Storage" due to lack of data
 
 #If the year columns have had an 'X' added to them... sometimes happens.
 colnames(ghg_gases) = gsub(pattern = '^X', replacement = '', x = names(ghg_gases))
@@ -65,7 +68,7 @@ colnames(ghg_gases) = gsub(pattern = '^X', replacement = '', x = names(ghg_gases
 ## Data is released under the Statistics Canada Open Licence Agreement 
 ## https://www.statcan.gc.ca/eng/reference/licence)
 
-#Load BC population data for 1990-2021
+#Load BC population data for 1990-2022
 bc_pop <- get_cansim("17-10-0005-01") |> 
   filter(GEO == "British Columbia",
          REF_DATE >= 1990 & REF_DATE <= max_ghg_yr,
@@ -77,7 +80,7 @@ bc_pop <- get_cansim("17-10-0005-01") |>
 bc_gdp <- get_cansim("36-10-0222-01") |>
   filter(GEO == "British Columbia",
          REF_DATE >= 1990 & REF_DATE <= max_ghg_yr,
-         Prices == "Chained (2012) dollars",
+         Prices == "Chained (2017) dollars",
          Estimates == "Gross domestic product at market prices") |> 
   select(year = REF_DATE, gdp_estimate = VALUE)
 

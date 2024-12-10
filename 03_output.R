@@ -36,21 +36,21 @@ theme_lineplots <- theme(
                                               unit = "pt")),
   plot.title = element_text(size = 17, hjust = 0.5),
   plot.margin = unit(c(6,6,6,6),"mm"),
-    legend.title.align = 0
+  legend.title = element_text(0)
 )
 
 # Set plotting parameters common to many plots:
 x_scale <- scale_x_continuous(limits = c(1990, max_ghg_yr + 1), 
-                              breaks = c(1990, seq(1993, max_ghg_yr + 1, 5),2021), 
+                              breaks = c(1990, seq(1993, max_ghg_yr, 5),2022), 
                               expand = c(0,0))
 
 ## Line plot of total GHG emissions over time in British Columbia
 ghg_time <- ggplot(data = bc_ghg_sum, aes(x = year, y = ghg_estimate)) + 
-  geom_line(colour = "#1B9E77", size = 1.5) +
+  geom_line(colour = "#1B9E77", linewidth = 1.5) +
   geom_point(x=2030, y=clean_bc_2030, color="black", shape=19, size=2)+
   geom_point(x=2025, y=clean_bc_2025, color="black", shape=19, size=2)+
   geom_point(x=2007, y=baseline_2007, color="black", shape=19, size=2)+
-  geom_segment(aes(x = 2004, xend = 2007, y = 62, yend = baseline_2007), size = 0.7) +
+  geom_segment(x = 2004, xend = 2007, y = 62, yend = baseline_2007, size = 0.7) +
   annotate("text", x=2018, y=clean_bc_2025, label="B.C. 2025 emission target", size = 4)+
   annotate("text", x=2023, y=clean_bc_2030, label="B.C. 2030 emission target", size = 4)+
   annotate("text", x=2004, y=61.5, label = "2007 baseline", size = 4)+
@@ -106,7 +106,7 @@ norm_base <- ggplot(data = normalized_measures,
                     aes(x = year, y = estimate, group = measure, 
                         colour = measure)) + 
   geom_line(linewidth = 1.5) +
-  scale_y_continuous(limits = c(.9,2.3), breaks = seq(.9, 2.3, .1),
+  scale_y_continuous(limits = c(.9,2.4), breaks = seq(.9, 2.4, .1),
                      expand = c(0,0)) +
   x_scale+
   labs(title = "Relative GHG Emissions, GDP, and Population Size") +
@@ -135,7 +135,7 @@ plot(norm_print)
 
 #Breakdown of change in individual ghgs over time
 #Remove NF3 as no data
-ghg_gases_sum = ghg_gases_sum %>%
+ghg_gases_sum <- ghg_gases_sum %>%
   filter(!gas == "NITROGEN TRIFLUORIDE (NF3)e") %>%
   mutate(gas = factor(gas))
 
@@ -189,29 +189,31 @@ ghg_gas_prop <- ghg_gases_sum_html %>%
   mutate(percentage = (ghg_estimate/sum(ghg_estimate))*100)
 
 labels_pdf = c(expression(Carbon~Dioxide~"("~CO[2]~")"),
+               paste("Hydroflourocarbons (HFCs)"),
                expression(Methane~"("~CH[4]~")"),
                expression(Nitrous~Oxide~"("~N[2]*O~")"),
-              paste("Hydroflourocarbons (HFCs)"),
-              paste("Perflourocarbons (PFCs)"),
-              expression(Sulphur~Hexaflouride~"("~SF[6]~")"))
+               paste("Perflourocarbons (PFCs)"),
+               expression(Sulphur~Hexaflouride~"("~SF[6]~")"))
 
 ghg_gases_prop <- ggplot(ghg_gas_prop) +
   geom_bar(aes(x = year,
                y = percentage,
                fill = gas,
-               group = gas,
-               text = paste0(gas, " (", year, "): ", round(percentage,1), "%")),
+               group = gas),
+               #text = paste0(gas, " (", year, "): ", round(percentage,1), "%")),
            width = 1,
            col = "black",
            linewidth=0.1,
            position="stack", stat="identity") +
   scale_fill_manual(name = "Greenhouse Gas", values = gas.pal,
-                  labels = labels_pdf)+
-  x_scale + 
-  labs(x="", y="Percentage of total emissions for each \nGHG from 1990 to 2021")+
+                  labels = labels_pdf) +
+  scale_x_continuous(limits = c(1990-1, max_ghg_yr + 1), 
+                     breaks = c(1990, seq(1993, max_ghg_yr, 5),2022), 
+                     expand = c(0,0)) + 
+  labs(x="", y="Percentage of total emissions for each \nGHG from 1990 to 2022")+
   theme_soe()+
-  theme(panel.grid.major = element_line(size = 0.5, colour = "grey85"),
-        panel.grid.minor = element_line(size = 0.5, colour = "grey85"),
+  theme(panel.grid.major = element_line(linewidth = 0.5, colour = "grey85"),
+        panel.grid.minor = element_line(linewidth = 0.5, colour = "grey85"),
         panel.grid.minor.x = element_blank(),
         panel.grid.major.x = element_blank(),
         axis.text.y = element_text(size = 8),
@@ -229,22 +231,66 @@ ghg_gas_prop <- ghg_gases_sum_html %>%
   group_by (year) %>%
   mutate(percentage = (ghg_estimate/sum(ghg_estimate))*100)
 
+percent_CO2 <- ghg_gas_prop %>%
+  filter(year == 2022, gas == "Carbon Dioxide (CO<sub>2</sub>)") %>%
+  ungroup() %>%
+  select(percentage) %>%
+  as.numeric() %>%
+  round(digits = 1)
+
+percent_CH4 <- ghg_gas_prop %>%
+  filter(year == 2022, gas == "Methane (CH<sub>4</sub>)") %>%
+  ungroup() %>%
+  select(percentage) %>%
+  as.numeric() %>%
+  round(digits = 1)
+
+percent_N2O <- ghg_gas_prop %>%
+  filter(year == 2022, gas == "Nitrous Oxide (N<sub>2</sub>0)") %>%
+  ungroup() %>%
+  select(percentage) %>%
+  as.numeric() %>%
+  round(digits = 1)
+
+percent_HFCs <- ghg_gas_prop %>%
+  filter(year == 2022, gas == "Hydroflourocarbons (HFCs)") %>%
+  ungroup() %>%
+  select(percentage) %>%
+  as.numeric() %>%
+  round(digits = 1)
+
+percent_PFCs <- ghg_gas_prop %>%
+  filter(year == 2022, gas == "Perflourocarbons (PFCs)") %>%
+  ungroup() %>%
+  select(percentage) %>%
+  as.numeric() %>%
+  round(digits = 1)
+
+percent_SF6 <- ghg_gas_prop %>%
+  filter(year == 2022, gas == "Sulphur Hexaflouride (SF<sub>6</sub>)") %>%
+  ungroup() %>%
+  select(percentage) %>%
+  as.numeric() %>%
+  round(digits = 1)
+
 
 ghg_gases_prop_html <- ggplot(ghg_gas_prop) +
   geom_bar(aes(x = year,
                             y = percentage,
                             fill = gas,
-                            group = gas,
-                            text = paste0(gas, " (", year, "): ", round(percentage,1), "%")),
+                            group = gas),
+                            #text = paste0(gas, " (", year, "): ", round(percentage,1), "%")),
                           width = 1,
                            col = "black",
                            linewidth=0.1,
            position="stack", stat="identity") +
   scale_fill_manual(name = "Greenhouse Gas", values = gas.pal,
                      limits = gas.order)+
-  labs(x="", y="Percentage of total emissions for each GHG \nfrom 1990 to 2021")+
+  labs(x="", y="Percentage of total emissions for each GHG \nfrom 1990 to 2022")+
   theme_soe()+
-  x_scale + 
+  scale_x_continuous(limits = c(1990-1, max_ghg_yr + 1), 
+                     breaks = c(1990, seq(1993, max_ghg_yr, 5),2022), 
+                     expand = c(0,0)) + 
   theme(panel.grid.major = element_line(size = 0.5, colour = "grey85"),
         panel.grid.minor = element_line(size = 0.5, colour = "grey85"),
         panel.grid.minor.x = element_blank(),
@@ -302,8 +348,8 @@ ghg_net_1990 <- ggplot(ghg_gases_net_1990) +
 ghg_net_1990
 
 ghg_net_1990_html <- ggplot(ghg_gases_net_1990) + 
-  geom_line(aes(x = year, y = net_ghg, col = gas, group = gas,
-                text = paste0(gas, " (", year, "): ", round(net_ghg,1), " MtCO<sub>2</sub>e")),
+  geom_line(aes(x = year, y = net_ghg, col = gas, group = gas),
+                #text = paste0(gas, " (", year, "): ", round(net_ghg,1), " MtCO<sub>2</sub>e")),
             linewidth = 1) +
   labs(x="", y="Annual change in MtCO<sub>2</sub>e from 1990  \nby Greenhouse Gas")+
   # xlab(NULL)+
@@ -337,8 +383,8 @@ ghg_sector_sum_data <- ghg_sector_sum %>%
 # Set colour palette for sector plot
 sector.order <- rev(levels(droplevels(ghg_sector_sum_data$new_sector))) # Gets rid of unused factors
 sector.no <- length(sector.order) + 1
-nb.cols<-4
-sector.pal <- colorRampPalette(brewer.pal(sector.no, "Dark2"))(nb.cols)
+sector.nb.cols<-4
+sector.pal <- colorRampPalette(brewer.pal(sector.no, "Dark2"))(sector.nb.cols)
 col_db <- melt(data.frame(sector.order,sector.pal)) #for use in plotting individual sectors
 names(sector.pal) <- sector.order
 
@@ -372,7 +418,7 @@ ghg_sector <- ggplot() +
   xlab(NULL) +  
   ylab(bquote(Mt~CO[2]*e~" by Sector")) + labs(color = "Sector") +
   scale_x_continuous(limits = c(1990, 2030), 
-                     breaks = c(1990, seq(1995, max_ghg_yr + 1, 5), 2030), 
+                     breaks = c(1990, seq(1997, max_ghg_yr, 5), 2026, 2030), 
                      expand = c(0,0)) +
   coord_cartesian(clip = "off") +
   theme_soe()+ 
@@ -395,13 +441,13 @@ plot(ghg_sector)
 ## Interactive sector plot for ggplotly html output
 ghg_sector_html <- ggplot() + 
   geom_line(aes(x = year, y = sum, color = fct_rev(new_sector), 
-                text = paste0(new_sector, " (", year, "): ", round(sum,1), " MtCO<sub>2</sub>e"),
+                #text = paste0(new_sector, " (", year, "): ", round(sum,1), " MtCO<sub>2</sub>e"),
                 group = fct_rev(new_sector)), data = ghg_sector_sum_data,
             linewidth = 1) +
   geom_point(aes(x=2030, y= BC_2030_emission_target,  color = fct_rev(sector_name)), data = sector.pal_targets, shape=19, size=2)+
   scale_color_manual(name = "Sector and emission target", values = sector.target.pal, limits = names(sector.target.pal), labels = names(sector.target.pal)) +
   scale_x_continuous(limits = c(1990, 2030), 
-                     breaks = c(1990, seq(1993, max_ghg_yr + 1, 5), 2030), 
+                     breaks = c(1990, 1993, seq(1997, max_ghg_yr, 5), 2026, 2030), 
                      expand = c(0,0)) +
   labs(x="", y="Emissions (MtCO<sub>2</sub>e)<br>by Sector")+
   theme_soe() +
@@ -503,7 +549,7 @@ for (i in 1:length(sector.order)){
                nrow = ifelse(s > 3, 2, 1), 
                labeller = label_wrap_gen(width = 25, multi_line = TRUE)) +
     xlab(NULL) + ylab(bquote(Mt~CO[2]*e)) +
-    scale_x_continuous(limits = c(1990, max_ghg_yr + 1), breaks = c(seq(1993, max_ghg_yr, 10),2021), 
+    scale_x_continuous(limits = c(1990, max_ghg_yr + 1), breaks = c(seq(1993, max_ghg_yr, 10),2022), 
                        expand = c(0,0)) +
     theme_soe_facet() +
     theme(legend.position = ("none"),
@@ -542,7 +588,8 @@ remove_filename_spaces(dir = "tmp", pattern = " ", replacement = "")
 if (!exists("tmp")) dir.create("tmp", showWarnings = FALSE)
 save(ghg_time, ghg_pop, gdp_time, ghg_gases_prop, 
      ghg_gases_prop_html, ghg_net_1990, ghg_net_1990_html, norm, norm_print,
-     ghg_sector, ghg_sector_html, ghg_abs_diff,ghg_abs_diff_html,
+     ghg_sector, ghg_sector_html, ghg_abs_diff,ghg_abs_diff_html,percent_CO2,
+     percent_CH4, percent_N2O, percent_HFCs, percent_PFCs, percent_SF6,
      file = "tmp/plots.RData")
 
 ## Printing plots for web in SVG formats (and PNG) 

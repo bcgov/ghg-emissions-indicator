@@ -1,5 +1,5 @@
 ---
-title: "Trends in Greenhouse Gas Emissions in B.C. (1990-2021): Appendix"
+title: "Trends in Greenhouse Gas Emissions in B.C. (1990-2022): Appendix"
 topic: sustainability
 output:
   pdf_document: default
